@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer verticalCenter="0"
+				   horizontalCenter="0"
+				   x="0"
+				   y="0"
+				   xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="100%"
+				   height="100%"
+				   minHeight="200"
+				   xmlns:flexlib="http://code.google.com/p/flexlib/"
+				   xmlns:components="components.*"
+				   creationComplete="bordercontainer1creationCompleteHandler(event)">
+	<fx:Declarations>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<fx:Script>
+		<![CDATA[
+			import controller.WindowManager;
+			
+			import flash.ui.ContextMenu;
+			
+			import mx.controls.*;
+			import mx.events.FlexEvent;
+			import mx.events.ScrollEvent;
+			[Bindable]
+			[Embed(source="../images/newsup.jpg")]
+			private var newsUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/newsover.jpg")]
+			private var newsOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/coporateannouceup.jpg")]
+			private var corporateAnnouncementsUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/corporateannounceover.jpg")]
+			private var corporateAnnouncementsOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/bulletinsupdown.jpg")]
+			private var bulletinsUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/bulletinsover.jpg")]
+			private var bulletinsOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/tradeactivityover.jpg")]
+			private var tradeactivityOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/tardeactivityup.jpg")]
+			private var tradeactivityUp:Class;
+			
+			[Bindable]
+			private var windowManager:WindowManager=WindowManager.getInstance();
+			
+			public var textBullet1:TextInput;
+			public var flag2:Boolean=true;
+			public var textBullet3:TextInput;
+			public var flag3:Boolean=true;
+			public var textBullet:TextInput;
+			public var flag:Boolean=true;
+			public var textBullet2:TextInput;
+			public var marketMessages:Boolean=true
+			
+			protected function corporateAnnouncementsMouseOverHandler(event:MouseEvent):void
+			{
+				corporateAnnouncements.source=corporateAnnouncementsOver;
+			}
+			
+			protected function corporateAnnouncementsMouseOutHandler(event:MouseEvent):void
+			{
+				corporateAnnouncements.source=corporateAnnouncementsUp;
+			}
+			
+			protected function bulletinsMouseOutHandler(event:MouseEvent):void
+			{
+				bulletins.source=bulletinsUp;
+			}
+			
+			protected function bulletinsMouseOverHandler(event:MouseEvent):void
+			{
+				bulletins.source=bulletinsOver;
+			}
+			
+			protected function tradeActivityMouseOutHandler(event:MouseEvent):void
+			{
+			}
+			
+			protected function tradeActivityMouseOverHandler(event:MouseEvent):void
+			{
+			}
+			
+			protected function newsMouseOverHandler(event:MouseEvent):void
+			{
+				messages.source=newsOver;
+			}
+			
+			protected function newsMouseOutHandler(event:MouseEvent):void
+			{
+				messages.source=newsUp;
+			}
+			
+			protected function messagesBar_clickHandler(event:MouseEvent):void
+			{
+				if (event.currentTarget.id == "messages")
+				{
+					corporateAnnouncements.source=corporateAnnouncementsUp;
+					bulletins.source=bulletinsUp;
+					messages.source=newsOver;
+					tradeActivity.source = tradeactivityUp;
+					txaMessagess.visible=true;
+					txaMessages.visible=false;
+					txaCorporateAnnouncements.visible=false;
+					txaBulletins.visible=false;
+				}
+				else if (event.currentTarget.id == "corporateAnnouncements")
+				{
+					tradeActivity.source = tradeactivityUp;
+					corporateAnnouncements.source=corporateAnnouncementsOver;
+					messages.source=newsUp;
+					bulletins.source=bulletinsUp;
+					txaMessages.visible=false;
+					txaCorporateAnnouncements.visible=true;
+					txaBulletins.visible=false;
+					txaMessagess.visible=false;
+				}
+				else if (event.currentTarget.id == "bulletins")
+				{
+					tradeActivity.source = tradeactivityUp;
+					messages.source=newsUp;
+					corporateAnnouncements.source=corporateAnnouncementsUp;
+					bulletins.source=bulletinsOver;
+					txaMessages.visible=false;
+					txaCorporateAnnouncements.visible=false;
+					txaBulletins.visible=true;
+					txaMessagess.visible=false;
+				}
+				else if (event.currentTarget.id == "tradeActivity")
+				{
+					tradeActivity.source = tradeactivityOver
+					messages.source=newsUp;
+					corporateAnnouncements.source=corporateAnnouncementsUp;
+					bulletins.source=bulletinsUp;
+					txaMessages.visible=true;
+					txaCorporateAnnouncements.visible=false;
+					txaBulletins.visible=false;
+					txaMessagess.visible=false;
+				}
+			}
+			
+			protected function bordercontainer1creationCompleteHandler(event:FlexEvent):void
+			{
+				tradeActivity.source = tradeactivityOver
+				txaMessages.visible=true;
+				txaCorporateAnnouncements.visible=false;
+				txaBulletins.visible=false;
+			}
+			
+			
+			public function updateStatus2(msg:String):void
+			{
+				if (marketMessages == true)
+				{
+					textBullet1=new TextInput();
+					textBullet1.setStyle("borderStyle", "none");
+					textBullet1.setStyle("color", 0xffffff);
+					textBullet1.setStyle("backgroundColor", 0x000000);
+					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
+					textBullet1.width=vgroup.width
+					textBullet1.editable=false;
+					vgroup1.setStyle("backgroundColor", 0x000000);
+					vgroup1.addChild(textBullet1);
+					marketMessages=false;
+				}
+				else
+				{
+					textBullet1=new TextInput();
+					textBullet1.setStyle("color", 0xffffff);
+					textBullet1.setStyle("borderStyle", "none");
+					textBullet1.setStyle("backgroundColor", 0x1e1e1e);
+					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
+					textBullet1.width=vgroup.width
+					textBullet1.editable=false;
+					vgroup1.setStyle("backgroundColor", 0x1e1e1e);
+					vgroup1.addChild(textBullet1);
+					marketMessages=true;
+				}
+			}
+			
+			public function updateStatus(msg:String):void
+			{
+				txaMessages.visible=true;
+				if (flag2 == true)
+				{
+					textBullet1=new TextInput();
+					textBullet1.setStyle("color", 0xffffff);
+					textBullet1.setStyle("borderStyle", "none");
+					textBullet1.setStyle("backgroundColor", 0x000000);
+					textBullet1.htmlText+="<TEXTFORMAT><font color='#FFFFFF'>" + msg + "</font><br /></TEXTFORMAT>";
+					textBullet1.width=vgroup.width
+					textBullet1.editable=false;
+					vgroup1.setStyle("backgroundColor", 0x000000);
+					vgroup1.addChild(textBullet1);
+					flag2=false;
+				}
+				else if (flag2 == false)
+				{
+					textBullet1=new TextInput();
+					textBullet1.setStyle("color", 0xffffff);
+					textBullet1.setStyle("borderStyle", "none");
+					textBullet1.setStyle("backgroundColor", 0x1e1e1e);
+					textBullet1.htmlText+="<TEXTFORMAT><font color='#FFFFFF'>" + msg + "</font><br /></TEXTFORMAT>";
+					textBullet1.width=vgroup.width
+					textBullet1.editable=false;
+					vgroup1.setStyle("backgroundColor", 0x1e1e1e);
+					vgroup1.addChild(textBullet1);
+					flag2=true;
+				}
+				
+			}
+			
+			public function updateBulletin(msg:String):void
+			{
+				
+				if (flag == true)
+				{
+					textBullet=new TextInput();
+					textBullet.setStyle("color", 0xffffff);
+					textBullet.setStyle("borderStyle", "none");
+					textBullet.setStyle("backgroundColor", 0x000000);
+					textBullet.htmlText+="<TEXTFORMAT><span style='background-color:#222021;'><font color='#FFFFFF'>" + msg + "</font><span><br /></TEXTFORMAT>";
+					textBullet.width=vgroup.width
+					textBullet.editable=false;
+					vgroup.setStyle("backgroundColor", 0x000000);
+					vgroup.addChild(textBullet);
+					flag=false;
+				}
+				else
+				{
+					textBullet=new TextInput();
+					textBullet.setStyle("color", 0xffffff);
+					textBullet.setStyle("borderStyle", "none");
+					textBullet.setStyle("backgroundColor", 0x1e1e1e);
+					textBullet.htmlText+="<TEXTFORMAT><span style='background-color:#222021;'><font color='#FFFFFF'>" + msg + "</font><span><br /></TEXTFORMAT>";
+					textBullet.width=vgroup.width
+					textBullet.editable=false;
+					vgroup.setStyle("backgroundColor", 0x1e1e1e);
+					vgroup.addChild(textBullet);
+					flag=true;
+				}
+			}
+		]]>
+	</fx:Script>
+	<mx:Canvas borderStyle="none"
+			   id="txaMessages"
+			   width="100%"
+			   left="0"
+			   height="167"
+			   backgroundColor="#000000"
+			   minHeight="200"
+			   color="#ffffff">
+		<mx:VBox id="vgroup1"
+				 width="100%"
+				 verticalGap="-2"
+				 horizontalScrollPolicy="auto"
+				 borderStyle="none"
+				 borderColor="#000000"/>
+	</mx:Canvas>
+	<mx:Canvas borderStyle="none"
+			   id="txaMessagess"
+			   width="100%"
+			   left="0"
+			   height="167" visible="false"
+			   backgroundColor="#000000"
+			   minHeight="200"
+			   color="#ffffff">
+		<mx:VBox id="vgroup13"
+				 width="100%"
+				 verticalGap="-2"
+				 horizontalScrollPolicy="auto"
+				 borderStyle="none"
+				 borderColor="#000000"/>
+	</mx:Canvas>
+	
+	<mx:Canvas borderStyle="none"
+			   id="txaCorporateAnnouncements"
+			   width="100%"
+			   left="0"
+			   height="167"
+			   backgroundColor="#000000"
+			   minHeight="200"
+			   color="#ffffff">
+		<mx:VBox id="vgroup2"
+				 width="100%"
+				 verticalGap="-2"
+				 horizontalScrollPolicy="auto"
+				 borderStyle="none"
+				 borderColor="#000000"/>
+	</mx:Canvas>
+	<mx:Canvas borderStyle="none"
+			   id="txaBulletins"
+			   width="100%"
+			   left="0"
+			   height="167"
+			   backgroundColor="#000000"
+			   minHeight="200"
+			   color="#ffffff">
+		<mx:VBox id="vgroup"
+				 width="100%"
+				 verticalGap="-2"
+				 horizontalScrollPolicy="auto"
+				 borderStyle="none"
+				 borderColor="#000000"/>
+	</mx:Canvas>
+	<mx:HBox id="marketWatchHGroup"
+			 x="0"
+			 y="165"
+			 width="100%"
+			 horizontalGap="0">
+		<s:Image source="@Embed('../images/tardeactivityup.jpg')"
+				 id="tradeActivity" useHandCursor="true" buttonMode="true"
+				 click="messagesBar_clickHandler(event)"
+				 />
+		<s:Image source="@Embed('../images/newsup.jpg')"
+				 id="messages"
+				 buttonMode="true"
+				 useHandCursor="true"
+				 click="messagesBar_clickHandler(event)"
+				 />
+		<s:Image source="@Embed('../images/coporateannouceup.jpg')"
+				 id="corporateAnnouncements"
+				 buttonMode="true"
+				 useHandCursor="true"
+				 click="messagesBar_clickHandler(event)"
+				 />
+		<s:Image source="@Embed('../images/bulletinsupdown.jpg')"
+				 id="bulletins"
+				 buttonMode="true"
+				 useHandCursor="true"
+				 click="messagesBar_clickHandler(event)"
+				 />
+	</mx:HBox>
+</s:BorderContainer>

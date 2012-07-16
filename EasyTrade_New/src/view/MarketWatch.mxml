@@ -1,0 +1,631 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:BorderContainer verticalCenter="0"
+				   horizontalCenter="0"
+				   x="0"
+				   y="0"
+				   xmlns:fx="http://ns.adobe.com/mxml/2009"
+				   xmlns:s="library://ns.adobe.com/flex/spark"
+				   xmlns:mx="library://ns.adobe.com/flex/mx"
+				   width="100%"
+				   height="100%"
+				   minHeight="186"
+				   xmlns:flexlib="http://code.google.com/p/flexlib/"
+				   initialize="group1_initializeHandler(event)"
+				   xmlns:components="components.*"
+				   creationComplete="group1_creationCompleteHandler(event)">
+	<fx:Script>
+		<![CDATA[
+			import flash.ui.ContextMenu;
+			
+			import mx.core.UIComponent;
+			import mx.events.ScrollEvent;
+			
+			import spark.components.Button;
+			include "../eventhandlers/MarketWatch.as"
+
+			[Bindable]
+			[Embed(source="../images/equitiesover.jpg")]
+			private var equitiesOverImage:Class;
+
+			[Bindable]
+			[Embed(source="../images/equitiesup.jpg")]
+			private var equitiesUpImage:Class;
+
+			[Bindable]
+			[Embed(source="../images/bondsover.jpg")]
+			private var bondsOverImage:Class;
+
+			[Bindable]
+			[Embed(source="../images/bondsup.jpg")]
+			private var bondsUpImage:Class;
+			
+			[Bindable]
+			[Embed(source="../images/backImage.png")]
+			private var backImage:Class;
+
+			protected function hgroupBackground():void
+			{
+				marketWatchHGroup.setStyle("backgroundColor", 0xb7b7b7);
+			}
+
+			protected function adgMarketWatch_scrollHandler(event:ScrollEvent):void
+			{
+				adgMarketWatch.invalidateList();
+			}
+
+			protected function adgMarketWatch_headerReleaseHandler(event:DataGridEvent):void
+			{
+//				if(sortColumn != "" && sortColumn == event.dataField)
+//					sortDescending = !sortDescending;
+//				else
+//					sortDescending = false;
+				if (sortColumn == event.dataField)
+				{
+					sortDescending=!(event.currentTarget.columns[event.columnIndex] as DataGridColumn).sortDescending
+				}
+				else
+				{
+					sortDescending=(event.currentTarget.columns[event.columnIndex] as DataGridColumn).sortDescending
+				}
+				//var sortFlag:Boolean = 
+				sortColumn=event.dataField;
+				event.currentTarget.selectedItem=null;
+			}
+			
+			protected function adgMarketWatch_itemEditBeginHandler(event:DataGridEvent):void
+			{
+				//modelManager.marketWatchModel.marketWatch[selectedIndex].disableAutoUpdate();
+				//(event.currentTarget as DataGrid).dataProvider = false;
+				// TODO Auto-generated method stub
+			}
+
+			protected function equitiesMouseOverHandler(event:MouseEvent):void
+			{
+				equities.source=equitiesOverImage;
+			}
+
+			protected function equitiesmouseOutHandler(event:MouseEvent):void
+			{
+				equities.source=equitiesUpImage;
+			}
+
+			protected function bondsmouseOverHandler(event:MouseEvent):void
+			{
+				bonds.source=bondsOverImage;
+			}
+
+			protected function bondsmouseOutHandler(event:MouseEvent):void
+			{
+				bonds.source=bondsUpImage;
+			}
+
+			protected function group1_creationCompleteHandler(event:FlexEvent):void
+			{
+				this.setStyle("backgroundColor", 0xdbdbdb)
+//				this.setStyle("verticalScrollPolicy", "off")
+			}
+			
+			
+			protected function equities_creationCompleteHandler(event:FlexEvent):void
+			{
+				windowManager.viewManager.marketWatch.toolbar_clickHandler(new MouseEvent(MouseEvent.CLICK,true,false));
+			}
+			
+			protected function pageNav_creationCompleteHandler(event:FlexEvent):void
+			{
+				pageNav.addEventListener(ItemClickEvent.ITEM_CLICK,changeToggle);
+				setTimeout(launchAlert1,1500);
+			}
+			
+			
+			private function launchAlert1():void
+			{
+				var curItem:Object = windowManager.viewManager.marketWatch.pageNav.getChildAt(0);
+				curItem.setStyle("color", 0xfb6605);
+			}
+			protected function changeToggle(event:ItemClickEvent,flag:Boolean=false):void
+			{
+					 for(var i:int=0; i<event.target.numChildren; i++)
+					 {   
+						var curItem:Object = event.target.getChildAt(i);  //d66316 0xff2020 fb6605
+						i==event.index ? curItem.setStyle("color", 0xfb6605) : curItem.setStyle("color", 0x000000);              
+					 }  
+			}
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<mx:DateFormatter id="dateFormatter"
+						  formatString="DD/MM/YYYY"/>
+		<components:EZCurrencyFormatter id="moneyFormatter"/>
+		<components:EZNumberFormatter id="numberFormatter"/>
+		<components:EZNumberFormatter id="numberFormatterWithPercentSign"
+									  usePercentSign="true"/>
+	</fx:Declarations>
+
+	<mx:VBox verticalGap="0"
+			 minHeight="186"  
+			 height="100%"
+			 width="100%">
+<mx:HBox x="0" y="7" width="20%" horizontalGap="0" id="paginationHBox" visible="true">
+		<mx:LinkBar id="pageNav" dataProvider="{nav}"   visible="true" separatorColor="#dbdbdb" separatorWidth="0"
+					itemClick="navigatePage(event)"   fontSize="12" 
+					 creationComplete="pageNav_creationCompleteHandler(event)"
+					horizontalGap="1" 
+					width="100%"/>
+		<mx:Label id="viewingAlertsLabel1" text=""/>
+		<mx:Label id="viewingAlertsLabel2" text=""/>
+</mx:HBox> <!--dataProvider="{bindedArray}"-->
+		<mx:DataGrid id="adgMarketWatch" x="0" top="30" bottom="22" width="100%" minHeight="186"
+					 contextMenu="{ctMenu}" height="100%" 
+					 creationComplete="adgMarketWatch_creationCompleteHandler(event)"
+					 doubleClick="adgMarketWatch_doubleClickHandler(event)" editable="true"
+					 headerRelease="adgMarketWatch_headerReleaseHandler(event)"
+					 horizontalScrollPolicy="auto"   dataProvider="{bindedArray}"
+					 itemClick="adgMarketWatch_itemClickHandler(event)"
+					 itemEditBegin="adgMarketWatch_itemEditBeginHandler(event)"
+					 itemEditEnd="adgMarketWatch_FocusOutHandler(event)"
+					 itemRollOver="lastRollOverIndex = event.rowIndex"
+					 rowCount="{Constants.ROW_COUNT_MARKET_WATCH}" rowHeight="18"
+					 scroll="adgMarketWatch_scrollHandler(event)" sortableColumns="false"
+					 variableRowHeight="true">
+			<mx:columns>
+				<mx:DataGridColumn width="65"
+								   id="colSymbolID"
+								   headerText=""
+								   dataField="sid"
+								   editable="false"
+								   draggable="false"
+								   visible="false"/>
+				<mx:DataGridColumn width="65"
+								   id="colExchange"
+								   sortCompareFunction="{stringSortCompare}"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispExchangeCol}"
+								   headerText="Exchange"
+								   dataField="EXCHANGE"
+								   editable="false"
+								   draggable="false"
+								   itemRenderer="renderer.DropDownCellRenderer"/>
+				<mx:DataGridColumn width="65"
+								   id="colMarket"
+								   sortCompareFunction="{stringSortCompare}"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispMarktetCol}"
+								   headerText="Market"
+								   dataField="MARKET"
+								   editable="false"
+								   draggable="false"
+								   itemRenderer="renderer.DropDownCellRenderer"/>
+				<mx:DataGridColumn width="120"
+								   id="colSymbol"
+								   sortCompareFunction="{stringSortCompare}"
+								   headerText="Symbol"
+								   dataField="SYMBOL"
+								   editable="true"
+								   draggable="false"
+								   color="#53f257"/>
+
+				<!-- Begin Bond Columns -->
+				<!-- mx:DataGridColumn width="50" id="colIssueName" headerText="Issue Name" dataField="ISSUE_NAME" editable="false" backgroundColor="#D3D3DA" /-->
+				<mx:DataGridColumn width="50"
+								   id="colIRR"
+								   headerText="IRR"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispIRRCol &amp;&amp; selectedIndex==1}"
+								   dataField="IRR"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.IRR)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colAIRR"
+								   headerText="AIRR"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispAIRRCol &amp;&amp; selectedIndex==1}"
+								   dataField="AIRR"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.AIRR)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colBaseRate"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBaseRateCol &amp;&amp; selectedIndex==1 }"
+								   headerText="Base Rate"
+								   dataField="BASE_RATE"
+								   editable="false"
+								   sortable="false"
+								   textAlign="right"/>
+
+				<mx:DataGridColumn width="50"
+								   id="colSpreadRate"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispSpreadRateCol &amp;&amp; selectedIndex==1}"
+								   headerText="Spread Rate"
+								   dataField="SPREAD_RATE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.SPREAD_RATE)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colCouponRate"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispCouponRateCol &amp;&amp; selectedIndex==1}"
+								   headerText="Coupon Rate"
+								   dataField="COUPON_RATE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.COUPON_RATE)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="70"
+								   id="colNextCoupon"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispNextCouponCol &amp;&amp; selectedIndex==1}"
+								   headerText="Next Coupon Date"
+								   dataField="NEXT_COUPON"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.dateFormatter.format(data.NEXT_COUPON)}"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="70"
+								   id="colMaturityDate"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispMaturityDateCol &amp;&amp; selectedIndex==1}"
+								   headerText="Maturity Date"
+								   dataField="MATURITY_DATE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.dateFormatter.format(data.MATURITY_DATE)}"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<!--mx:DataGridColumn width="50" id="colFloor" headerText="Floor" dataField="FLOOR" editable="false" sortable="false" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.FLOOR)}" width="100%" textAlign="right" />
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+
+				<mx:DataGridColumn width="50" id="colCap" headerText="Cap" dataField="CAP" editable="false" sortable="false" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.CAP)}" width="100%" textAlign="right" />
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+
+				<mx:DataGridColumn width="50" id="colMTM" headerText="MTM" dataField="MTM" editable="false" sortable="false" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.MTM)}" width="100%" textAlign="right" />
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn-->
+				<!-- End Bond Columns-->
+				<!--mx:DataGridColumn width="50" id="colState" headerText="State" dataField="STATE" editable="false" sortable="false" /-->
+				<mx:DataGridColumn width="50"
+								   id="colFlags"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispFlagsCol}"
+								   headerText="Flags"
+								   dataField="FLAGS"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.FLAGS}"
+									  width="100%"
+									  textAlign="right"
+									 />
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colBuyVolume"
+								   backgroundColor="#000000"
+								   color="#3ebefd"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBidVolumeCol}"
+								   headerText="BidSize"
+								   dataField="BUY_VOLUME"
+								   editable="false"
+								   sortable="false"
+								   itemRenderer="renderer.BuyVolumeCellRenderer"
+								   textAlign="right">
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colBuy"
+								   backgroundColor="#000000"
+								   color="#3ebefd"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBidCol}"
+								   headerText="Bid"
+								   dataField="BUY"
+								   editable="false"
+								   sortable="false"
+								   itemRenderer="renderer.BuyCellRenderer"
+								   textAlign="right"/>
+				<mx:DataGridColumn width="50"
+								   id="colBuyYield"
+								   backgroundColor="#1e1e1e"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBuyYield &amp;&amp; selectedIndex==1 }"
+								   headerText="Yield"
+								   dataField="BUY"
+								   editable="false"
+								   sortable="false"
+								   textAlign="right">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.calculateCurrentYield(data.BUY,new Number(data.COUPON_RATE) ) > 0 ? outerDocument.calculateCurrentYield(data.BUY,new Number(data.COUPON_RATE) ) : '' }"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colSell"
+								   backgroundColor="#000000"
+								   headerText="Ask"
+								   color="#fe5898"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispOfferCol}"
+								   dataField="SELL"
+								   editable="false"
+								   sortable="false"
+								   itemRenderer="renderer.SellCellRenderer"
+								   textAlign="right"/>
+				<mx:DataGridColumn width="50"
+								   id="colSellYield"
+								   backgroundColor="#1e1e1e"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispSellYield &amp;&amp; selectedIndex==1 }"
+								   headerText="Yield"
+								   dataField="SELL"
+								   editable="false"
+								   sortable="false"
+								   textAlign="right">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.calculateCurrentYield(data.SELL,new Number(data.COUPON_RATE) ) > 0 ? outerDocument.calculateCurrentYield(data.SELL,new Number(data.COUPON_RATE) ) : '' }"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colSellVolume"
+								   backgroundColor="#000000"
+								   color="#fe5898"
+								   headerText="AskSize"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispOfferVolumeCol}"
+								   dataField="SELL_VOLUME"
+								   editable="false"
+								   sortable="false"
+								   itemRenderer="renderer.SellVolumeCellRenderer"
+								   textAlign="right"/>
+
+				<mx:DataGridColumn width="50"
+								   id="colLast"
+								   headerText="Last"
+								   dataField="LAST"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispLastCol}"
+								   editable="false"
+								   sortable="false"
+								   itemRenderer="renderer.LastPriceCellRenderer"
+								   textAlign="right"/>
+
+				<mx:DataGridColumn width="50"
+								   id="colLastVolume"
+								   headerText="Last Volume"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispLastVolumeCol}"
+								   dataField="LAST_VOLUME"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.LAST_VOLUME)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colTurnOver"
+								   headerText="Turn Over"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispTurnOverCol}"
+								   dataField="TURN_OVER"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.TURN_OVER)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colTrades"
+								   headerText="Trades"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispTradesCol}"
+								   dataField="TRADES"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.TRADES)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colOpen"
+								   headerText="Open"
+								   visible="false"
+								   dataField="OPEN"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format(data.OPEN)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colAverage"
+								   headerText="Average"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispAverageCol}"
+								   dataField="AVERAGE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format(data.AVERAGE)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colHigh"
+								   headerText="High"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispHighCol}"
+								   dataField="HIGH"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format(data.HIGH)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colLow"
+								   headerText="Low"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispLowCol}"
+								   dataField="LOW"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format(data.LOW)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colChange"
+								   headerText="Change"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispChangeCol}"
+								   dataField="CHANGE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format(data.CHANGE)}"
+									  color="{(data.CHANGE > 0) ? 0x52f156: 0xff1411}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colDaysToMaturity"
+								   headerText="Days To Maturity"
+								   dataField="DAYS_TO_MATURITY"
+								   visible="{modelManager.marketWatchModel.marketWatchCols.dispDaysToMaturityCol &amp;&amp; selectedIndex==1}"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.numberFormatter.format(data.DAYS_TO_MATURITY)}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn width="50"
+								   id="colPercentChange"
+								   headerText="%Change"
+								   visible="false"
+								   dataField="PERCENT_CHANGE"
+								   editable="false"
+								   sortable="false">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{outerDocument.moneyFormatter.format((data.CHANGE/100)*100)}"
+									  color="{((data.CHANGE/100)*100 > 0) ? 0x52f156: 0xff1411}"
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</mx:columns>
+		</mx:DataGrid>
+		
+	<!--<mx:VBox width="100%" top="{this.height-paginationHBox.height-1}" verticalGap="0">-->
+		<s:BorderContainer width="100%"
+						   height="3"
+						   borderColor="#fb6506"
+						   borderWeight="2"/>
+		<mx:HBox id="marketWatchHGroup" x="0" y="619" width="401" horizontalGap="0">
+			<s:Image source="@Embed('../images/equitiesup.jpg')"
+					 useHandCursor="true"
+					 buttonMode="true"
+					 id="equities"  creationComplete="equities_creationCompleteHandler(event)"
+					 click="toolbar_clickHandler(event)"
+					/>  
+			<s:Image source="@Embed('../images/bondsup.jpg')"
+					 id="bonds"
+					 useHandCursor="true"
+					 buttonMode="true"
+					 click="toolbar_clickHandler(event)"
+					 />
+			<s:Image source="@Embed('../images/derivativesup.jpg')"
+					 id="derivatives"
+					 useHandCursor="true"
+					 buttonMode="true"
+					 click="toolbar_clickHandler(event)"
+					 enabled="false"/>
+			<s:Image source="@Embed('../images/futuresup.jpg')"
+					 id="futures"
+					 useHandCursor="true"
+					 buttonMode="true"
+					 click="toolbar_clickHandler(event)"
+					 enabled="false"/>
+			<s:Image source="@Embed('../images/optionsup.jpg')"
+					 id="options"
+					 useHandCursor="true"
+					 buttonMode="true"
+					 click="toolbar_clickHandler(event)"
+					 enabled="false"/>
+		</mx:HBox>
+	</mx:VBox>
+</s:BorderContainer>
+<!-- //CHANGE {modelManager.marketWatchModel.marketWatchCols.dispPercChangeCol}  //OPEN {modelManager.marketWatchModel.marketWatchCols.dispOpenCol}-->

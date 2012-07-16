@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" width="100%" height="100%" xmlns:components="components.*">
+	<fx:Script>
+		<![CDATA[
+			import controller.ModelManager;
+			
+			import mx.events.FlexEvent;
+			
+			include "../eventhandlers/RiskInformation.as"
+			
+			
+		]]>
+	</fx:Script>
+	<fx:Declarations>
+		<mx:DateFormatter id="dateFormatter"
+						  formatString="LL:NN:SS A"/>
+		<components:EZCurrencyFormatter id="moneyFormatter"/>
+		<components:EZNumberFormatter id="numberFormatter"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	<s:BorderContainer width="100%">
+		
+	
+	<mx:Grid verticalGap="3"
+			 paddingLeft="4"
+			 paddingRight="4"
+			 paddingTop="4"
+			 paddingBottom="4"
+			 id="dgSymbolSummary"
+			 width="100%" horizontalAlign="center"
+			 height="105">
+		<mx:GridRow>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Client Code"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="true" id="txtClientCode" enter="txtClientCode_enterHandler(event)"/>		
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="By Pass Risk "/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtByPassRisk" />		
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Active"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtActive"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		<mx:GridRow>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Allow Short Sell"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false"  id="txtShortSell"/>
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="110">
+				<s:Label text="Use Open Position"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtUseOpenPosition" />		
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Cash"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtCash"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		<mx:GridRow>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Buying Power"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false"  id="txtBuyingPower"/>
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="140">
+				<s:Label text="Remaining Buying Power"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtRemainigBuyingPower" />		
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Margin"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtMargin"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+		
+		<mx:GridRow>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Share Value"/>
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false"  id="txtShareValue"/>
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="110">
+				<s:Label text="Open Position"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtOpenPosition" />		
+			</mx:GridItem>
+			<mx:GridItem verticalAlign="middle"
+						 width="102">
+				<s:Label text="Profit Loss"/>		
+			</mx:GridItem>
+			<mx:GridItem>
+				<s:TextInput editable="false" id="txtProfitLoss"/>
+			</mx:GridItem>
+		</mx:GridRow>
+		
+	</mx:Grid>
+	</s:BorderContainer>
+	<s:HGroup y="110" width="1110" height="607" horizontalCenter="1">
+		<components:EZDataGrid id="adgRemainingOrders"
+							   right="1"
+							   left="1"
+							   bottom="1"
+							   top="30"
+							   width="100%"
+							   height="100%"
+							   dataProvider="{modelManager.riskInformationModel.holdings}">
+			<components:columns>
+				<!--mx:AdvancedDataGridColumn headerText="Market" dataField="MARKET" /-->
+				<mx:DataGridColumn headerText="Symbol Code"
+								   dataField="SYMBOL_CODE">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.SYMBOL_CODE}"
+									  width="100%"
+									  textAlign="right"/>
+									  
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Hair Cut"
+								   dataField="HAIR_CUT">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.HAIR_CUT}"
+									  width="100%"
+									  textAlign="right"/>
+									 
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Market Rate"
+								   dataField="MARKET_RATE">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.MARKET_RATE}"
+									  width="100%"
+									  textAlign="right"/>
+									 
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Quantity"
+								   dataField="QUANTITY">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.QUANTITY}"
+									  width="100%"
+									  textAlign="right"/>
+									  
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Value"
+								   dataField="VALUE">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.VALUE}"
+									 
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Access Value"
+								   dataField="ACCESS_VALUE">
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.ACCESS_VALUE}"
+									  
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Open Position"
+								   dataField="OPEN_POSITION" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.OPEN_POSITION}"
+									 
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Queued Sale Volume"
+								   dataField="QUEUED_SALE_VOLUME" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.QUEUED_SALE_VOLUME}"
+									  
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Sale Volume"
+								   dataField="SALE_VOLUME" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.SALE_VOLUME}"
+									  
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+				<mx:DataGridColumn headerText="Purchase Volume"
+								   dataField="PURCHASE_VOLUME" >
+					<mx:itemRenderer>
+						<fx:Component>
+							<mx:Label text="{data.PURCHASE_VOLUME}"
+									  
+									  width="100%"
+									  textAlign="right"/>
+						</fx:Component>
+					</mx:itemRenderer>
+				</mx:DataGridColumn>
+			</components:columns>
+		</components:EZDataGrid>
+		</s:HGroup>
+</s:Group>
