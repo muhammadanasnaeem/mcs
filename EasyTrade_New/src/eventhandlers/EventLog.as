@@ -8,6 +8,7 @@ import controller.WindowManager;
 
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
+import flash.net.FileReference;
 
 import flashx.textLayout.operations.ApplyFormatOperation;
 
@@ -18,11 +19,16 @@ import mx.events.FlexEvent;
 
 import view.Order;
 
+
+public var fr:FileReference = new FileReference();;
+
 [Bindable]
 public var modelManager:ModelManager=ModelManager.getInstance();
 
 [Bindable]
 private var tradersList:ArrayCollection=new ArrayCollection();
+
+
 
 //private var windowManager:WindowManager = WindowManager.getInstance();
 protected function group1_initializeHandler(event:FlexEvent):void

@@ -10,14 +10,119 @@
 	<fx:Script>
 		<![CDATA[
 			import businessobjects.UserTradeBO;
-
+			
+			import com.as3xls.xls.Cell;
+			import com.as3xls.xls.Sheet;
+			
+			import components.FormPrintView;
+			
 			import mx.events.DataGridEvent;
-
+			import mx.printing.FlexPrintJob;
+			
 			import spark.events.IndexChangeEvent;
 			include "../components/SelectionMenu.as"
 			include "../eventhandlers/UserTradeHistory.as"
 
-
+			[Bindable]
+			private var fields:Array=new Array();
+			
+			[Bindable]
+			[Embed(source="images/xls.png")]
+			public var ImgXls:Class;
+			
+			protected function btnExport_clickHandler(event:MouseEvent):void
+			{
+				//				var sheet:Sheet = new Sheet();				
+				//				var dataProviderCollection:ArrayCollection = adgUserTradeHistory.dataProvider as ArrayCollection;  
+				//				var rowCount:int = dataProviderCollection.length;  
+				//				sheet.resize(rowCount + 1,adgRemainingOrders.columnCount);  
+				//				var columns:Array = adgRemainingOrders.columns;  
+				//				var i:int = 0;  
+				//				for each (var field:DataGridColumn in columns){  
+				//					fields.push(field.dataField.toString());  
+				//					sheet.setCell(0,i,field.dataField.toString());  
+				//					i++;  
+				//				}  
+				//				
+				//				for(var r:int=0; r < rowCount; r++)  
+				//				{  
+				//					var record:Object = dataProviderCollection.getItemAt(r);  
+				//					/*insert record starting from row no 2 else  
+				//					headers will be overwritten*/  
+				//					insertRecordInSheet(r+1,sheet,record);  
+				//				}  
+				//				var xls:ExcelFile = new ExcelFile();  
+				//				xls.sheets.addItem(sheet);  
+				//				
+				//				var bytes: ByteArray = xls.saveToByteArray();				
+				//				fr.save(bytes,"RemainingOrders.xls");				 
+			}
+			
+			private function fileIOError_Handler(event:IOErrorEvent):void
+			{
+				Alert.show(Messages.FILE_IO_ERROR, Messages.TITLE_ERROR);
+			}
+			
+			private function fileSaved_Handler(event:Event):void
+			{
+				Alert.show(Messages.FILE_SAVED_SUCCESS);
+			}
+			
+			private function insertRecordInSheet(row:int, sheet:Sheet, record:Object):void
+			{
+				var colCount:int=adgUserTradeHistory.columnCount;
+				for (var c:int; c < colCount; c++)
+				{
+					var i:int=0;
+					for each (var field:String in fields)
+					{
+						//Alert.show(record[field]);
+//						if (record[field] is Date)
+//						{
+//							sheet.setCell(row, i, record[field]);
+//							var cell:Cell=sheet.getCell(row, i);
+//							cell.format="D-MMM-YY";
+//							cell.dateMode=1;
+//							//cell.
+//						}
+//						else
+							sheet.setCell(row, i, record[field]);
+						i++;
+					}
+				}
+			}
+			// Created on 16/07/2012 by Anas for the print functionality
+			protected function image1_clickHandler(event:MouseEvent):void
+			{
+				setTimeout(launchAlert2, 3000);
+				
+				function launchAlert2():void
+				{
+					trace('eee');
+				}
+				
+				const printJob:FlexPrintJob = new FlexPrintJob(); 
+				
+				if ( printJob.start() ) 
+				{ 
+					var printDataGrid:FormPrintView = new FormPrintView(); 
+					printDataGrid.myDataGrid.setStyle('wordWrap',true);
+					printDataGrid.myDataGrid.setStyle('fontSize',14);
+					printDataGrid.myDataGrid.width = printJob.pageWidth+550; 
+					printDataGrid.myDataGrid.height = printJob.pageHeight; 
+					printDataGrid.myDataGrid.dataProvider = ModelManager.getInstance().userTradeHistoryModel.userTradeHistory;
+					printDataGrid.myDataGrid.columns = adgUserTradeHistory.columns;
+					printDataGrid.myDataGrid.showHeaders = true;
+					addElement(printDataGrid.myDataGrid); 
+					while (printDataGrid.myDataGrid.validNextPage) 
+					{ 
+						printJob.addObject(printDataGrid.myDataGrid); 
+					} 
+					removeElement(printDataGrid.myDataGrid); 
+					printJob.send(); 
+				} 
+				Alert.show('Printed Successfully','Information');	
+			}
 
 			protected function traders_changeHandler(event:IndexChangeEvent):void
 			{

@@ -11,17 +11,24 @@
 		<![CDATA[
 			include "../components/SelectionMenu.as"
 			include "../eventhandlers/RemainingOrders.as"
-
-
+			
 			import com.as3xls.xls.Cell;
 			import com.as3xls.xls.ExcelFile;
 			import com.as3xls.xls.Sheet;
 			import com.as3xls.xls.Type;
-
+			
+			import common.Messages;
+			
+			import components.FormPrintView;
+			
+			import controller.ModelManager;
+			
 			import flash.net.FileReference;
-
+			
 			import mx.collections.ArrayCollection;
-
+			import mx.controls.Alert;
+			import mx.printing.FlexPrintJob;
+			
 			import spark.events.IndexChangeEvent;
 			[Bindable]
 			private var fields:Array=new Array();
@@ -32,8 +39,8 @@
 
 			protected function btnExport_clickHandler(event:MouseEvent):void
 			{
-//				sheet = new Shee();				
-//				var dataProviderCollection:ArrayCollection = adgRemainingOrders.dataProvider;  
+//				var sheet:Sheet = new Sheet();				
+//				var dataProviderCollection:ArrayCollection = adgRemainingOrders.dataProvider as ArrayCollection;  
 //				var rowCount:int = dataProviderCollection.length;  
 //				sheet.resize(rowCount + 1,adgRemainingOrders.columnCount);  
 //				var columns:Array = adgRemainingOrders.columns;  
@@ -90,6 +97,38 @@
 						i++;
 					}
 				}
+			}
+			// Created on 16/07/2012 by Anas for the print functionality
+			protected function image1_clickHandler(event:MouseEvent):void
+			{
+				setTimeout(launchAlert2, 3000);
+				
+				function launchAlert2():void
+				{
+					trace('eee');
+				}
+				
+				const printJob:FlexPrintJob = new FlexPrintJob(); 
+				
+				if ( printJob.start() ) 
+				{ 
+					var printDataGrid:FormPrintView = new FormPrintView(); 
+					printDataGrid.myDataGrid.setStyle('wordWrap',true);
+					printDataGrid.myDataGrid.setStyle('fontSize',14);
+					printDataGrid.myDataGrid.width = printJob.pageWidth+550; 
+					printDataGrid.myDataGrid.height = printJob.pageHeight; 
+					printDataGrid.myDataGrid.dataProvider = ModelManager.getInstance().remainingOrdersModel.remainingOrders;
+					printDataGrid.myDataGrid.columns = adgRemainingOrders.columns;
+					printDataGrid.myDataGrid.showHeaders = true;
+					addElement(printDataGrid.myDataGrid); 
+					while (printDataGrid.myDataGrid.validNextPage) 
+					{ 
+						printJob.addObject(printDataGrid.myDataGrid); 
+					} 
+					removeElement(printDataGrid.myDataGrid); 
+					printJob.send(); 
+				} 
+				Alert.show('Printed Successfully','Information');	
 			}
 
 
