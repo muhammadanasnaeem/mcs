@@ -64,17 +64,35 @@
 					var columns:Array = dgEventLog.columns;  
 					var i:int = 0;  
 					for each (var field:DataGridColumn in columns){  
-						fields.push(field.dataField.toString());  
-						sheet.setCell(0,i,field.dataField.toString());  
+						if(field.dataField != 'IS_NEGOTIATED')
+						{
+							fields.push(field.dataField.toString());  
+							sheet.setCell(0,i,field.dataField.toString());
+						}
 						i++;  
 					}  
 					
 					for(var r:int=0; r < rowCount; r++)  
 					{  
 						var record:Object = dataProviderCollection.getItemAt(r);  
+						record.IS_NEGOTIATED = null;
 						/*insert record starting from row no 2 else  
-						headers will be overwritten*/  
-						insertRecordInSheet(r+1,sheet,record);  
+						headers will be overwritten*/ 
+						if(record.ORDER_TYPE == null  )
+						{
+							record.ORDER_TYPE = '';
+						}
+//						if( record.IS_NEGOTIATED == false)
+//						{
+//							record.IS_NEGOTIATED.toString();
+//							record.IS_NEGOTIATED = '';
+//						}
+						if(record.DISCLOSED_VOLUME == 0 || record.DISCLOSED_VOLUME == '0')
+						{
+							record.DISCLOSED_VOLUME.toString();
+							record.DISCLOSED_VOLUME = '';
+						}
+							insertRecordInSheet(r+1,sheet,record);
 					}  
 					var xls:ExcelFile = new ExcelFile();  
 					xls.sheets.addItem(sheet);  
@@ -159,7 +177,7 @@
 					while (printDataGrid.myDataGrid.validNextPage) 
 					{ 
 						printDataGrid.myDataGrid.setStyle("headerStyleName", "myHeaderStyles");
-						printJob.addObject(printDataGrid.myDataGrid); 
+						printJob.addObject(printDataGrid.myDataGrid);
 					} 
 					printDataGrid.myDataGrid.setStyle("headerStyleName", "myHeaderStyles");
 					removeElement(printDataGrid.myDataGrid); 

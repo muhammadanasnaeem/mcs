@@ -32,7 +32,7 @@ package businessobjects
 
 		//Properties for OrderBO
 
-		public var DISCLOSED_VOLUME:Number=0;
+		public var DISCLOSED_VOLUME:String="";
 		public var SIDE:String="";
 		public var TIF:Date;
 		public var TRIGGER_PRICE:Number=-1;
