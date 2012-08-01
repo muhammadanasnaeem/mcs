@@ -18,8 +18,12 @@ import flexlib.mdi.events.MDIWindowEvent;
 
 import mx.collections.ArrayCollection;
 import mx.controls.Alert;
+import mx.controls.Menu;
+import mx.controls.menuClasses.MenuBarItem;
 import mx.events.MenuEvent;
 import mx.printing.FlexPrintJob;
+import mx.resources.IResourceManager;
+import mx.resources.ResourceManager;
 import mx.rpc.AsyncToken;
 
 import services.QWClient;
@@ -51,7 +55,7 @@ public function menubarMain_itemClickHandler(event:MenuEvent):void
 		menuItemSetting_itemClickHandler(event);
 	}
 	//added on 21/12/2010
-	else if (event.item.@id == "liveSym") // Charts
+	else if (event.item.@id == "liveSym") // Charts event.item.@id == "liveSym"
 	{
 		menuitemLiveSymbolChart_itemClickHandler(event);
 	}
@@ -59,6 +63,10 @@ public function menubarMain_itemClickHandler(event:MenuEvent):void
 	else if (event.item.@id == "about") // About
 	{
 		menuitemAbout_itemClickHandler(event);
+	}
+	else if (event.item.@id == "changeLang") // About
+	{
+		menuitemChange_itemClickHandler(event);
 	}
 	else if (event.item.@submenu_id == "PrintMessages") // File -> Printing -> PrintMessages
 	{
@@ -907,6 +915,7 @@ public function menuitemOrderLimitControl_itemClickHandler(event:MenuEvent):void
 */
 public function menuitemLiveSymbolChart_itemClickHandler(event:MenuEvent):void
 {
+//	(event.item.@id == "liveSym").@label = ResourceManager.getInstance().getString('marketwatch','file');
 	var theApp:EasyTradeApp=EasyTradeApp.getInstance();
 	var modelManager:ModelManager=ModelManager.getInstance();
 	var viewManager:ViewManager=ViewManager.getInstance();
@@ -927,6 +936,26 @@ public function menuitemLiveSymbolChart_itemClickHandler(event:MenuEvent):void
 public function menuitemAbout_itemClickHandler(event:MenuEvent):void
 {
 	Alert.show(Constants.APPLICATION_VERSION, Constants.APPLICATION_TITLE);
+}
+
+public function menuitemChange_itemClickHandler(event:MenuEvent):void
+{
+	try
+	{
+		var theApp:EasyTradeApp=EasyTradeApp.getInstance();
+		var arr:Array = theApp.easyTrade.menubarMain.menuBarItems;
+		var resourceManager:IResourceManager = ResourceManager.getInstance();
+		resourceManager.localeChain = ['sv_SE'];
+		var str:String = resourceManager.getString('marketwatch', 'file');
+//		((theApp.easyTrade.menubarMain.menuBarItems[0]as MenuBarItem).data as XML).@label = resourceManager.getString('marketwatch', 'file');
+		var xm:XML = (arr[0] as MenuBarItem).data as XML;
+		xm.@label = resourceManager.getString('marketwatch', 'file').toString();
+		trace(xm.@label);
+		
+	}catch(e:Error)
+	{
+		trace(e.message);
+	}
 }
 
 public function menuitemMarketMessages_itemClickHandler(event:MenuEvent):void

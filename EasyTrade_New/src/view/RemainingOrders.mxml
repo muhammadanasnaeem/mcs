@@ -20,6 +20,7 @@
 			import common.Messages;
 			
 			import components.FormPrintView;
+			import components.RemainingFormPrintView;
 			
 			import controller.ModelManager;
 			
@@ -30,39 +31,50 @@
 			import mx.printing.FlexPrintJob;
 			
 			import spark.events.IndexChangeEvent;
+			
+//			public var fr:FileReference = new FileReference();
+			
 			[Bindable]
 			private var fields:Array=new Array();
 
 			[Bindable]
 			[Embed(source="images/xls.png")]
 			public var ImgXls:Class;
+			
+			[Bindable]
+			[Embed(source="images/printer-icon.jpg")]
+			public var ImgPrint:Class;
+			
+			[Bindable]
+			[Embed(source="images/refresh.jpg")]
+			public var refresh:Class;
 
 			protected function btnExport_clickHandler(event:MouseEvent):void
 			{
-//				var sheet:Sheet = new Sheet();				
-//				var dataProviderCollection:ArrayCollection = adgRemainingOrders.dataProvider as ArrayCollection;  
-//				var rowCount:int = dataProviderCollection.length;  
-//				sheet.resize(rowCount + 1,adgRemainingOrders.columnCount);  
-//				var columns:Array = adgRemainingOrders.columns;  
-//				var i:int = 0;  
-//				for each (var field:DataGridColumn in columns){  
-//					fields.push(field.dataField.toString());  
-//					sheet.setCell(0,i,field.dataField.toString());  
-//					i++;  
-//				}  
-//				
-//				for(var r:int=0; r < rowCount; r++)  
-//				{  
-//					var record:Object = dataProviderCollection.getItemAt(r);  
-//					/*insert record starting from row no 2 else  
-//					headers will be overwritten*/  
-//					insertRecordInSheet(r+1,sheet,record);  
-//				}  
-//				var xls:ExcelFile = new ExcelFile();  
-//				xls.sheets.addItem(sheet);  
-//				
-//				var bytes: ByteArray = xls.saveToByteArray();				
-//				fr.save(bytes,"RemainingOrders.xls");				 
+				var sheet:Sheet = new Sheet();				
+				var dataProviderCollection:ArrayCollection = adgRemainingOrders.dataProvider as ArrayCollection;  
+				var rowCount:int = dataProviderCollection.length;  
+				sheet.resize(rowCount + 1,adgRemainingOrders.columnCount);  
+				var columns:Array = adgRemainingOrders.columns;  
+				var i:int = 0;  
+				for each (var field:DataGridColumn in columns){  
+					fields.push(field.dataField.toString());  
+					sheet.setCell(0,i,field.dataField.toString());  
+					i++;  
+				}  
+				
+				for(var r:int=0; r < rowCount; r++)  
+				{  
+					var record:Object = dataProviderCollection.getItemAt(r);  
+					/*insert record starting from row no 2 else  
+					headers will be overwritten*/  
+					insertRecordInSheet(r+1,sheet,record);  
+				}  
+				var xls:ExcelFile = new ExcelFile();  
+				xls.sheets.addItem(sheet);  
+				
+				var bytes: ByteArray = xls.saveToByteArray();				
+				fr.save(bytes,"Working Orders.xls");				 
 			}
 
 			private function fileIOError_Handler(event:IOErrorEvent):void
@@ -98,6 +110,105 @@
 					}
 				}
 			}
+			
+			
+			// The function to print the output.
+			public function doPrint():void {
+				
+				setTimeout(launchAlert2, 3000);
+				
+				function launchAlert2():void
+				{
+					trace('eee');
+				}
+				// Create a FlexPrintJob instance.
+				var printJob:FlexPrintJob = new FlexPrintJob();
+				
+				// Start the print job.
+				if (printJob.start()) {
+					// Create a FormPrintView control 
+					// as a child of the application.
+					var thePrintView:RemainingFormPrintView = new RemainingFormPrintView();
+					addElement(thePrintView);
+					thePrintView.myDataGrid.setStyle('color',0x000000);
+					thePrintView.exchangeLabel.text = (txtExchange.text == '') ? '<ALL>' : txtExchange.text;
+					thePrintView.marketLabel.text = (txtMarket.text == '') ? '<ALL>':txtMarket.text;
+					thePrintView.symbolLabel.text = (txtSymbol.text == '') ? '<ALL>' :txtSymbol.text;
+					thePrintView.traderLabel.text = ((traders.labelDisplay as Label).text == '')?'<ALL>':(traders.labelDisplay as Label).text;
+					//					thePrintView.myDataGrid.setStyle('fontSize',12);
+					// Set the print view properties.
+					thePrintView.width=printJob.pageWidth+540;
+					thePrintView.height=printJob.pageHeight;
+					
+					// Set the data provider of the FormPrintView 
+					// component's DataGrid to be the data provider of 
+					// the displayed DataGrid.
+					thePrintView.myDataGrid.dataProvider = 
+						ModelManager.getInstance().remainingOrdersModel.remainingOrders;
+					//					thePrintView.myDataGrid.columns = dgEventLog.columns;
+					thePrintView.myDataGrid.showHeaders = true;
+					// Create a single-page image.
+					
+					// If the print image's DataGrid can hold all the  
+					// data provider's rows, add the page to the print job. 
+					if(!thePrintView.myDataGrid.validNextPage)
+					{
+						thePrintView.myDataGrid.setStyle('color',0x000000);
+						printJob.addObject(thePrintView);
+					}
+						// Otherwise, the job requires multiple pages.
+					else
+					{
+						// Create the first page and add it to the print job.
+						thePrintView.myDataGrid.setStyle('color',0x000000);
+						printJob.addObject(thePrintView);
+						thePrintView.pageNumber++;
+						// Loop through the following code 
+						// until all pages are queued.
+						while(true)
+						{
+							// Move the next page of data to the top of 
+							// the PrintDataGrid.
+							thePrintView.myDataGrid.nextPage();
+							
+							// Try creating a last page.
+							
+							// If the page holds the remaining data, or if 
+							// the last page was completely filled by the last  
+							// grid data, queue it for printing.
+							// Test if there is data for another 
+							// PrintDataGrid page.
+							if(!thePrintView.myDataGrid.validNextPage) 
+							{
+								// This is the last page; 
+								// queue it and exit the print loop.
+								thePrintView.myDataGrid.setStyle('color',0x000000);
+								printJob.addObject(thePrintView);
+								break;
+							}
+							else
+								// This is not the last page. Queue a middle page. 
+							{
+								thePrintView.myDataGrid.setStyle('color',0x000000);
+								printJob.addObject(thePrintView);
+								thePrintView.pageNumber++;
+							}
+						}
+					}
+					// All pages are queued; remove the FormPrintView 
+					// control to free memory.
+					thePrintView.myDataGrid.setStyle('color',0x000000);
+					removeElement(thePrintView);
+				}
+				// Send the job to the printer.
+				printJob.send();
+			}
+			
+			///////////////////////////////////////////////////////////
+			
+			
+			
+			
 			// Created on 16/07/2012 by Anas for the print functionality
 			protected function image1_clickHandler(event:MouseEvent):void
 			{
@@ -156,34 +267,38 @@
 					   height="30"
 					   horizontalCenter="0"
 					   top="0">
+		<s:Image y="-1" click="doPrint()" horizontalCenter="-380" visible="true"
+				 source="{ImgPrint}" buttonMode="true" useHandCursor="true" />
+		<s:Image y="-1" buttonMode="true" click="btnExport_clickHandler(event)" visible="true"
+				 horizontalCenter="-415" source="{ImgXls}" useHandCursor="true"/>
 		<s:Label text="Exchange:"
-				 horizontalCenter="-265"
+				 horizontalCenter="-295"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-210"
+										horizontalCenter="-240"
 										top="2"/>
 		<s:Label text="Market:"
-				 horizontalCenter="-160"
+				 horizontalCenter="-190"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
-										horizontalCenter="-114"
+										horizontalCenter="-144"
 										top="2"/>
 		<s:Label text="Symbol:"
-				 horizontalCenter="-61"
+				 horizontalCenter="-91"
 				 top="7"/>
 		<s:TextInput width="110"
 					 height="20"
 					 id="txtSymbol"
 					 keyDown="txtSymbol_keyDownHandler(event)"
-					 horizontalCenter="19"
+					 horizontalCenter="-11"
 					 top="2"/>
 	</s:BorderContainer>
 	<components:EZDataGrid id="adgRemainingOrders"
@@ -318,22 +433,21 @@
 			</mx:DataGridColumn>
 		</components:columns>
 	</components:EZDataGrid>
-	<s:Button label="Refresh"
-			  width="75"
-			  height="20"
+	<s:Image  toolTip="Refresh Event Log"
+			  source="{refresh}"
 			  id="btnRefresh"
-			  top="2"
-			  horizontalCenter="133"
+			  top="-1" useHandCursor="true" buttonMode="true"
+			  horizontalCenter="139"
 			  click="btnRefresh_clickHandler(event)"/>
 	<s:Label text="Trader:"
-			 horizontalCenter="195"
+			 horizontalCenter="235"
 			 top="7"/>
 	<s:DropDownList width="75"
 					change="traders_changeHandler(event)"
 					dataProvider="{tradersList}"
 					height="20"
 					id="traders"
-					horizontalCenter="255"
+					horizontalCenter="295"
 					top="2"/>
 	<!--<mx:Image source="{ImgXls}" buttonMode="true" useHandCursor="true" toolTip="Export" width="20" height="20" id="btnExport" top="2" horizontalCenter="296" click="btnExport_clickHandler(event)"/> -->
 </s:Group>

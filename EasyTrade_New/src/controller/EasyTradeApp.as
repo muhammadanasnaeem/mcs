@@ -1,36 +1,38 @@
 package controller
 {
 	import businessobjects.ExchangeBO;
-
+	
 	import common.Constants;
 	import common.HashMap;
-
+	
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
 	import flash.net.URLRequest;
 	import flash.net.navigateToURL;
-
+	
 	import flexlib.mdi.containers.MDICanvas;
 	import flexlib.mdi.containers.MDIWindow;
 	import flexlib.mdi.events.MDIWindowEvent;
-
+	
 	import model.MarketWatchModel;
 	import model.UserProfileModel;
-
+	
 	import mx.controls.Alert;
 	import mx.controls.Button;
+	import mx.core.UIComponent;
 	import mx.events.ItemClickEvent;
-
+	
 	import services.LSListener;
 	import services.OrdererClient;
 	import services.QWClient;
-
+	
 	import spark.components.Group;
-
+	
 	import windows.LoginWindow;
-
-	public class EasyTradeApp
+	
+//	[ResourceBundle("marketwatch")] 
+	public class EasyTradeApp 
 	{
 		//Members
 		private var easyTrade_:EasyTrade;

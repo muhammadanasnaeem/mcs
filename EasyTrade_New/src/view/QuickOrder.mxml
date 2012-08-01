@@ -40,6 +40,8 @@
 			import mx.events.FlexEvent;
 			import mx.events.ListEvent;
 			import mx.messaging.events.MessageAckEvent;
+			import mx.resources.IResourceManager;
+			import mx.resources.ResourceManager;
 			
 			import services.LSListener;
 			import services.OrdererClient;
@@ -76,7 +78,7 @@
 			private var isUpdate3:Boolean=false;
 			private var moneyFormatter:EZCurrencyFormatter=new EZCurrencyFormatter();
 			private var animatingTargets:Object=new Object();
-			
+			private var resourceManagerr:IResourceManager = ResourceManager.getInstance();
 			
 //			[Bindable] var splittedSellPrice2:Array;
 //			[Bindable] var splittedBuyPrice2:Array;
@@ -1278,7 +1280,7 @@
 						 height="18" toolTip="Select Symbol from list"
 						 width="195"
 						 styleName="greyComboBox"
-						 prompt="Select"
+						 prompt="{resourceManagerr.getString('marketwatch','select')}"
 						 useHandCursor="true"  skinClass="assets.skins.CustomDropDownListSkin"
 						 buttonMode="true" 
 						 id="firstSymbolDropDown" visible="true"
@@ -1288,7 +1290,7 @@
 			</components:DedupeComboBox>
 			<s:Label left="7"
 					 top="28"
-					 text="Low:"/>
+					 text="{resourceManagerr.getString('marketwatch','low')+':'}"/>
 			<s:Label left="36"
 					 top="28"
 					 id="firstSegmentLowLabel"/>
@@ -1303,7 +1305,7 @@
 					 height="12"/>
 			<s:Label left="120"
 					 top="28"
-					 text="High:"/>
+					 text="{resourceManagerr.getString('marketwatch','high')+':'}"/>
 			<s:Label left="151"
 					 top="28"
 					 id="firstHighValue"/>
@@ -1327,13 +1329,13 @@
 					   click="firstorderButtonClickHandler(event)"/>
 			<s:Label left="31"
 					 top="92"
-					 text="Buy"
+					 text="{resourceManagerr.getString('marketwatch','buy')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
 			<s:Label left="136"
 					 top="92"
-					 text="Sell"
+					 text="{resourceManagerr.getString('marketwatch','sell')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
@@ -1413,14 +1415,14 @@
 						 styleName="greyComboBox"
 						 change="secondsymbolDropDownchangeHandler(event)"
 						 creationComplete="secondSymbolDropDownCreationCompleteHandler(event)"
-						 prompt="Select"
+						 prompt="{resourceManagerr.getString('marketwatch','select')}"
 						 useHandCursor="true"
 						 buttonMode="true"
 						 id="secondSymbolDropDown">
 			</components:DedupeComboBox>
 			<s:Label left="7"
 					 top="28"
-					 text="Low:"/>
+					 text="{resourceManagerr.getString('marketwatch','low')+':'}"/>
 			<s:Label left="36"
 					 top="28"
 					 id="secondSegmentLowLabel"/>
@@ -1435,7 +1437,7 @@
 					 height="12"/>
 			<s:Label x="120"
 					 y="28"
-					 text="High:"/>
+					 text="{resourceManagerr.getString('marketwatch','high')+':'}"/>
 			<s:Label left="151"
 					 top="28"
 					 id="secondHighValue"/>
@@ -1459,13 +1461,13 @@
 					   click="secondorderButtonClickHandler(event)"/>
 			<s:Label x="31"
 					 y="92"
-					 text="Buy"
+					 text="{resourceManagerr.getString('marketwatch','buy')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
 			<s:Label x="136"
 					 y="92"
-					 text="Sell"
+					 text="{resourceManagerr.getString('marketwatch','sell')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
@@ -1549,14 +1551,14 @@
 						 styleName="greyComboBox"
 						 change="thirdsymbolDropDownchangeHandler(event)"
 						 creationComplete="thirdSymbolDropDownCreationCompleteHandler(event)"
-						 prompt="Select"
+						 prompt="{resourceManagerr.getString('marketwatch','select')}"
 						 useHandCursor="true"
 						 buttonMode="true" skinClass="assets.skins.CustomDropDownListSkin"
 						 id="thirdSymbolDropDown">
 			</components:DedupeComboBox>
 			<s:Label x="7"
 					 y="28"
-					 text="Low:"/>
+					 text="{resourceManagerr.getString('marketwatch','low')+':'}"/>
 			<s:Label left="36"
 					 top="28"
 					 id="thirdSegmentLowLabel"/>
@@ -1572,7 +1574,7 @@
 					 height="12"/>
 			<s:Label x="120"
 					 y="28"
-					 text="High:"/>
+					 text="{resourceManagerr.getString('marketwatch','high')+':'}"/>
 			<s:Label left="151"
 					 top="28"
 					 id="thirdHighValue"/>
@@ -1596,13 +1598,13 @@
 					   click="thirdorderButtonClickHandler(event)"/>
 			<s:Label x="31"
 					 y="92"
-					 text="Buy"
+					 text="{resourceManagerr.getString('marketwatch','buy')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
 			<s:Label x="136"
 					 y="92"
-					 text="Sell"
+					 text="{resourceManagerr.getString('marketwatch','sell')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
@@ -1687,7 +1689,7 @@
 						 height="18"
 						 width="195" labelField="SYMBOL"
 						 styleName="greyComboBox"
-						 prompt="Select"
+						 prompt="{resourceManagerr.getString('marketwatch','select')}"
 						 change="fourthsymbolDropDownchangeHandler(event)"
 						 creationComplete="fourthSymbolDropDownCreationCompleteHandler(event)"
 						 useHandCursor="true"
@@ -1696,7 +1698,7 @@
 			</components:DedupeComboBox>
 			<s:Label x="7"
 					 y="28"
-					 text="Low:"/>
+					 text="{resourceManagerr.getString('marketwatch','low')+':'}"/>
 			<s:Label left="36"
 					 top="28"
 					 id="fourthSegmentLowLabel"/>
@@ -1711,7 +1713,7 @@
 					 height="12"/>
 			<s:Label x="120"
 					 y="28"
-					 text="High:"/>
+					 text="{resourceManagerr.getString('marketwatch','high')+':'}"/>
 			<s:Label left="151"
 					 top="28"
 					 id="fourthHighValue"/>
@@ -1735,13 +1737,13 @@
 					   click="fourthorderButtonClickHandler(event)"/>
 			<s:Label x="31"
 					 y="92"
-					 text="Buy"
+					 text="{resourceManagerr.getString('marketwatch','buy')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>
 			<s:Label x="136"
 					 y="92"
-					 text="Sell"
+					 text="{resourceManagerr.getString('marketwatch','sell')}"
 					 color="white"
 					 fontSize="11"
 					 fontWeight="bold"/>

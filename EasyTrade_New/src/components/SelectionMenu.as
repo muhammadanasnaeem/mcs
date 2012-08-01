@@ -21,6 +21,7 @@ import spark.components.TextInput;
 import view.BulletinControl;
 import view.MarketSummary;
 import view.SelectionMenu;
+import components.FormPrintView;
 
 [Bindable]
 public var internalExchangeID:Number=-1;

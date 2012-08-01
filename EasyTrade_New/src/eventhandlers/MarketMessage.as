@@ -19,6 +19,7 @@ import mx.formatters.NumberFormatter;
 import mx.messaging.events.MessageEvent;
 import mx.messaging.events.MessageFaultEvent;
 import mx.preloaders.Preloader;
+import mx.resources.ResourceManager;
 
 import services.LSListener;
 
@@ -29,6 +30,9 @@ private var modelManager:ModelManager=ModelManager.getInstance();
 
 [Bindable]
 private var windowManager:WindowManager=WindowManager.getInstance();
+
+[Bindable]
+public var messagesArray:Array = new Array();
 
 public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 
@@ -88,6 +92,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			windowManager.viewManager.liveMessages.txaMessages.validateNow();
 			windowManager.viewManager.liveMessages.txaMessages.verticalScrollPosition=windowManager.viewManager.liveMessages.txaMessages.maxVerticalScrollPosition; // added on 2/12/2010
 			SoundManager.getInstance().playMarketStateSound();
+			messagesArray.push(statusMsg);
 		}
 		else if (updateType == "3") // Symbol state changed
 		{
@@ -109,6 +114,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			WindowManager.getInstance().viewManager.liveMessages.updateStatus(statusMsg);
 			windowManager.viewManager.liveMessages.txaMessages.validateNow();
 			windowManager.viewManager.liveMessages.txaMessages.verticalScrollPosition=windowManager.viewManager.liveMessages.txaMessages.maxVerticalScrollPosition; // added on 2/12/2010
+			messagesArray.push(statusMsg);
 		}
 		else if (updateType == "5") // Bulletin for all exchanges
 		{
@@ -117,6 +123,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			WindowManager.getInstance().viewManager.liveMessages.updateBulletin(statusMsg);
 			windowManager.viewManager.liveMessages.txaBulletins.validateNow();
 			windowManager.viewManager.liveMessages.txaBulletins.verticalScrollPosition=windowManager.viewManager.liveMessages.txaBulletins.maxVerticalScrollPosition; // added on 2/12/2010
+			messagesArray.push(statusMsg);
 		}
 		else if (updateType == "6") // Symbol Order Limit Change
 		{
@@ -154,12 +161,14 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			WindowManager.getInstance().viewManager.liveMessages.updateStatus(statusMsg);
 			windowManager.viewManager.liveMessages.txaMessages.validateNow();
 			windowManager.viewManager.liveMessages.txaMessages.verticalScrollPosition=windowManager.viewManager.liveMessages.txaMessages.maxVerticalScrollPosition; // added on 2/12/2010
+			messagesArray.push(statusMsg);
 		}
 	}
 	else if (event.item == itemNameUser)
 	{
 		if (updateType == "2") // Market Schedule Update
 		{
+			messagesArray.push(statusMsg);
 			WindowManager.getInstance().viewManager.liveMessages.updateStatus(statusMsg);
 			windowManager.viewManager.liveMessages.txaMessages.validateNow();
 			windowManager.viewManager.liveMessages.txaMessages.verticalScrollPosition=windowManager.viewManager.liveMessages.txaMessages.maxVerticalScrollPosition; // added on 2/12/2010
@@ -177,6 +186,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			WindowManager.getInstance().viewManager.liveMessages.updateBulletin(statusMsg);
 			windowManager.viewManager.liveMessages.txaBulletins.validateNow();
 			windowManager.viewManager.liveMessages.txaBulletins.verticalScrollPosition=windowManager.viewManager.liveMessages.txaBulletins.maxVerticalScrollPosition; // added on 2/12/2010
+			messagesArray.push(statusMsg);
 		}
 	}
 	else

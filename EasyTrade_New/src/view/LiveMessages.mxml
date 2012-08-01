@@ -17,13 +17,31 @@
 	</fx:Declarations>
 	<fx:Script>
 		<![CDATA[
+			import com.as3xls.xls.Cell;
+			import com.as3xls.xls.ExcelFile;
+			import com.as3xls.xls.Sheet;
+			
 			import controller.WindowManager;
 			
 			import flash.ui.ContextMenu;
 			
+			import mx.collections.ArrayCollection;
 			import mx.controls.*;
 			import mx.events.FlexEvent;
 			import mx.events.ScrollEvent;
+			
+			import org.alivepdf.display.Display;
+			import org.alivepdf.layout.Orientation;
+			import org.alivepdf.layout.Size;
+			import org.alivepdf.layout.Unit;
+			import org.alivepdf.pdf.PDF;
+			import org.alivepdf.saving.Method;
+			
+			import spark.components.VGroup;
+			import spark.effects.Resize;
+//			include "../eventhandlers/MarketMessage.as"
+//			import 
+			
 			[Bindable]
 			[Embed(source="../images/newsup.jpg")]
 			private var newsUp:Class;
@@ -59,6 +77,9 @@
 			[Bindable]
 			private var windowManager:WindowManager=WindowManager.getInstance();
 			
+			[Bindable]
+			public var messagesArrayCol:ArrayCollection = new ArrayCollection();
+			
 			public var textBullet1:TextInput;
 			public var flag2:Boolean=true;
 			public var textBullet3:TextInput;
@@ -67,6 +88,14 @@
 			public var flag:Boolean=true;
 			public var textBullet2:TextInput;
 			public var marketMessages:Boolean=true
+			private var item1:ContextMenuItem;
+			public var fr:FileReference = new FileReference();
+			public var tp:TextInput;
+			[Bindable]
+			private var pdfByte:ByteArray = new ByteArray();
+			// we create the PDF
+			[Bindable]
+			private var myPDF:PDF = new PDF(  Orientation.PORTRAIT, Unit.MM, Size.A4 );
 			
 			protected function corporateAnnouncementsMouseOverHandler(event:MouseEvent):void
 			{
@@ -156,6 +185,7 @@
 			
 			protected function bordercontainer1creationCompleteHandler(event:FlexEvent):void
 			{
+				customizeContextMenu();  
 				tradeActivity.source = tradeactivityOver
 				txaMessages.visible=true;
 				txaCorporateAnnouncements.visible=false;
@@ -163,10 +193,150 @@
 			}
 			
 			
+			
+			//Custom Context Menu Handlers
+			private function customizeContextMenu():void
+			{
+				// InteractiveObject objects as Application, Panel, Button, ... have a contextMenu 
+				// property used to reference the ContextMenu to be displayed when right clicking 
+				// on the component.
+				// In most of the cases, this property is initialized to null and you have to
+				// create a new ContextMenu object.
+				// Note: this is not the case for the Application object.
+				if (!contextMenu) {
+					contextMenu = new ContextMenu();
+				}
+				
+				// By default, the ContextMenu contains some Flash Player related menu items as
+				// Print, Zoom, etc...
+				// These menu items can be hidden as done below.
+//				contextMenu.hideBuiltInItems();
+				// You can also hide individual items by setting to false the corresponding
+				// properties of the builtInItems property.
+				// For example, to remove only the Print entry:
+				//         contextMenu.builtInItems.print=false;
+				
+				/*
+				Creation of some customized menu items
+				
+				Notes:
+				
+				Use the second parameter of ContextMenuItem constructor to add (true) or not (false)
+				a separator in the menu before the entry.
+				
+				Customized items are put on top of the ContextMenu with one exception: if
+				View Source is enabled, it will always remain as the first entry in the menu.
+				
+				If the debug Flash Player is used, debugging items will be displayed just
+				after your customized entries and cannot be hidden.
+				
+				Parameters and Flash Player version entries are displayed at the bottom of
+				the menu and cannot be hidden.
+				
+				When you right click a selectable or editable text field, clipboard entries
+				(Cut/Copy/Paste/Clear/Select All) are automatically added to the menu and 
+				cannot be removed.
+				*/
+//				item1 = new ContextMenuItem("Export to Excel", true);
+				
+				// Manage clicks on your customized items
+//				item1.addEventListener(ContextMenuEvent.MENU_ITEM_SELECT, menuItemHandler);
+				
+				// Add your customized entries to the menu            
+//				contextMenu.customItems.push(item1);
+				
+				// Manage Menu selection to handle visibility or enablement changes
+//				contextMenu.addEventListener(ContextMenuEvent.MENU_SELECT, menuSelectHandler);
+			}
+			
+			// Handler when context menu is opened.
+			// Use it to implement any enablement/visibility logic required for your
+			// customized menu entries.        
+			private function menuSelectHandler(event:ContextMenuEvent):void {
+				// Toggle item2 enablement and item3 visibility each time the menu is displayed
+//				item2.enabled = !item2.enabled;
+//				item3.visible = !item3.visible;
+			}
+			
+			private function menuItemHandler(event:ContextMenuEvent):void {
+				switch (event.target) {
+					case item1:
+						var rowCount:int = messagesArrayCol.length; 
+						var i:int=0;
+						var sheet:Sheet = new Sheet();
+						var vg:Canvas = new Canvas();
+						var vb:VBox = new VBox();
+						for(var r:int=0; r < rowCount; r++)  
+						{  
+							var record:Object = messagesArrayCol.getItemAt(r);
+							
+							tp = new TextInput();
+							tp.text = record.toString();
+							vb.addChild(tp);
+							i++;
+						}
+							vgg.addChild(vb);
+						myPDF.setDisplayMode ( Display.FULL_WIDTH ); 
+						var ar:Array = vgg.getChildren();
+						myPDF.addPage();
+						myPDF.addImage(vgg);
+						
+						pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
+						
+						fr.addEventListener(Event.COMPLETE,fileReference_Complete);
+						fr.save(pdfByte,"messages.pdf");	
+						
+						break;
+				}
+			}
+			private function fileReference_Progress(event:ProgressEvent):void
+			{
+			}
+			
+			private function fileReference_Complete(event:Event):void
+			{
+				try
+				{
+				Alert.show("Exported to Excel.", event.currentTarget.caption);
+				}catch(e:Error)
+				{
+					trace(e.message);
+				}
+			}
+			
+			
+			
+			private function generatePDF ( event:ContextMenuEvent ):void
+			{
+				try
+				{
+				
+				// we set the zoom to 100%
+				myPDF.setDisplayMode ( Display.FULL_PAGE ); 
+				
+				
+				// we add a page
+				myPDF.addPage();
+				
+				myPDF.addImage(vgg);
+				// to save the PDF your specificy the path to the create.php script
+				// alivepdf takes care of the rest, if you are using AIR and want to save the PDF locally just use Method.LOCAL
+				// and save the returned bytes on the disk through the FileStream class
+				pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
+				
+				fr.addEventListener(Event.COMPLETE,fileReference_Complete);
+				fr.save(pdfByte,"messages.pdf");	
+				}catch(e:Error)
+				{
+					trace(e.message);
+				}
+			}
+			
 			public function updateStatus2(msg:String):void
 			{
 				if (marketMessages == true)
 				{
+					messagesArrayCol.addItem(msg);
 					textBullet1=new TextInput();
 					textBullet1.setStyle("borderStyle", "none");
 					textBullet1.setStyle("color", 0xffffff);
@@ -180,6 +350,7 @@
 				}
 				else
 				{
+					messagesArrayCol.addItem(msg);
 					textBullet1=new TextInput();
 					textBullet1.setStyle("color", 0xffffff);
 					textBullet1.setStyle("borderStyle", "none");
@@ -195,6 +366,7 @@
 			
 			public function updateStatus(msg:String):void
 			{
+				messagesArrayCol.addItem(msg);
 				txaMessages.visible=true;
 				if (flag2 == true)
 				{
@@ -211,6 +383,7 @@
 				}
 				else if (flag2 == false)
 				{
+					messagesArrayCol.addItem(msg);
 					textBullet1=new TextInput();
 					textBullet1.setStyle("color", 0xffffff);
 					textBullet1.setStyle("borderStyle", "none");
@@ -230,6 +403,7 @@
 				
 				if (flag == true)
 				{
+					messagesArrayCol.addItem(msg);
 					textBullet=new TextInput();
 					textBullet.setStyle("color", 0xffffff);
 					textBullet.setStyle("borderStyle", "none");
@@ -243,6 +417,7 @@
 				}
 				else
 				{
+					messagesArrayCol.addItem(msg);
 					textBullet=new TextInput();
 					textBullet.setStyle("color", 0xffffff);
 					textBullet.setStyle("borderStyle", "none");
@@ -257,6 +432,8 @@
 			}
 		]]>
 	</fx:Script>
+		
+	<mx:Canvas  visible="false" width="100%"  id="vgg"/>
 	<mx:Canvas borderStyle="none"
 			   id="txaMessages"
 			   width="100%"
@@ -266,7 +443,7 @@
 			   minHeight="200"
 			   color="#ffffff">
 		<mx:VBox id="vgroup1"
-				 width="100%"
+				 width="100%" 
 				 verticalGap="-2"
 				 horizontalScrollPolicy="auto"
 				 borderStyle="none"

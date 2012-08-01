@@ -43,7 +43,7 @@ public var modelManager:ModelManager=ModelManager.getInstance();
 private var tradersList:ArrayCollection=new ArrayCollection();
 
 
-public var fr:FileReference;
+public var fr:FileReference = new FileReference();
 
 protected function group1_initializeHandler(event:FlexEvent):void
 {

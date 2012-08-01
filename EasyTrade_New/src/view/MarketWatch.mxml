@@ -19,6 +19,8 @@
 			
 			import mx.core.UIComponent;
 			import mx.events.ScrollEvent;
+			import mx.resources.IResourceManager;
+			import mx.resources.ResourceManager;
 			
 			import spark.components.Button;
 			include "../eventhandlers/MarketWatch.as"
@@ -43,6 +45,9 @@
 			[Embed(source="../images/backImage.png")]
 			private var backImage:Class;
 
+			
+			private var resourceManagerr:IResourceManager = ResourceManager.getInstance();
+			
 			protected function hgroupBackground():void
 			{
 				marketWatchHGroup.setStyle("backgroundColor", 0xb7b7b7);
@@ -181,7 +186,7 @@
 								   id="colExchange"
 								   sortCompareFunction="{stringSortCompare}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispExchangeCol}"
-								   headerText="Exchange"
+								   headerText="{resourceManagerr.getString('marketwatch','exchange')}"
 								   dataField="EXCHANGE"
 								   editable="false"
 								   draggable="false"
@@ -190,7 +195,7 @@
 								   id="colMarket"
 								   sortCompareFunction="{stringSortCompare}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispMarktetCol}"
-								   headerText="Market"
+								   headerText="{resourceManagerr.getString('marketwatch','market')}"
 								   dataField="MARKET"
 								   editable="false"
 								   draggable="false"
@@ -198,7 +203,7 @@
 				<mx:DataGridColumn width="120"
 								   id="colSymbol"
 								   sortCompareFunction="{stringSortCompare}"
-								   headerText="Symbol"
+								   headerText="{resourceManagerr.getString('marketwatch','symbol')}"
 								   dataField="SYMBOL"
 								   editable="true"
 								   draggable="false"
@@ -208,7 +213,7 @@
 				<!-- mx:DataGridColumn width="50" id="colIssueName" headerText="Issue Name" dataField="ISSUE_NAME" editable="false" backgroundColor="#D3D3DA" /-->
 				<mx:DataGridColumn width="50"
 								   id="colIRR"
-								   headerText="IRR"
+								   headerText="{resourceManagerr.getString('marketwatch','irr')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispIRRCol &amp;&amp; selectedIndex==1}"
 								   dataField="IRR"
 								   editable="false"
@@ -223,7 +228,7 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn width="50"
 								   id="colAIRR"
-								   headerText="AIRR"
+								   headerText="{resourceManagerr.getString('marketwatch','airr')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispAIRRCol &amp;&amp; selectedIndex==1}"
 								   dataField="AIRR"
 								   editable="false"
@@ -239,7 +244,7 @@
 				<mx:DataGridColumn width="50"
 								   id="colBaseRate"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBaseRateCol &amp;&amp; selectedIndex==1 }"
-								   headerText="Base Rate"
+								   headerText="{resourceManagerr.getString('marketwatch','baserate')}"
 								   dataField="BASE_RATE"
 								   editable="false"
 								   sortable="false"
@@ -248,7 +253,7 @@
 				<mx:DataGridColumn width="50"
 								   id="colSpreadRate"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispSpreadRateCol &amp;&amp; selectedIndex==1}"
-								   headerText="Spread Rate"
+								   headerText="{resourceManagerr.getString('marketwatch','spreadrate')}"
 								   dataField="SPREAD_RATE"
 								   editable="false"
 								   sortable="false">
@@ -263,7 +268,7 @@
 				<mx:DataGridColumn width="50"
 								   id="colCouponRate"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispCouponRateCol &amp;&amp; selectedIndex==1}"
-								   headerText="Coupon Rate"
+								   headerText="{resourceManagerr.getString('marketwatch','couponrate')}"
 								   dataField="COUPON_RATE"
 								   editable="false"
 								   sortable="false">
@@ -278,7 +283,7 @@
 				<mx:DataGridColumn width="70"
 								   id="colNextCoupon"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispNextCouponCol &amp;&amp; selectedIndex==1}"
-								   headerText="Next Coupon Date"
+								   headerText="{resourceManagerr.getString('marketwatch','nextcoupondate')}"
 								   dataField="NEXT_COUPON"
 								   editable="false"
 								   sortable="false">
@@ -331,7 +336,7 @@
 				<mx:DataGridColumn width="50"
 								   id="colFlags"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispFlagsCol}"
-								   headerText="Flags"
+								   headerText="{resourceManagerr.getString('marketwatch','flags')}"
 								   dataField="FLAGS"
 								   editable="false"
 								   sortable="false">
@@ -349,7 +354,7 @@
 								   backgroundColor="#000000"
 								   color="#3ebefd"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBidVolumeCol}"
-								   headerText="BidSize"
+								   headerText="{resourceManagerr.getString('marketwatch','bidsize')}"
 								   dataField="BUY_VOLUME"
 								   editable="false"
 								   sortable="false"
@@ -361,7 +366,7 @@
 								   backgroundColor="#000000"
 								   color="#3ebefd"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispBidCol}"
-								   headerText="Bid"
+								   headerText="{resourceManagerr.getString('marketwatch','bid')}"
 								   dataField="BUY"
 								   editable="false"
 								   sortable="false"
@@ -387,7 +392,7 @@
 				<mx:DataGridColumn width="50"
 								   id="colSell"
 								   backgroundColor="#000000"
-								   headerText="Ask"
+								   headerText="{resourceManagerr.getString('marketwatch','ask')}"
 								   color="#fe5898"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispOfferCol}"
 								   dataField="SELL"
@@ -416,7 +421,7 @@
 								   id="colSellVolume"
 								   backgroundColor="#000000"
 								   color="#fe5898"
-								   headerText="AskSize"
+								   headerText="{resourceManagerr.getString('marketwatch','askSize')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispOfferVolumeCol}"
 								   dataField="SELL_VOLUME"
 								   editable="false"
@@ -426,7 +431,7 @@
 
 				<mx:DataGridColumn width="50"
 								   id="colLast"
-								   headerText="Last"
+								   headerText="{resourceManagerr.getString('marketwatch','last')}"
 								   dataField="LAST"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispLastCol}"
 								   editable="false"
@@ -511,7 +516,7 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn width="50"
 								   id="colHigh"
-								   headerText="High"
+								   headerText="{resourceManagerr.getString('marketwatch','high')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispHighCol}"
 								   dataField="HIGH"
 								   editable="false"
@@ -526,7 +531,7 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn width="50"
 								   id="colLow"
-								   headerText="Low"
+								   headerText="{resourceManagerr.getString('marketwatch','low')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispLowCol}"
 								   dataField="LOW"
 								   editable="false"
@@ -541,7 +546,7 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn width="50"
 								   id="colChange"
-								   headerText="Change"
+								   headerText="{resourceManagerr.getString('marketwatch','change')}"
 								   visible="{modelManager.marketWatchModel.marketWatchCols.dispChangeCol}"
 								   dataField="CHANGE"
 								   editable="false"
@@ -572,7 +577,7 @@
 				</mx:DataGridColumn>
 				<mx:DataGridColumn width="50"
 								   id="colPercentChange"
-								   headerText="%Change"
+								   headerText="{'%'+resourceManagerr.getString('marketwatch','change')}"
 								   visible="false"
 								   dataField="PERCENT_CHANGE"
 								   editable="false"

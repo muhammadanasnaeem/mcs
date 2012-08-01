@@ -30,6 +30,11 @@
 			cornerRadius:5;
 		}
 	</fx:Style>
+	
+	<fx:Metadata>
+		[ResourceBundle("marketwatch")] 
+	</fx:Metadata>
+	
 	<fx:Declarations>
 		<mx:DateFormatter id="dateFormatter"
 						  formatString="YYYY/MM/DD ::: L:NN A"/>
@@ -96,6 +101,7 @@
 			import flexlib.mdi.events.MDIManagerEvent;
 			import flexlib.mdi.managers.MDIManager;
 			
+			import mx.collections.XMLListCollection;
 			import mx.core.Container;
 			import mx.core.FlexGlobals;
 			import mx.core.UIComponent;
@@ -189,6 +195,151 @@
 			private var cmi:ContextMenu = new ContextMenu();
 
 			
+			[Bindable]
+			public var menuBarCollection:XMLListCollection;
+			
+			
+			
+			
+			private var menubarXML:XMLList=<>
+				
+					<menuitem label="File">
+					<!--menuitem label="Fonts" />
+					<menuitem label="Unattended Mode" />
+					<menuitem label="Change Password" />
+					<menuitem type="separator"/>
+					<menuitem label="Messages" >
+					<menuitem label="Send Message" />
+					<menuitem label="Save Messages" />
+					</menuitem>
+					<menuitem label="Printing" >
+					<menuitem label="Print Messages" submenu_id="PrintMessages" />
+					<menuitem label="Print History Messages" submenu_id="PrintHistoryMessages" />
+					<menuitem label="Change Printer" submenu_id="ChangePrinter" />
+					</menuitem>
+					<menuitem type="separator"/>
+					<menuitem label="Speak Messages" />
+					<menuitem label="Speach Settings" />
+					<menuitem type="separator"/-->
+					<menuitem label="Log off"/>
+					<!-- menuitem label="Exit" / -->
+				</menuitem>
+				<menuitem label="Order"
+						  id="menuitemOrder">
+					<menuitem label="Sell       F5"
+							  icon="ImgBuy"/>
+					<menuitem label="Buy       F4"
+							  icon="ImgSell"/>
+					<menuitem label="Change"/>
+					<menuitem label="Cancel"
+							  icon="ImgCancel"/>
+					<menuitem label="Yield Calculator"/>
+					<menuitem label="Quick Orders"/>
+					<!--menuitem label="Take" />
+					<menuitem label="Hit" />
+					<menuitem type="separator"/>
+					<menuitem label="Cross Trade" />
+					<menuitem type="separator"/-->
+				</menuitem>
+				<menuitem label="Watch"
+						  id="menuitemWatch">
+					<menuitem label="Market"/>
+					<menuitem label="Best Orders"/>
+					<menuitem label="Best Price Levels"/>
+					<menuitem label="Messages"/>
+					<!--menuitem label="Water Fall Ticker" /-->
+					<menuitem type="separator"/>
+					<menuitem label="Exchange Stats"/>
+					<menuitem label="Market Schedule"/>
+				</menuitem>
+				<menuitem label="Reports"
+						  id="menuitemReports">
+					<menuitem label="Working Orders"
+							  icon="ImgWorkingOrders"/>
+					<!--menuitem label="Order Book" /-->
+					<menuitem label="Executed Orders"
+							  icon="ImgExecutedOrders"/>
+					<menuitem label="Event Log"
+							  icon="ImgEventLog"/>
+					<menuitem type="separator"/>
+					<menuitem label="Symbol Browser"/>
+					<menuitem label="Symbol Summary"/>
+					<menuitem label="Market Summary"/>
+					<menuitem type="separator"/>
+					<menuitem label="Risk inforamtion"/>
+					<!--menuitem label="Symbol Summary" />
+
+					<menuitem type="separator"/>
+					<menuitem label="Net Position" /-->
+				</menuitem>
+				<menuitem label="Control"
+						  enabled="false">
+					<menuitem label="Market States"
+							  icon="ImgMarketScheduleControl"/>
+					<!--menuitem type="separator"/-->
+					<menuitem label="Symbol State"
+							  icon="changeSymbolState"/>
+					<!--menuitem label="Symbol Spot Status" />
+					<menuitem label="Symbol Freeze Selection" />
+					<menuitem label="Symbol Order Cancelation" />
+					<menuitem type="separator"/>
+					<menuitem label="User State" />
+					<menuitem type="separator"/>
+					<menuitem label="Operational Bulletin" /-->
+					<menuitem label="Bulletin"/>
+					<!--menuitem type="separator"/>
+					<menuitem label="Remove Timing Schedule" />
+					<menuitem type="separator"/>
+					<menuitem label="Change Freeze Limits" /-->
+					<menuitem label="Change Order Limits"/>
+					<!--menuitem type="separator"/>
+					<menuitem label="Future Session" /-->
+					<menuitem label="Last Day Remaining Orders"
+							  enabled="false"/>
+					<menuitem label="Cancel All Orders"/>
+				</menuitem>
+				<menuitem label="Bond">
+					<menuitem label="Payment Schedule"
+							  enabled="false"/>
+					<menuitem label="Summary"
+							  enabled="false"/>
+					<menuitem label="Historical Data"
+							  enabled="false"/>
+				</menuitem>
+				<menuitem label="Settings">
+					<menuitem label="Profile"/>
+					<menuitem label="Change Password"/>
+					<menuitem label="Printer"
+							  enabled="false"/>
+				</menuitem>
+				<menuitem label="Charts">
+					<menuitem label="Real Time">  
+						<menuitem label="Index"
+								  enabled="false"
+								  icon="ImgLiveIndex"/>
+						<menuitem label="Symbol"
+								  id="liveSym"
+								  icon="ImgLiveSymbol"/>
+					</menuitem>
+					<menuitem label="Historical">
+						<menuitem label="Index"
+								  enabled="false"
+								  icon="ImgHistoricalIndex"/>
+						<menuitem label="Symbol"
+								  enabled="false"
+								  id="historicalSym"
+								  icon="ImgHistoricalSymbolChart"/>
+						<menuitem label="Volume Leaders"
+								  enabled="false"/>
+					</menuitem>
+				</menuitem>
+				<menuitem label="Help">
+					<menuitem label="About Easy Trade"
+							  id="about"/>
+					<!--menuitem label="Change Language"
+							  id="changeLang"/-->
+				</menuitem>
+			</>;
 			//Some extra 3-D effects to please kids ;)
 			
 			private var rotate3DY:Rotate3D;
@@ -204,6 +355,14 @@
 				ToolTipManager.hideDelay = 2500;
 				ToolTipManager.showEffect = rotate;
 				ToolTipManager.hideEffect = zoom;
+				for(var i:int = 0 ; i < 10  ; i++ )
+				{
+					setTimeout(launchAlert1, 3000);
+				}
+				function launchAlert1():void
+				{
+					//				Alert.show('aaa');
+				}
 			}
 
 			private function animateHover(target:Object):void
@@ -421,6 +580,58 @@
 				try
 				{
 					init();
+					
+					menubarMain.menuBarItems[0].data.(@label=="File").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[0].data.menuitem.(@id=="logof").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.(@label=="Order").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Sell       F5").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Buy       F4").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Change").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Cancel").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Yield Calculator").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Quick Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.(@id=="menuitemWatch").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@label=="Market").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="bo").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="bpl").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="msg").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="es").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="ms").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.(@id=="menuitemReports").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Working Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Executed Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Event Log").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Market Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Browser").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Risk Information").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.(@id=="cntrl").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Market States").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Symbol State").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Bulletin").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Change Order Limits").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Last Day Remaining Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Cancel All Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.(@id=="bnd").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Payment Schedule").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Historical Data").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.(@id=="setting").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Profile").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Change Password").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Printer").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.(@id=="chrt").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Real Time").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Historical").@label = resourceManager.getString('marketwatch','quickOrder');
+					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Index").@label = resourceManager.getString('default','quickOrder');
+					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Symbol").@label = resourceManager.getString('default','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Volume Leaders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
+//					Alert.show(menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label);
+					menubarMain.menuBarItems[7].data.menuitem.(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[8].data.(@id=="hlp").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[8].data.menuitem.(@label=="About Easy Trade").@label = resourceManager.getString('marketwatch','quickOrder');
+					
 					Constants.SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SERVICE_URL;
 					Constants.SECURE_SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SECURE_SERVICE_URL;
 					Constants.LIGHTSTREAMER_SERVER=FlexGlobals.topLevelApplication.parameters.LIGHTSTREAMER_SERVER;
@@ -449,6 +660,23 @@
 					var mdiManager:CustomMDIManager = new CustomMDIManager(this,null);
 //					mdiManager.executeDefaultBehavior(MDIManagerEvent.WINDOW_FOCUS_START as Event);
 //					mdiManager.executeDefaultBehavior(MDIManagerEvent.WINDOW_FOCUS_END as Event);
+					for(var i:int = 0 ; i < 10 ; i++ )
+					{
+						setTimeout(launchAlert1, 3000);
+					}
+					function launchAlert1():void
+					{
+						//				Alert.show('aaa');
+					}
+					var profile:ProfileManager = ProfileManager.getInstance();
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == resourceManager.localeChain[0])
+					{
+						loginLabel.text = WindowManager.getInstance().loginWindow.txtUserID.text+' :'+resourceManager.getString('marketwatch','loggedinuser')+'               '+dateFormatter.format(new Date())+' :'+resourceManager.getString('marketwatch','logindatetime');
+					}
+					else
+					{
+						resourceManager.getString('marketwatch','loggedinuser')+': '+ profile.userName+'               '+resourceManager.getString('marketwatch','logindatetime')+': '+ dateFormatter.format(new Date()); 
+					}
 				}
 				catch(e:Error)
 				{
@@ -543,15 +771,15 @@
 			   width="100%"
 			   height="46">
 		<mx:MenuBar id="menubarMain"
-					labelField="@label"
+					labelField="@label" 
 					iconField="@icon"
-					height="21"
+					height="21" layoutDirection="rtl"
 					itemClick="menubarMain_itemClickHandler(event)"
 					x="0"
 					y="0"
 					width="100%">
 			<fx:XMLList>
-				<menuitem label="File">
+				<root label="File" id="file">
 					<!--menuitem label="Fonts" />
 					<menuitem label="Unattended Mode" />
 					<menuitem label="Change Password" />
@@ -569,9 +797,9 @@
 					<menuitem label="Speak Messages" />
 					<menuitem label="Speach Settings" />
 					<menuitem type="separator"/-->
-					<menuitem label="Log off"/>
+					<menuitem label="Log off" id="logof"/>
 					<!-- menuitem label="Exit" / -->
-				</menuitem>
+				</root>
 				<menuitem label="Order"
 						  id="menuitemOrder">
 					<menuitem label="Sell       F5"
@@ -589,17 +817,17 @@
 					<menuitem label="Cross Trade" />
 					<menuitem type="separator"/-->
 				</menuitem>
-				<menuitem label="Watch"
-						  id="menuitemWatch">
-					<menuitem label="Market"/>
-					<menuitem label="Best Orders"/>
-					<menuitem label="Best Price Levels"/>
-					<menuitem label="Messages"/>
+				<root label="Watch"
+					  id="menuitemWatch">
+					<menuitem label="Market" id="mrkt"/>
+					<menuitem label="Best Orders" id="bo"/>
+					<menuitem label="Best Price Levels" id="bpl"/>
+					<menuitem label="Messages" id="msg"/>
 					<!--menuitem label="Water Fall Ticker" /-->
-					<menuitem type="separator"/>
-					<menuitem label="Exchange Stats"/>
-					<menuitem label="Market Schedule"/>
-				</menuitem>
+					<!--menuitem type="separator"/-->
+					<menuitem label="Exchange Stats" id="es"/>
+					<menuitem label="Market Schedule" id="ms"/>
+				</root>
 				<menuitem label="Reports"
 						  id="menuitemReports">
 					<menuitem label="Working Orders"
@@ -609,18 +837,18 @@
 							  icon="ImgExecutedOrders"/>
 					<menuitem label="Event Log"
 							  icon="ImgEventLog"/>
-					<menuitem type="separator"/>
+					<!--menuitem type="separator"/-->
 					<menuitem label="Symbol Browser"/>
 					<menuitem label="Symbol Summary"/>
 					<menuitem label="Market Summary"/>
-					<menuitem type="separator"/>
-					<menuitem label="Risk inforamtion"/>
+					<!--menuitem type="separator"/-->
+					<menuitem label="Risk Information"/>
 					<!--menuitem label="Symbol Summary" />
-
+					
 					<menuitem type="separator"/>
 					<menuitem label="Net Position" /-->
 				</menuitem>
-				<menuitem label="Control"
+				<menuitem label="Control" id="cntrl"
 						  enabled="false">
 					<menuitem label="Market States"
 							  icon="ImgMarketScheduleControl"/>
@@ -646,7 +874,7 @@
 							  enabled="false"/>
 					<menuitem label="Cancel All Orders"/>
 				</menuitem>
-				<menuitem label="Bond">
+				<menuitem label="Bond" id="bnd">
 					<menuitem label="Payment Schedule"
 							  enabled="false"/>
 					<menuitem label="Summary"
@@ -654,22 +882,22 @@
 					<menuitem label="Historical Data"
 							  enabled="false"/>
 				</menuitem>
-				<menuitem label="Settings">
+				<menuitem label="Settings" id="setting">
 					<menuitem label="Profile"/>
 					<menuitem label="Change Password"/>
 					<menuitem label="Printer"
 							  enabled="false"/>
 				</menuitem>
-				<menuitem label="Charts">
-					<menuitem label="Real Time">
-						<menuitem label="Index"
+				<menuitem label="Charts" id="chrt">
+					<menuitem label="Real Time" id="real">  
+						<menuitem label="Index" id="indx"
 								  enabled="false"
 								  icon="ImgLiveIndex"/>
-						<menuitem label="Symbol"
+						<menuitem label="Symbol" 
 								  id="liveSym"
 								  icon="ImgLiveSymbol"/>
 					</menuitem>
-					<menuitem label="Historical">
+					<menuitem label="Historical" id="history">
 						<menuitem label="Index"
 								  enabled="false"
 								  icon="ImgHistoricalIndex"/>
@@ -681,12 +909,15 @@
 								  enabled="false"/>
 					</menuitem>
 				</menuitem>
-				<menuitem label="Help">
+				<menuitem label="Help" id="hlp">
 					<menuitem label="About Easy Trade"
 							  id="about"/>
+					<!--menuitem label="Change Language"
+					id="changeLang"/-->
 				</menuitem>
 			</fx:XMLList>
 		</mx:MenuBar>
+		
 		<!--<mx:ToolBar x="0" y="20" width="100%" paddingBottom="0" paddingTop="0" verticalScrollPolicy="off">-->
 		<mx:ApplicationControlBar id="toolbarMain"
 								  top="20"
@@ -702,7 +933,7 @@
 			</mx:Spacer>
 		</mx:ApplicationControlBar>
 		<!--</mx:ToolBar>-->
-		<components:buttonBuy left="25"
+		<components:buttonBuy left="25" layoutDirection="rtl"
 							  top="27"
 							  buttonMode="true"
 							  click="imgSell_clickHandler(event)"
@@ -805,8 +1036,7 @@
 										toolTip="Live Index Chart"/>
 		<mx:Label left="697"
 				  top="24"
-				  styleName="welcomeString"
-				  text=" Logged In User: {ProfileManager.getInstance().userName}               Logged In Date/Time: {dateFormatter.format(new Date())} "
+				  styleName="welcomeString" layoutDirection="rtl" id="loginLabel"
 				  fontSize="11"/>
 	</mx:Canvas>
 

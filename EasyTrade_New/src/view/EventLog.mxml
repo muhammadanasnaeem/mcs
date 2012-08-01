@@ -39,6 +39,9 @@
 			
 			//Created on 16/07/2012 by Anas for the export to excel functionality.
 			[Bindable]
+			private var exchange:TextInput;
+			
+			[Bindable]
 			[Embed(source="images/xls.png")]
 			public var ImgXls:Class;
 			
@@ -110,6 +113,7 @@
 			
 			private function fileReference_Progress(event:ProgressEvent):void
 			{
+				progressBar.toolTip = 'Saving';
 				progressBar.visible = true; 
 				progressBar.includeInLayout = true;
 			}
@@ -151,9 +155,15 @@
 				modelManager.updateEventLog();
 			}
 			
-			
 			// The function to print the output.
 			public function doPrint():void {
+				
+				setTimeout(launchAlert2, 3000);
+				
+				function launchAlert2():void
+				{
+					trace('eee');
+				}
 				// Create a FlexPrintJob instance.
 				var printJob:FlexPrintJob = new FlexPrintJob();
 				
@@ -163,31 +173,40 @@
 					// as a child of the application.
 					var thePrintView:FormPrintView = new FormPrintView();
 					addElement(thePrintView);
-					
+					thePrintView.myDataGrid.setStyle('color',0x000000);
+					thePrintView.exchangeLabel.text = (txtExchange.text == '') ?  '<ALL>':txtExchange.text;
+					thePrintView.marketLabel.text = (txtMarket.text == '') ? '<ALL>':txtMarket.text;
+					thePrintView.symbolLabel.text = (txtSymbol.text == '') ? '<ALL>' :txtSymbol.text;
+					thePrintView.traderLabel.text = ((traders.labelDisplay as Label).text == '')?'<ALL>':(traders.labelDisplay as Label).text;
+//					thePrintView.myDataGrid.setStyle('fontSize',12);
 					// Set the print view properties.
-					thePrintView.width=printJob.pageWidth;
+					thePrintView.width=printJob.pageWidth+540;
 					thePrintView.height=printJob.pageHeight;
 					
 					// Set the data provider of the FormPrintView 
 					// component's DataGrid to be the data provider of 
 					// the displayed DataGrid.
 					thePrintView.myDataGrid.dataProvider = 
-						dgEventLog.dataProvider;
-					
+						modelManager.eventLogModel.eventLog;
+//					thePrintView.myDataGrid.columns = dgEventLog.columns;
+					thePrintView.myDataGrid.showHeaders = true;
+//					(thePrintView.myDataGrid.columns[4] as DataGridColumn).
 					// Create a single-page image.
 					
 					// If the print image's DataGrid can hold all the  
 					// data provider's rows, add the page to the print job. 
 					if(!thePrintView.myDataGrid.validNextPage)
 					{
+						thePrintView.myDataGrid.setStyle('color',0x000000);
 						printJob.addObject(thePrintView);
 					}
 						// Otherwise, the job requires multiple pages.
 					else
 					{
 						// Create the first page and add it to the print job.
+						thePrintView.myDataGrid.setStyle('color',0x000000);
 						printJob.addObject(thePrintView);
-						
+						thePrintView.pageNumber++;
 						// Loop through the following code 
 						// until all pages are queued.
 						while(true)
@@ -207,28 +226,33 @@
 							{
 								// This is the last page; 
 								// queue it and exit the print loop.
+								thePrintView.myDataGrid.setStyle('color',0x000000);
 								printJob.addObject(thePrintView);
 								break;
 							}
 							else
 								// This is not the last page. Queue a middle page. 
 							{
+								thePrintView.myDataGrid.setStyle('color',0x000000);
 								printJob.addObject(thePrintView);
+								thePrintView.pageNumber++;
 							}
 						}
 					}
 					// All pages are queued; remove the FormPrintView 
 					// control to free memory.
+					thePrintView.myDataGrid.setStyle('color',0x000000);
 					removeElement(thePrintView);
 				}
 				// Send the job to the printer.
 				printJob.send();
 			}
 			
-			
 			// Created on 16/07/2012 by Anas for the print functionality
 			protected function image1_clickHandler(event:MouseEvent):void
 			{
+				try
+				{
 				setTimeout(launchAlert2, 3000);
 				
 				function launchAlert2():void
@@ -259,8 +283,11 @@
 					removeElement(printDataGrid.myDataGrid); 
 					
 					printJob.send(); 
-					
 				} 
+				}catch(e:Error)
+				{
+					trace('');
+				}
 //					Alert.show('Printed Successfully','Information');	
 			}
 //			(dg.columns[0] as DataGridColumn).headerText = "Something"
@@ -271,6 +298,7 @@
 						  formatString="LL:NN:SS A"/>
 		<components:EZCurrencyFormatter id="moneyFormatter"/>
 		<components:EZNumberFormatter id="numberFormatter"/>
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	<!-- mx:ButtonBar id="toolbar" name="toolbar" y="2" horizontalCenter="0">
 	<mx:dataProvider>
@@ -282,7 +310,7 @@
 					   height="30"
 					   horizontalCenter="0"
 					   top="0">
-		<s:Image y="-1" click="image1_clickHandler(event)" horizontalCenter="-380" visible="true"
+		<s:Image y="-1" click="doPrint()" horizontalCenter="-380" visible="true"
 				 source="{ImgPrint}" buttonMode="true" useHandCursor="true" />
 		<s:Image y="-1" buttonMode="true" click="btnExport_clickHandler(event)" visible="true"
 				 horizontalCenter="-415" source="{ImgXls}" useHandCursor="true"/>

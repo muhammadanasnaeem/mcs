@@ -1719,7 +1719,7 @@ package controller
 				else
 				{
 					orderModel_.orderBO=new OrderBO();
-					for(var i:int = 0 ; i < 10 && ModelManager.getInstance().changebooleanFlag == false ; i++ )
+					for(var ii:int = 0 ; ii < 10 && ModelManager.getInstance().changebooleanFlag == false ; ii++ )
 					{
 						setTimeout(launchAlert, 1000);
 					}

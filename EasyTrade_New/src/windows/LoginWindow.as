@@ -19,6 +19,9 @@ package windows
 	
 	import mx.controls.Alert;
 	import mx.controls.CheckBox;
+	import mx.core.FlexGlobals;
+	import mx.core.IUIComponent;
+	import mx.core.UIComponent;
 	import mx.managers.FocusManager;
 	import mx.states.SetEventHandler;
 	import mx.utils.StringUtil;
@@ -31,8 +34,8 @@ package windows
 	import spark.effects.Rotate3D;
 	import spark.events.TextOperationEvent;
 
-	public class LoginWindow extends MDIWindow
-	{
+	public class LoginWindow extends MDIWindow 
+	{  
 		private var easyTradeApp_:EasyTradeApp=EasyTradeApp.getInstance();
 		private var modelManager_:ModelManager=ModelManager.getInstance();
 
@@ -63,15 +66,28 @@ package windows
 //			stringValidator2.trigger = btnLogin;
 //			stringValidator2.triggerEvent = "click";
 //			stringValidator2.property="text";
-
+		
 			setStyle("backgroundColor", Constants.MARKET_WATCH_TITLE_BACKGROUND_INT);
 			setStyle("borderVisible", true);
 			setStyle("bordercolor", Constants.MARKET_WATCH_TITLE_BORDER_INT);
 			setStyle("bordercolor", Constants.BORDER_TOP);
 			addEventListener(MDIWindowEvent.CLOSE, onLoginWindowClose);
+			
+			if(FlexGlobals.topLevelApplication.parameters.LOCALE == "sv_SE")
+			{
+				resourceManager.localeChain = ['sv_SE'];
+				txtUserID.layoutDirection = "rtl";
+				txtPassword.layoutDirection = "rtl";
+				bc.layoutDirection = "rtl";
+				var str:String = resourceManager.getString('marketwatch', 'file');
+			}
+			else
+			{
+				resourceManager.localeChain = ['en_US']; 
+			}
 			id="Login";
-			title="..: Login to Easy Trade™ :..";
-
+			title=resourceManager.getString('marketwatch', 'login').toString();
+  
 			resizable=false;
 			minimizeBtn.visible=false;
 			maximizeRestoreBtn.visible=false;
@@ -88,45 +104,50 @@ package windows
 			bc.y=0;
 			bc.width=238;
 			bc.height=137;
-
-			lblUserID.text="User Name: ";
+			
+			
+			lblUserID.text=resourceManager.getString('marketwatch', 'username').toString();
 			lblUserID.x=10;
 			lblUserID.y=22;
 			bc.addElement(lblUserID);
 
 			txtUserID.id="txtUserID";
+			
 			txtUserID.x=100;
 			txtUserID.y=10;
 			txtUserID.width=125;
-			txtUserID.prompt="UserName";
+			txtUserID.prompt=resourceManager.getString('marketwatch', 'username').toString();
 			txtUserID.setStyle("backgroundColor",0xdbe1e9);
 			bc.addElement(txtUserID);
 
-			lblPassword.text="Password: ";
+			lblPassword.text=resourceManager.getString('marketwatch', 'password').toString()+' ';
 			lblPassword.x=10;
 			lblPassword.y=62;
 			bc.addElement(lblPassword);
 
 			txtPassword.id="txtPassword";
+			
 			txtPassword.setStyle("backgroundColor",0xdbe1e9);
 			txtPassword.x=100;
 			txtPassword.y=50;
 			txtPassword.width=125;
-			txtPassword.prompt="Password";
+			txtPassword.prompt=resourceManager.getString('marketwatch', 'password').toString()+' ';
 			txtPassword.displayAsPassword=true;
 			bc.addElement(txtPassword);
 
+			chckRememberMe.layoutDirection = "ltr";
 			chckRememberMe.x=10;
 			chckRememberMe.y=80;
-			chckRememberMe.label="Remember me";
+			chckRememberMe.label=resourceManager.getString('marketwatch', 'rememberme').toString();
 			chckRememberMe.id="chckRememberMe";
 			bc.addElement(chckRememberMe);
 
+			btnLogin.layoutDirection = "rtl";
 			btnLogin.buttonMode=true;
 			btnLogin.useHandCursor=true;
 			btnLogin.x=85;
 			btnLogin.y=100;
-			btnLogin.label="Log me in!";
+			btnLogin.label=resourceManager.getString('marketwatch', 'logmein').toString();
 			btnLogin.id="btnLogin";
 			btnLogin.addEventListener(MouseEvent.CLICK, btnLogin_clickHandler);
 			bc.addElement(btnLogin);

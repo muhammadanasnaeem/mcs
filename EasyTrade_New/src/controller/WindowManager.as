@@ -34,6 +34,8 @@ package controller
 	import mx.graphics.LinearGradient;
 	import mx.graphics.SolidColor;
 	import mx.managers.PopUpManager;
+	import mx.resources.IResourceManager;
+	import mx.resources.ResourceManager;
 	
 	import spark.components.Group;
 	import spark.components.SkinnableContainer;
@@ -872,7 +874,8 @@ package controller
 
 		public function initLiveSymbolChartWindow():MDIWindow
 		{
-			liveSymbolChartWindow=initWindow(liveSymbolChartWindow, viewManager_.liveSymbolChart, Constants.HIST_SYMBOL_CHART_WINDOW_TITLE, Constants.HIST_SYMBOL_CHART_WINDOW_ID,
+			var resourceManager:IResourceManager = ResourceManager.getInstance();
+			liveSymbolChartWindow=initWindow(liveSymbolChartWindow, viewManager_.liveSymbolChart, resourceManager.getString('marketwatch','liveChart'), Constants.HIST_SYMBOL_CHART_WINDOW_ID,
 
 				403, 289);
 			liveSymbolChartWindow.left=0;
@@ -925,7 +928,16 @@ package controller
 		public function initMarketWatchWindow():Object
 		{
 			viewManager_.marketWatch=new MarketWatch();
-			marketWatchWindow=initWindow(marketWatchWindow, viewManager_.marketWatch, Constants.MARKET_WATCH_WINDOW_TITLE, Constants.MARKET_WATCH_WINDOW_ID, 810, 584);
+			marketWatchWindow=initWindow(marketWatchWindow, viewManager_.marketWatch, ResourceManager.getInstance().getString('marketwatch', 'marketWatch').toString(), Constants.MARKET_WATCH_WINDOW_ID, 810, 584);
+			var resourceManager:IResourceManager = ResourceManager.getInstance();
+			if(resourceManager.localeChain[0] == ['sv_SE'])
+			{
+//				marketWatchWindow.layoutDirection = 'rtl';
+			}
+			else
+			{
+				marketWatchWindow.layoutDirection = 'ltr';
+			}
 			marketWatchWindow.top=0;
 			marketWatchWindow.right=0;
 //			marketWatchWindow.maxHeight = canvas.height;
@@ -958,8 +970,9 @@ package controller
 		///////////////////////////////////////////////////////////
 		public function initQuickOrderWindow():MDIWindow
 		{
+			var resourceManager:IResourceManager = ResourceManager.getInstance();
 			viewManager_.quickOrders=new QuickOrder();
-			quickOrdersWindow=initWindow(quickOrdersWindow, viewManager_.quickOrders, Constants.QUICK_ORDERS_WINDOW_TITLE, Constants.QUICK_ORDERS_WINDOW_ID, 402, 296, false);
+			quickOrdersWindow=initWindow(quickOrdersWindow, viewManager_.quickOrders, resourceManager.getString('marketwatch','quickOrder'), Constants.QUICK_ORDERS_WINDOW_ID, 402, 296, false);
 			quickOrdersWindow.maxHeight=298;
 			quickOrdersWindow.maxHeight=265;
 			quickOrdersWindow.left=0;
@@ -977,8 +990,9 @@ package controller
 		///////////////////////////////////////////////////////////////
 		public function initLiveMessagesWindow():MDIWindow
 		{
+			var resourceManager:IResourceManager = ResourceManager.getInstance();
 			viewManager_.liveMessages=new LiveMessages();
-			liveMessages=initWindow(liveMessages, viewManager_.liveMessages, Constants.LIVE_MESSAGES_WINDOW_TITLE, Constants.LIVE_MESSAGES_WINDOW_WINDOW_ID, 1260, 215, false);
+			liveMessages=initWindow(liveMessages, viewManager_.liveMessages, resourceManager.getString('marketwatch','liveMessage'), Constants.LIVE_MESSAGES_WINDOW_WINDOW_ID, 1260, 215, false);
 			liveMessages.maxHeight=215;
 			liveMessages.maxWidth=1260;
 			liveMessages.left=0;
@@ -1075,8 +1089,8 @@ package controller
 		///////////////////////////////////////////////////////////////
 		public function initRemainingOrdersWindow():MDIWindow
 		{
-			remainingOrdersWindow=initWindow(remainingOrdersWindow, viewManager_.remainingOrders, Constants.WORKING_ORDERS_WINDOW_TITLE, Constants.WORKING_ORDERS_WINDOW_ID, 650, 400);
-			remainingOrdersWindow.minWidth=550;
+			remainingOrdersWindow=initWindow(remainingOrdersWindow, viewManager_.remainingOrders, Constants.WORKING_ORDERS_WINDOW_TITLE, Constants.WORKING_ORDERS_WINDOW_ID, 750, 400);
+			remainingOrdersWindow.minWidth=750;
 			remainingOrdersWindow.minHeight=300;
 			// added on 18/1/2011
 			remainingOrdersWindow.addEventListener(MDIWindowEvent.FOCUS_START, remainingOrders_FocusStartHandler);
@@ -1101,8 +1115,8 @@ package controller
 		///////////////////////////////////////////////////////////////
 		public function initUserTradeHistoryWindow():void
 		{
-			userTradeHistoryWindow=initWindow(userTradeHistoryWindow, viewManager_.userTradeHistory, Constants.EXECUTED_ORDERS_WINDOW_TITLE, Constants.EXECUTED_ORDERS_WINDOW_ID, 650, 400);
-			userTradeHistoryWindow.minWidth=550;
+			userTradeHistoryWindow=initWindow(userTradeHistoryWindow, viewManager_.userTradeHistory, Constants.EXECUTED_ORDERS_WINDOW_TITLE, Constants.EXECUTED_ORDERS_WINDOW_ID, 750, 400);
+			userTradeHistoryWindow.minWidth=750;
 			userTradeHistoryWindow.minHeight=300;
 			// added on 18/1/2011
 			userTradeHistoryWindow.addEventListener(MDIWindowEvent.FOCUS_START, userTradeHistory_FocusStartHandler);
@@ -1116,8 +1130,8 @@ package controller
 		///////////////////////////////////////////////////////////////
 		public function initEventLogWindow():void
 		{
-			eventLogWindow=initWindow(eventLogWindow, viewManager_.eventLog, Constants.EVENT_LOG_WINDOW_TITLE, Constants.EVENT_LOG_WINDOW_ID, 650, 400);
-			eventLogWindow.minWidth=550;
+			eventLogWindow=initWindow(eventLogWindow, viewManager_.eventLog, Constants.EVENT_LOG_WINDOW_TITLE, Constants.EVENT_LOG_WINDOW_ID, 750, 400);
+			eventLogWindow.minWidth=750;
 			eventLogWindow.minHeight=300;
 			// added on 18/1/2011
 			eventLogWindow.addEventListener(MDIWindowEvent.FOCUS_START, eventLog_FocusStartHandler);
@@ -1182,6 +1196,7 @@ package controller
 			try
 			{
 				window=new MDIWindow();
+			
 				window.removeAllChildren();
 				window.addChild(displayObject);
 				window.title=title;

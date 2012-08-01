@@ -6,6 +6,7 @@ import controller.ModelManager;
 
 import flash.events.KeyboardEvent;
 import flash.events.MouseEvent;
+import flash.net.FileReference;
 
 import flashx.textLayout.events.UpdateCompleteEvent;
 
@@ -20,6 +21,7 @@ import mx.events.DataGridEvent;
 import mx.events.FlexEvent;
 import mx.events.ItemClickEvent;
 
+public var fr:FileReference = new FileReference();
 public var userID:Number;
 private var isExpanded:Boolean=false;
 [Bindable]

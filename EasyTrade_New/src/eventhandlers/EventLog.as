@@ -20,7 +20,7 @@ import mx.events.FlexEvent;
 import view.Order;
 
 
-public var fr:FileReference = new FileReference();;
+public var fr:FileReference = new FileReference();
 
 [Bindable]
 public var modelManager:ModelManager=ModelManager.getInstance();

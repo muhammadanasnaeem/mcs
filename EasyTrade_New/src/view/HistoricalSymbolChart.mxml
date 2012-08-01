@@ -10,8 +10,12 @@
 	<fx:Script>
 		<![CDATA[
 			import mx.events.ResizeEvent;
+			import mx.resources.IResourceManager;
+			import mx.resources.ResourceManager;
 			include "../components/SelectionMenu.as"
 			include "../eventhandlers/HistoricalSymbolChart.as"
+			
+			private var resourceManagerr:IResourceManager = ResourceManager.getInstance();
 			
 			protected function chartVbox_resizeHandler(event:ResizeEvent):void
 			{
@@ -104,7 +108,7 @@
 			<s:SolidColor color="black"
 						  alpha="1"/>
 		</s:backgroundFill>
-		<s:Label text="Exchange:"
+		<s:Label text="{resourceManagerr.getString('marketwatch','exchange')+':'}"
 				 horizontalCenter="-137"
 				 top="7"
 				 color="white"/>
@@ -115,7 +119,7 @@
 										click="txtExchange_clickHandler(event)"
 										horizontalCenter="-82"
 										top="2"/>
-		<s:Label text="Market:"
+		<s:Label text="{resourceManagerr.getString('marketwatch','market')+':'}"
 				 horizontalCenter="-33"
 				 top="7"
 				 color="white"/>
@@ -126,7 +130,7 @@
 										click="txtMarket_clickHandler(event)"
 										horizontalCenter="13"
 										top="2"/>
-		<s:Label text="Symbol:"
+		<s:Label text="{resourceManagerr.getString('marketwatch','symbol')+':'}"
 				 horizontalCenter="63"
 				 top="7"
 				 color="white"/>
@@ -167,11 +171,11 @@
 				</mx:backgroundElements>
 				<mx:verticalAxis>
 					<mx:LinearAxis baseAtZero="false" 
-								   title="Price"/>
+								   title="{resourceManagerr.getString('marketwatch','price')}" />
 				</mx:verticalAxis>
 				<mx:horizontalAxis>
 					<mx:DateTimeAxis dataUnits="minutes"
-									 title="Time"
+									 title="{resourceManagerr.getString('marketwatch','time')}"
 									 displayLocalTime="true"/>
 				</mx:horizontalAxis>
 				<mx:series>
@@ -220,13 +224,13 @@
 				<!-- vertical axis -->
 				<mx:verticalAxis>
 					<mx:LinearAxis baseAtZero="false"
-								   title="Volume"/>
+								   title="{resourceManagerr.getString('marketwatch','volume')}"/>
 				</mx:verticalAxis>
 
 				<!-- horizontal axis -->
 				<mx:horizontalAxis>
 					<mx:DateTimeAxis dataUnits="seconds"
-									 title="Time"
+									 title="{resourceManagerr.getString('marketwatch','time')}"
 									 displayLocalTime="true"/>
 				</mx:horizontalAxis>
 				<mx:series>
