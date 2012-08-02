@@ -193,153 +193,7 @@
 			public var changeSymbolState:Class;
 			
 			private var cmi:ContextMenu = new ContextMenu();
-
 			
-			[Bindable]
-			public var menuBarCollection:XMLListCollection;
-			
-			
-			
-			
-			private var menubarXML:XMLList=<>
-				
-					<menuitem label="File">
-					<!--menuitem label="Fonts" />
-					<menuitem label="Unattended Mode" />
-					<menuitem label="Change Password" />
-					<menuitem type="separator"/>
-					<menuitem label="Messages" >
-					<menuitem label="Send Message" />
-					<menuitem label="Save Messages" />
-					</menuitem>
-					<menuitem label="Printing" >
-					<menuitem label="Print Messages" submenu_id="PrintMessages" />
-					<menuitem label="Print History Messages" submenu_id="PrintHistoryMessages" />
-					<menuitem label="Change Printer" submenu_id="ChangePrinter" />
-					</menuitem>
-					<menuitem type="separator"/>
-					<menuitem label="Speak Messages" />
-					<menuitem label="Speach Settings" />
-					<menuitem type="separator"/-->
-					<menuitem label="Log off"/>
-					<!-- menuitem label="Exit" / -->
-				</menuitem>
-				<menuitem label="Order"
-						  id="menuitemOrder">
-					<menuitem label="Sell       F5"
-							  icon="ImgBuy"/>
-					<menuitem label="Buy       F4"
-							  icon="ImgSell"/>
-					<menuitem label="Change"/>
-					<menuitem label="Cancel"
-							  icon="ImgCancel"/>
-					<menuitem label="Yield Calculator"/>
-					<menuitem label="Quick Orders"/>
-					<!--menuitem label="Take" />
-					<menuitem label="Hit" />
-					<menuitem type="separator"/>
-					<menuitem label="Cross Trade" />
-					<menuitem type="separator"/-->
-				</menuitem>
-				<menuitem label="Watch"
-						  id="menuitemWatch">
-					<menuitem label="Market"/>
-					<menuitem label="Best Orders"/>
-					<menuitem label="Best Price Levels"/>
-					<menuitem label="Messages"/>
-					<!--menuitem label="Water Fall Ticker" /-->
-					<menuitem type="separator"/>
-					<menuitem label="Exchange Stats"/>
-					<menuitem label="Market Schedule"/>
-				</menuitem>
-				<menuitem label="Reports"
-						  id="menuitemReports">
-					<menuitem label="Working Orders"
-							  icon="ImgWorkingOrders"/>
-					<!--menuitem label="Order Book" /-->
-					<menuitem label="Executed Orders"
-							  icon="ImgExecutedOrders"/>
-					<menuitem label="Event Log"
-							  icon="ImgEventLog"/>
-					<menuitem type="separator"/>
-					<menuitem label="Symbol Browser"/>
-					<menuitem label="Symbol Summary"/>
-					<menuitem label="Market Summary"/>
-					<menuitem type="separator"/>
-					<menuitem label="Risk inforamtion"/>
-					<!--menuitem label="Symbol Summary" />
-
-					<menuitem type="separator"/>
-					<menuitem label="Net Position" /-->
-				</menuitem>
-				<menuitem label="Control"
-						  enabled="false">
-					<menuitem label="Market States"
-							  icon="ImgMarketScheduleControl"/>
-					<!--menuitem type="separator"/-->
-					<menuitem label="Symbol State"
-							  icon="changeSymbolState"/>
-					<!--menuitem label="Symbol Spot Status" />
-					<menuitem label="Symbol Freeze Selection" />
-					<menuitem label="Symbol Order Cancelation" />
-					<menuitem type="separator"/>
-					<menuitem label="User State" />
-					<menuitem type="separator"/>
-					<menuitem label="Operational Bulletin" /-->
-					<menuitem label="Bulletin"/>
-					<!--menuitem type="separator"/>
-					<menuitem label="Remove Timing Schedule" />
-					<menuitem type="separator"/>
-					<menuitem label="Change Freeze Limits" /-->
-					<menuitem label="Change Order Limits"/>
-					<!--menuitem type="separator"/>
-					<menuitem label="Future Session" /-->
-					<menuitem label="Last Day Remaining Orders"
-							  enabled="false"/>
-					<menuitem label="Cancel All Orders"/>
-				</menuitem>
-				<menuitem label="Bond">
-					<menuitem label="Payment Schedule"
-							  enabled="false"/>
-					<menuitem label="Summary"
-							  enabled="false"/>
-					<menuitem label="Historical Data"
-							  enabled="false"/>
-				</menuitem>
-				<menuitem label="Settings">
-					<menuitem label="Profile"/>
-					<menuitem label="Change Password"/>
-					<menuitem label="Printer"
-							  enabled="false"/>
-				</menuitem>
-				<menuitem label="Charts">
-					<menuitem label="Real Time">  
-						<menuitem label="Index"
-								  enabled="false"
-								  icon="ImgLiveIndex"/>
-						<menuitem label="Symbol"
-								  id="liveSym"
-								  icon="ImgLiveSymbol"/>
-					</menuitem>
-					<menuitem label="Historical">
-						<menuitem label="Index"
-								  enabled="false"
-								  icon="ImgHistoricalIndex"/>
-						<menuitem label="Symbol"
-								  enabled="false"
-								  id="historicalSym"
-								  icon="ImgHistoricalSymbolChart"/>
-						<menuitem label="Volume Leaders"
-								  enabled="false"/>
-					</menuitem>
-				</menuitem>
-				<menuitem label="Help">
-					<menuitem label="About Easy Trade"
-							  id="about"/>
-					<!--menuitem label="Change Language"
-							  id="changeLang"/-->
-				</menuitem>
-			</>;
 			//Some extra 3-D effects to please kids ;)
 			
 			private var rotate3DY:Rotate3D;
@@ -580,58 +434,6 @@
 				try
 				{
 					init();
-					
-					menubarMain.menuBarItems[0].data.(@label=="File").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[0].data.menuitem.(@id=="logof").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.(@label=="Order").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Sell       F5").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Buy       F4").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Change").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Cancel").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Yield Calculator").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[1].data.menuitem.(@label=="Quick Orders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.(@id=="menuitemWatch").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@label=="Market").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@id=="bo").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@id=="bpl").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@id=="msg").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@id=="es").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[2].data.menuitem.(@id=="ms").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.(@id=="menuitemReports").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Working Orders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Executed Orders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Event Log").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Summary").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Market Summary").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Browser").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[3].data.menuitem.(@label=="Risk Information").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.(@id=="cntrl").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Market States").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Symbol State").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Bulletin").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Change Order Limits").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Last Day Remaining Orders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[4].data.menuitem.(@label=="Cancel All Orders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[5].data.(@id=="bnd").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[5].data.menuitem.(@label=="Payment Schedule").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[5].data.menuitem.(@label=="Summary").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[5].data.menuitem.(@label=="Historical Data").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[6].data.(@id=="setting").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[6].data.menuitem.(@label=="Profile").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[6].data.menuitem.(@label=="Change Password").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[6].data.menuitem.(@label=="Printer").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[7].data.(@id=="chrt").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[7].data.menuitem.(@label=="Real Time").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[7].data.menuitem.(@label=="Historical").@label = resourceManager.getString('marketwatch','quickOrder');
-					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Index").@label = resourceManager.getString('default','quickOrder');
-					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Symbol").@label = resourceManager.getString('default','quickOrder');
-					menubarMain.menuBarItems[7].data.menuitem.(@label=="Volume Leaders").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
-//					Alert.show(menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label);
-					menubarMain.menuBarItems[7].data.menuitem.(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[8].data.(@id=="hlp").@label = resourceManager.getString('marketwatch','quickOrder');
-					menubarMain.menuBarItems[8].data.menuitem.(@label=="About Easy Trade").@label = resourceManager.getString('marketwatch','quickOrder');
-					
 					Constants.SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SERVICE_URL;
 					Constants.SECURE_SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SECURE_SERVICE_URL;
 					Constants.LIGHTSTREAMER_SERVER=FlexGlobals.topLevelApplication.parameters.LIGHTSTREAMER_SERVER;
@@ -641,6 +443,63 @@
 					Constants.ANNOUNCER_WSDL_END_POINT=Constants.SERVICE_URL + Constants.ANNOUNCER_WSDL_END_POINT;
 					Constants.LOGIN_MANAGER_WSDL_END_POINT=Constants.SERVICE_URL + Constants.LOGIN_MANAGER_WSDL_END_POINT;
 					Constants.RS_WSDL_END_POINT = Constants.SERVICE_URL + Constants.RS_WSDL_END_POINT;
+					
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == resourceManager.localeChain[0])
+					{
+						menubarMain.layoutDirection = 'rtl';
+					}
+					menubarMain.menuBarItems[0].data.(@label=="File").@label = resourceManager.getString('marketwatch','file');
+					menubarMain.menuBarItems[0].data.menuitem.(@id=="logof").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.(@label=="Order").@label = resourceManager.getString('marketwatch','order');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Sell       F5").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Buy       F4").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Change").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Cancel").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Yield Calculator").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[1].data.menuitem.(@label=="Quick Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.(@id=="menuitemWatch").@label = resourceManager.getString('marketwatch','watch');
+					menubarMain.menuBarItems[2].data.menuitem.(@label=="Market").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="bo").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="bpl").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="msg").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="es").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[2].data.menuitem.(@id=="ms").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.(@id=="menuitemReports").@label = resourceManager.getString('marketwatch','reports');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Working Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Executed Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Event Log").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Market Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Symbol Browser").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[3].data.menuitem.(@label=="Risk Information").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.(@id=="cntrl").@label = resourceManager.getString('marketwatch','control');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Market States").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Symbol State").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Bulletin").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Change Order Limits").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Last Day Remaining Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[4].data.menuitem.(@label=="Cancel All Orders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.(@id=="bnd").@label = resourceManager.getString('marketwatch','bond');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Payment Schedule").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Summary").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[5].data.menuitem.(@label=="Historical Data").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.(@id=="setting").@label = resourceManager.getString('marketwatch','settings');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Profile").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Change Password").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[6].data.menuitem.(@label=="Printer").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.(@id=="chrt").@label = resourceManager.getString('marketwatch','charts');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Real Time").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Historical").@label = resourceManager.getString('marketwatch','quickOrder');
+					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Index").@label = resourceManager.getString('default','quickOrder');
+					//				menubarMain.menuBarItems[7].data.menuitem.(@label=="Symbol").@label = resourceManager.getString('default','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@label=="Volume Leaders").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
+//					Alert.show(menubarMain.menuBarItems[7].data.menuitem.(@id=="real").(@id=="liveSym").@label);
+					menubarMain.menuBarItems[7].data.menuitem.(@id=="liveSym").@label = resourceManager.getString('marketwatch','quickOrder');
+					menubarMain.menuBarItems[8].data.(@id=="hlp").@label = resourceManager.getString('marketwatch','help');
+					menubarMain.menuBarItems[8].data.menuitem.(@label=="About Easy Trade").@label = resourceManager.getString('marketwatch','quickOrder');
+					   
+					
 					
 					cmi.hideBuiltInItems();
 					this.contextMenu = cmi;
@@ -675,7 +534,7 @@
 					}
 					else
 					{
-						resourceManager.getString('marketwatch','loggedinuser')+': '+ profile.userName+'               '+resourceManager.getString('marketwatch','logindatetime')+': '+ dateFormatter.format(new Date()); 
+						resourceManager.getString('marketwatch','loggedinuser')+': '+WindowManager.getInstance().loginWindow.txtUserID.text+'               '+resourceManager.getString('marketwatch','logindatetime')+': '+ dateFormatter.format(new Date()); 
 					}
 				}
 				catch(e:Error)
@@ -773,7 +632,7 @@
 		<mx:MenuBar id="menubarMain"
 					labelField="@label" 
 					iconField="@icon"
-					height="21" layoutDirection="rtl"
+					height="21" 
 					itemClick="menubarMain_itemClickHandler(event)"
 					x="0"
 					y="0"

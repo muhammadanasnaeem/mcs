@@ -79,13 +79,12 @@ package windows
 				txtUserID.layoutDirection = "rtl";
 				txtPassword.layoutDirection = "rtl";
 				bc.layoutDirection = "rtl";
-				var str:String = resourceManager.getString('marketwatch', 'file');
 			}
 			else
 			{
 				resourceManager.localeChain = ['en_US']; 
 			}
-			id="Login";
+			id="Login"; 
 			title=resourceManager.getString('marketwatch', 'login').toString();
   
 			resizable=false;
