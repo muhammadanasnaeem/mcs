@@ -533,7 +533,7 @@ package controller
 		///////////////////////////////////////////////////////////////
 		public function initRiskInformationWindow():void
 		{
-//			riskInformationWindow=initWindow(riskInformationWindow, viewManager_.riskInfo, ResourceManager.getInstance().getString('marketwatch', 'riskInformation'), Constants.RISK_INFORMATION_WINDOW_ID, 1135, 607);
+			riskInformationWindow=initWindow(riskInformationWindow, viewManager_.riskInfo, ResourceManager.getInstance().getString('marketwatch', 'riskInformation'), Constants.RISK_INFORMATION_WINDOW_ID, 1135, 607);
 			riskInformationWindow.resizable=true;
 			riskInformationWindow.minWidth=1110;
 			riskInformationWindow.minHeight=607;
@@ -898,7 +898,7 @@ package controller
 			{
 				viewManager_.liveSymbolChart.areaChart.percentWidth=96;
 				viewManager_.liveSymbolChart.timeVolumeChart.percentWidth=96;
-//				viewManager_.liveSymbolChart.chartVbox.percentWidth=96;
+				viewManager_.liveSymbolChart.chartVbox.percentWidth=96;
 			}
 //			if(viewManager_.liveSymbolChart.chartVbox <= 408)
 //			{

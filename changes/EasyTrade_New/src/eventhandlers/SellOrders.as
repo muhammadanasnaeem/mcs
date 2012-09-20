@@ -1884,7 +1884,7 @@ public function imgExpander_clickHandler(event:MouseEvent):void
 //			txtLow.y=txtOpenPositionNormal;
 //			marketDataCurrent.y=marketDataOpenPostionNormal;
 //			txtCurrent.y=txtOpenPositionNormal;
-//			ohlcHbox.y = txtOpenPositionNormal;
+			ohlcHbox.y = txtOpenPositionNormal;
 //			msgHbox.y = txtMsgPositionNormal;
 			messagesTxtLabel.y=messagesTxtLabelPositionNormal;
 			txtMsg.y=txtMsgPositionNormal;
@@ -1941,7 +1941,7 @@ public function imgExpander_clickHandler(event:MouseEvent):void
 //			txtLow.y=txtOpenPositionExpanded;
 //			marketDataCurrent.y=marketDataOpenPostionExpanded;
 //			txtCurrent.y=txtOpenPositionExpanded;
-//			ohlcHbox.y = txtOpenPositionExpanded;
+			ohlcHbox.y = txtOpenPositionExpanded;
 //			msgHbox.y = txtMsgPositionExpanded;
 			messagesTxtLabel.y=messagesTxtLabelPositionExpanded;
 			txtMsg.y=txtMsgPositionExpanded;

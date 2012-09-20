@@ -10,7 +10,9 @@
 			   skinClass="assets.skins.ETGradientBackgroundSkin"
 			   initialize="application1_initializeHandler(event)"
 			   creationComplete="addKeyboardListeners();"
-			   xmlns:containers="com.dougmccune.containers.*">
+			   xmlns:containers="com.dougmccune.containers.*"
+			   preloader="preload.CustomPreloader"
+			   >
 	<fx:Metadata> 
 		[ResourceBundle("marketwatch")] 
 	</fx:Metadata>
@@ -42,7 +44,10 @@
 					 duration="1000"/>
 		</mx:Parallel>
 		<containers:VistaFlowContainer id="vistaFlow2"/>
-
+		<!--Tool tip Effects-->
+		<mx:Rotate id="rotate"/>
+		<mx:Zoom id="zoom"/>
+		<!--Tool tip Effects-->
 		<!--Effects for the top level Application Bar-->
 		<mx:Glow id="glowButton"
 				 alphaFrom="1.0"
@@ -99,6 +104,7 @@
 			import mx.events.EffectEvent;
 			import mx.events.FlexEvent;
 			import mx.managers.PopUpManager;
+			import mx.managers.ToolTipManager;
 			
 			import spark.components.Button;
 			import spark.effects.animation.RepeatBehavior;
@@ -129,54 +135,14 @@
 			private var animatingTargets:Object=new Object();
 
 
-			[Bindable]
-			[Embed(source="images/buyButton.png")]
-			public var ImgBuy:Class;
-
-			[Bindable]
-			[Embed(source="images/sellButton.png")]
-			public var ImgSell:Class;
-
-			[Bindable]
-			[Embed(source="images/cancelButton.png")]
-			public var ImgCancel:Class;
-
-			[Bindable]
-			[Embed(source="images/workOrdersButton.png")]
-			public var ImgWorkingOrders:Class;
-
-			[Bindable]
-			[Embed(source="images/executedOrdersButton.png")]
-			public var ImgExecutedOrders:Class;
-
-			[Bindable]
-			[Embed(source="images/eventLogButton.png")]
-			public var ImgEventLog:Class;
-
-			[Bindable]
-			[Embed(source="images/marketschedulecontrol.png")]
-			public var ImgMarketScheduleControl:Class;
-
-			[Bindable]
-			[Embed(source="images/symbolstatecontrol.png")]
-			public var ImgSymbolStateControl:Class;
-
-			[Bindable]
-			[Embed(source="images/historical_symbol.png")]
-			public var ImgHistoricalSymbolChart:Class;
-
-			[Bindable]
-			[Embed(source="images/live_symbol.png")]
-			public var ImgLiveSymbol:Class;
-
-			[Bindable]
-			[Embed(source="images/historical_index.png")]
-			public var ImgHistoricalIndex:Class;
-
-			[Bindable]
-			[Embed(source="images/live_index.png")]
-			public var ImgLiveIndex:Class;
 			
+			private function init():void
+			{
+				zoom.duration=1000;
+				ToolTipManager.hideDelay=2500;
+				ToolTipManager.showEffect=rotate;
+				ToolTipManager.hideEffect=zoom;
+			}
 
 			private function animateHover(target:Object):void
 			{
@@ -299,6 +265,7 @@
 
 			private function addKeyboardListeners():void
 			{
+				
 				Constants.SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SERVICE_URL;
 				Constants.SECURE_SERVICE_URL=FlexGlobals.topLevelApplication.parameters.SECURE_SERVICE_URL;
 				Constants.LIGHTSTREAMER_SERVER=FlexGlobals.topLevelApplication.parameters.LIGHTSTREAMER_SERVER;
@@ -358,7 +325,7 @@
 				menubarMain.menuBarItems[8].data.(@id == "hlp").@label=resourceManager.getString('marketwatch', 'help');
 				menubarMain.menuBarItems[8].data.menuitem.(@label == "About Easy Trade").@label=resourceManager.getString('marketwatch', 'aboutEasyTrade'); //resourceManager.getString('marketwatch', 'quickOrder');
 				////Ended
-				
+				init();
 			}
 
 

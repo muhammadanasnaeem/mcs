@@ -1031,18 +1031,18 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 //				strMsg+=Constants.BUY_COLOR;
 //				strMsg+="'>";
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=ResourceManager.getInstance().getString('marketwatch','trade');
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','trade')+' ';
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[17]);
-				strMsg+=ResourceManager.getInstance().getString('marketwatch','bought');
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','bought')+' ';
 			}
 			else
 			{
 //				strMsg+=Constants.SELL_COLOR;
 //				strMsg+="'>";
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=ResourceManager.getInstance().getString('marketwatch','trade');
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','trade')+' ';
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[17]);
-				strMsg+=ResourceManager.getInstance().getString('marketwatch','sold');
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','sold')+' ';
 			}
 			strMsg=formatOrderQueuedMessage(event, strMsg);
 			SoundManager.getInstance().playTradeSound();
@@ -1088,7 +1088,7 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		// usman majeed - for RSS
 		strMsg+="";
 //		strMsg+="</font><br />";
-//		windowManager.viewManager.liveMessages.updateStatus2(event,strMsg);
+		windowManager.viewManager.liveMessages.updateStatus2(event,strMsg);
 		
 		callLater(focusNewRow);
 	}
@@ -1265,12 +1265,12 @@ private function formatOrderQueuedMessage(event:NonVisualItemUpdateEvent, strMsg
 	strMsg += strSymbolCode + " @ ";
 	var ezCurrencyFormatter:EZCurrencyFormatter = new EZCurrencyFormatter();
 	str = LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[7]);
-	strMsg += ezCurrencyFormatter.format( str ) + ''+ ResourceManager.getInstance().getString('marketwatch','for')+'';
-	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + ''+ ResourceManager.getInstance().getString('marketwatch','orderNumber')+'';
-	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[6]) + ''+ ResourceManager.getInstance().getString('marketwatch','in')+'';
+	strMsg += ezCurrencyFormatter.format( str ) + ' '+ ResourceManager.getInstance().getString('marketwatch','for')+' ';
+	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + ' '+ ResourceManager.getInstance().getString('marketwatch','orderNumber')+' ';
+	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[6]) + ' '+ ResourceManager.getInstance().getString('marketwatch','in')+' ';
 	var strMarketCode:String = modelManager.exchangeModel.getMarketCode( new Number (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[18])),
 		new Number (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[5])) );
-	strMsg += strMarketCode + ''+ ResourceManager.getInstance().getString('marketwatch','market')+'.';
+	strMsg += strMarketCode + ' '+ ResourceManager.getInstance().getString('marketwatch','market')+'.';
 	// added on 14/1/2011
 	if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "3")
 	{
@@ -1281,7 +1281,7 @@ private function formatOrderQueuedMessage(event:NonVisualItemUpdateEvent, strMsg
 			var remaining_volume:Number =  new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[25]));
 			remainedVol = remaining_volume;
 			var volume:Number =  new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[16])); 
-			strMsg += ''+ ResourceManager.getInstance().getString('marketwatch','remainingVolume')+'' + remaining_volume;	
+			strMsg += ' '+ ResourceManager.getInstance().getString('marketwatch','remainingVolume')+' ' + remaining_volume;	
 		}
 		
 	}

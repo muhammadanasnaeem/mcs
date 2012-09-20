@@ -248,26 +248,26 @@ public function txtSymbol_focusOutHandler(event:FocusEvent):void
 		txtSymbol.text
 		);*/
 		var frmTxtFld:Boolean=true;
-//		var obj:Object=modelManager.exchangeModel.getSymbolByCode(internalExchangeID, internalMarketID, txtSymbol.text,frmTxtFld);
+		var obj:Object=modelManager.exchangeModel.getSymbolByCode(internalExchangeID, internalMarketID, txtSymbol.text,frmTxtFld);
 		
 		internalSymbolID=-1;
-//		if (obj)
-//		{
-//			internalSymbolID=obj.INTERNAL_SYMBOL_ID;
-//		}
-//		
-//		if (obj && obj.hasOwnProperty("SYMBOL_TYPE") && obj.SYMBOL_TYPE == "Bond")
-//		{
-//			txtCouponRate.text=(obj as BondBO).couponRate.toString();
-//			var dateFormatter:DateFormatter=new DateFormatter();
-//			dateFormatter.formatString="DD/MM/YYYY";
-//			txtNextCoupon.text=dateFormatter.format((obj as BondBO).issueDate);
-//			txtMaturityDate.text=dateFormatter.format((obj as BondBO).maturityDate);
-//			nextCouponDate=(obj as BondBO).nextCouponDate;
-//			issueDate=(obj as BondBO).issueDate;
-//			maturityDate=(obj as BondBO).maturityDate;
-//			baseRate=(obj as BondBO).baseRate;
-//		}
+		if (obj)
+		{
+			internalSymbolID=obj.INTERNAL_SYMBOL_ID;
+		}
+		
+		if (obj && obj.hasOwnProperty("SYMBOL_TYPE") && obj.SYMBOL_TYPE == "Bond")
+		{
+			txtCouponRate.text=(obj as BondBO).couponRate.toString();
+			var dateFormatter:DateFormatter=new DateFormatter();
+			dateFormatter.formatString="DD/MM/YYYY";
+			txtNextCoupon.text=dateFormatter.format((obj as BondBO).issueDate);
+			txtMaturityDate.text=dateFormatter.format((obj as BondBO).maturityDate);
+			nextCouponDate=(obj as BondBO).nextCouponDate;
+			issueDate=(obj as BondBO).issueDate;
+			maturityDate=(obj as BondBO).maturityDate;
+			baseRate=(obj as BondBO).baseRate;
+		}
 		
 		if (internalSymbolID < 0)
 		{
