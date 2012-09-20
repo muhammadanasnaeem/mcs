@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Copy of EasyTradeWeb_JSCurrent</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] advancedgrids_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/advancedgrids_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] automation_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/automation_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] charts_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/charts_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] en_US</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/en_US</location>
+		</link>
+		<link>
+			<name>[source path] framework_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/framework_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] mx_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/mx_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] spark_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/spark_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>[source path] textLayout_rb_ar_TN-src-main-flex-locale-ar_TN</name>
+			<type>2</type>
+			<location>C:/Program Files/Adobe/Adobe Flash Builder 4.6/sdks/4.6.0/frameworks/locale/ar_SA/textLayout_rb_ar_TN/src/main/flex/locale/ar_TN</location>
+		</link>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/Testing</location>
+		</link>
+		<link>
+			<name>bin-release</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/Copy of EasyTradeWeb_JSCurrent</location>
+		</link>
+	</linkedResources>
+</projectDescription>
