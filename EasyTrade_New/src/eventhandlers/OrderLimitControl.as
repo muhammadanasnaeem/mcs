@@ -9,8 +9,13 @@ import components.EZNumberFormatter;
 
 import controller.ModelManager;
 
+import flash.events.FocusEvent;
+import flash.events.KeyboardEvent;
+import flash.events.MouseEvent;
+
 import mx.controls.Alert;
 import mx.events.FlexEvent;
+import mx.resources.ResourceManager;
 
 import view.ExchangeStatsIndices;
 
@@ -44,7 +49,7 @@ protected function btnSubmit_clickHandler(event:MouseEvent):void
 
 	if (isNaN(sol.UPPER_LIMIT) || isNaN(sol.LOWER_LIMIT))
 	{
-		Alert.show(Messages.INVALID_INPUT, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidInput'),ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -52,7 +57,7 @@ protected function btnSubmit_clickHandler(event:MouseEvent):void
 	{
 		if (sol.UPPER_LIMIT > 999999.9999 || sol.LOWER_LIMIT > 999999.9999)
 		{
-			Alert.show(Messages.INVALID_INPUT, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidInput'),ResourceManager.getInstance().getString('marketwatch','error'));
 			return;
 		}
 
@@ -61,7 +66,7 @@ protected function btnSubmit_clickHandler(event:MouseEvent):void
 	{
 		if (sol.UPPER_LIMIT > 9999999999.9999 || sol.LOWER_LIMIT > 9999999999.9999)
 		{
-			Alert.show(Messages.INVALID_INPUT, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidInput'),ResourceManager.getInstance().getString('marketwatch','error'));
 			return;
 		}
 	}
@@ -70,14 +75,14 @@ protected function btnSubmit_clickHandler(event:MouseEvent):void
 	{
 		if (sol.UPPER_LIMIT > 9999999999 || sol.LOWER_LIMIT > 9999999999)
 		{
-			Alert.show(Messages.INVALID_INPUT, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidInput'),ResourceManager.getInstance().getString('marketwatch','error'));
 			return;
 		}
 	}
 
 	if (sol.LOWER_LIMIT >= sol.UPPER_LIMIT)
 	{
-		Alert.show(Messages.INVALID_INPUT, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidInput'),ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -98,7 +103,7 @@ protected function txtSymbol_focusOutHandler(event:FocusEvent):void
 	}
 
 	var modelManager:ModelManager=ModelManager.getInstance();
-	txtSymbol.text=txtSymbol.text.toUpperCase();
+//	txtSymbol.text=txtSymbol.text.toUpperCase();
 	var obj:SymbolBO=modelManager.exchangeModel.getSymbolByCode(internalExchangeID, internalMarketID, txtSymbol.text) as SymbolBO;
 	if (obj)
 	{

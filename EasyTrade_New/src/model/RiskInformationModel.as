@@ -10,10 +10,11 @@ package model
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
-	import org.hamcrest.filter.FilterFunction;
+//	import org.hamcrest.filter.FilterFunction;
 	
 	import services.QWClient;
 	
@@ -40,8 +41,8 @@ package model
 		
 		public function execute():void
 		{
-			var obj:Object=ModelManager.getInstance().userProfileModel.userProfile.grants;
-			var brokerId:Number = obj[0].brokerId;
+			var modelMgr:ModelManager = ModelManager.getInstance();
+			var brokerId:Number = modelMgr.userProfileModel.userProfile.brokerId;
 			var clnCode:String = WindowManager.getInstance().viewManager.riskInfo.txtClientCode.text;
 			var requesterUserId:Number  = ModelManager.getInstance().userID;
 			QWClient.getInstance().getClientRiskInfo(requesterUserId,brokerId,clnCode);
@@ -66,7 +67,7 @@ package model
 				WindowManager.getInstance().viewManager.riskInfo.txtRemainigBuyingPower.text = '';
 				WindowManager.getInstance().viewManager.riskInfo.txtUseOpenPosition.text = '';
 				ModelManager.getInstance().riskInformationModel.holdings = null;
-				Alert.show('Client not found.', Messages.TITLE_ERROR);
+				Alert.show('Client not found.', ResourceManager.getInstance().getString('marketwatch','error'));
 				CursorManager.removeBusyCursor();
 			}
 			else

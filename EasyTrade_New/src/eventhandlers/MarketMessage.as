@@ -15,6 +15,7 @@ import controller.SoundManager;
 import controller.WindowManager;
 
 import mx.controls.Alert;
+import mx.core.FlexGlobals;
 import mx.formatters.NumberFormatter;
 import mx.messaging.events.MessageEvent;
 import mx.messaging.events.MessageFaultEvent;
@@ -78,13 +79,13 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			}
 			marketSchedule.SCHEDULE.addItem(stateInfo);
 			modelManager.exchangeScheduleModel.updateMarketSchedule(marketSchedule);
-			statusMsg+="<font color='";
-			statusMsg+="#FFFFFF";
-			statusMsg+="'>";
+//			statusMsg+="<font color='";
+//			statusMsg+="#FFFFFF";
+//			statusMsg+="'>";
 			statusMsg = LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[8]).replace("T", " ");
 			var strMarketCode:String=modelManager.exchangeModel.getMarketCode(marketSchedule.INTERNAL_EXCHANGE_ID, marketSchedule.INTERNAL_MARKET_ID);
-			var strExchangeCode:String=modelManager.exchangeModel.getExchangeCode(marketSchedule.INTERNAL_EXCHANGE_ID);
-			statusMsg+=" Market state of " + strMarketCode + " in Exchange " + strExchangeCode + " is " + States.getMarketState(stateInfo.state_);
+			var strExchangeCode:String=modelManager.exchangeModel.getExchangeCode(marketSchedule.INTERNAL_EXCHANGE_ID);																																																																							
+			statusMsg+=(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?' '+ResourceManager.getInstance().getString('marketwatch','marketStateOf')+' '+States.getMarketState(stateInfo.state_) +  ' ' +ResourceManager.getInstance().getString('marketwatch','inExchange') +' '+ strExchangeCode + " " + ResourceManager.getInstance().getString('marketwatch','inMarket')+' ' + strMarketCode :' '+ResourceManager.getInstance().getString('marketwatch','marketStateOf')+' '+ strMarketCode +' '+ResourceManager.getInstance().getString('marketwatch','inExchange')+' '+ strExchangeCode +' '+ResourceManager.getInstance().getString('marketwatch','is')+' '+ States.getMarketState(stateInfo.state_);
 			WindowManager.getInstance().viewManager.marketScheduleControl.updateStatus(statusMsg);
 			modelManager.exchangeModel.setMarketState(marketSchedule.INTERNAL_EXCHANGE_ID, marketSchedule.INTERNAL_MARKET_ID, new Number(stateInfo.state_));
 			WindowManager.getInstance().viewManager.marketScheduleControl.resetFields(false);
@@ -104,7 +105,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 				new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[2])), // internal market id
 				new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[17])) // internal symbol id
 				);
-				statusMsg += " Symbol state of "+ symbolCode +" is " + States.getSymbolState(symbolState);
+				statusMsg +=' '+ ResourceManager.getInstance().getString('marketwatch','symbolStateOf')+ ' ' + symbolCode +' '+ResourceManager.getInstance().getString('marketwatch','is')+' ' + States.getSymbolState(symbolState);
 			modelManager.exchangeModel.setSymbolState(
 				new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[1])), // internal exchange id
 				new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[2])), // internal market id
@@ -119,7 +120,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 		else if (updateType == "5") // Bulletin for all exchanges
 		{
 			//statusMsg = LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[8]).replace("T", " ");
-			statusMsg += "Bulletin: " + LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[9]);
+			statusMsg += ResourceManager.getInstance().getString('marketwatch','marketStateOf')+':' + LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[9]);
 			WindowManager.getInstance().viewManager.liveMessages.updateBulletin(statusMsg);
 			windowManager.viewManager.liveMessages.txaBulletins.validateNow();
 			windowManager.viewManager.liveMessages.txaBulletins.verticalScrollPosition=windowManager.viewManager.liveMessages.txaBulletins.maxVerticalScrollPosition; // added on 2/12/2010
@@ -139,9 +140,9 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			//statusMsg = LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[8]).replace("T", " ");
 			var marketCode:String=modelManager.exchangeModel.getMarketCode(symbolOrderLimit.INTERNAL_EXCHANGE_ID, symbolOrderLimit.INTERNAL_MARKET_ID);
 			var symbol:String=modelManager.exchangeModel.getSymbolCode(symbolOrderLimit.INTERNAL_EXCHANGE_ID, symbolOrderLimit.INTERNAL_MARKET_ID, symbolOrderLimit.INTERNAL_SYMBOL_ID);
-			statusMsg+="Order limit for symbol " + symbol + " in market " + marketCode + " for ";
+			statusMsg+=ResourceManager.getInstance().getString('marketwatch','ordrLimitforSym')+' ' + symbol + ' '+ResourceManager.getInstance().getString('marketwatch','inMarket')+' ' + marketCode + ' '+ResourceManager.getInstance().getString('marketwatch','for')+' ';
 			statusMsg+=Type.OrderLimitType[symbolOrderLimit.LIMIT_TYPE];
-			statusMsg+=" changed to ";
+			statusMsg+=' '+ResourceManager.getInstance().getString('marketwatch','ordrLimitforSym')+' ';
 			var ezNumberFormatter:EZNumberFormatter=new EZNumberFormatter();
 			//var upperLmtStr:String = new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[15]));
 			//var lowerLmtStr:String = new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[16])); 
@@ -181,7 +182,7 @@ public function handleMarketMessage(event:NonVisualItemUpdateEvent):void
 			var windMang:BulletinControl = WindowManager.getInstance().viewManager.bulletinControl;
 			//statusMsg = LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[8]).replace("T", " ");
 			var exchangeCode:String=modelManager.exchangeModel.getExchangeByID(new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[9])));
-			statusMsg+="Bulletin for exchange " + windMang.txtExchange.text;
+			statusMsg+=' '+ResourceManager.getInstance().getString('marketwatch','bulletinForExchange')+' '+ windMang.txtExchange.text;
 			statusMsg += ": " + LSListener.extractFieldData(event, LSListener.fieldSchemaMarketMessage[9]);
 			WindowManager.getInstance().viewManager.liveMessages.updateBulletin(statusMsg);
 			windowManager.viewManager.liveMessages.txaBulletins.validateNow();

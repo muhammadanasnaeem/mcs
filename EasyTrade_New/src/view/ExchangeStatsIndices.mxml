@@ -16,7 +16,7 @@
 	</fx:Declarations>
 	<fx:Binding source="{numberFormatter.format(ModelManager.getInstance().exchangeStatsModel.exchangeStats.ADVANCED)}"
 				destination="txtAdvanced.text"/>
-	<s:Label text="Advanced"
+	<s:Label text="{resourceManager.getString('marketwatch','advanced')}"
 			 top="6"
 			 horizontalCenter="-123"/>
 	<s:TextInput width="74"
@@ -33,7 +33,7 @@
 
 	<fx:Binding source="{numberFormatter.format(ModelManager.getInstance().exchangeStatsModel.exchangeStats.DECLINED)}"
 				destination="txtDeclined.text"/>
-	<s:Label text="Declined"
+	<s:Label text="{resourceManager.getString('marketwatch','declined')}"
 			 top="6"
 			 horizontalCenter="-40"/>
 	<s:TextInput width="74"
@@ -50,7 +50,7 @@
 
 	<fx:Binding source="{numberFormatter.format(ModelManager.getInstance().exchangeStatsModel.exchangeStats.UNCHANGED)}"
 				destination="txtUnchanged.text"/>
-	<s:Label text="Unchanged"
+	<s:Label text="{resourceManager.getString('marketwatch','unchangeds')}"
 			 top="6"
 			 horizontalCenter="43"/>
 	<s:TextInput width="74"
@@ -67,7 +67,7 @@
 
 	<fx:Binding source="{numberFormatter.format(ModelManager.getInstance().exchangeStatsModel.exchangeStats.TRADED)}"
 				destination="txtTraded.text"/>
-	<s:Label text="Traded"
+	<s:Label text="{resourceManager.getString('marketwatch','traded')}"
 			 top="6"
 			 horizontalCenter="126"/>
 	<s:TextInput width="74"
@@ -91,19 +91,19 @@
 					 height="99%"
 					 rowCount="{ConfigurationManager.getInstance().exchangeStatsConf.ROW_COUNT_INDICES}">
 			<mx:columns>
-				<mx:DataGridColumn headerText="Index"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','index')}"
 								   dataField="INDEX_CODE"/>
-				<mx:DataGridColumn headerText="High"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','high')}"
 								   dataField="HIGH"/>
-				<mx:DataGridColumn headerText="Low"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','low')}"
 								   dataField="LOW"/>
-				<mx:DataGridColumn headerText="Volume"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 								   dataField="VOLUME"/>
-				<mx:DataGridColumn headerText="Value"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','value')}"
 								   dataField="VALUE"/>
-				<mx:DataGridColumn headerText="Current"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','current')}"
 								   dataField="INDEX"/>
-				<mx:DataGridColumn headerText="Change"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','change')}"
 								   dataField="CHANGE"/>
 			</mx:columns>
 		</mx:DataGrid>

@@ -142,6 +142,30 @@ package filters
 			}
 			return retVal;
 		}
+		
+		public static function historicalSymbolDataFilter(item:Object):Boolean
+		{
+			var retVal:Boolean=false;
+			if (WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalExchangeID == -1)
+			{
+				retVal=true;
+			}
+			if (item.INTERNAL_EXCHANGE_ID == WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalExchangeID)
+			{
+				if (WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalMarketID == -1)
+				{
+					retVal=true;
+				}
+				else if (item.INTERNAL_MARKET_ID == WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalMarketID)
+				{
+					if ((WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalSymbolID == -1) || (item.INTERNAL_SYMBOL_ID == WindowManager.getInstance().viewManager.historicalSymbolDataInfo.internalSymbolID))
+					{
+						retVal=true;
+					}
+				}
+			}
+			return retVal;
+		}
 
 		public static function symbolBrowserFilter(item:Object):Boolean
 		{

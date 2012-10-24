@@ -12,6 +12,7 @@ import flash.events.MouseEvent;
 import mx.controls.Alert;
 import mx.events.FlexEvent;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 
 import view.SelectionMenu;
 
@@ -50,7 +51,7 @@ protected function btnRefresh_clickHandler(event:MouseEvent):void
 
 public function updateBestOrders():void
 {
-	txtSymbol.text=txtSymbol.text.toUpperCase();
+//	txtSymbol.text=txtSymbol.text.toUpperCase();
 	internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 	symbolID=ModelManager.getInstance().exchangeModel.getSymbolID(internalExchangeID, internalMarketID, internalSymbolID);
 	// added on 31/3/2011
@@ -81,7 +82,7 @@ protected function txtMarket_clickHandler_BestOrders(event:MouseEvent):void
 {
 	if (internalExchangeID < 0)
 	{
-		Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;

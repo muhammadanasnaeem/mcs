@@ -2,10 +2,8 @@
 <mx:Canvas xmlns:fx="http://ns.adobe.com/mxml/2009"
 		   xmlns:s="library://ns.adobe.com/flex/spark"
 		   xmlns:mx="library://ns.adobe.com/flex/mx"
-		   xmlns:flexlib="http://code.google.com/p/flexlib/"
 		   xmlns:components="components.*"
 		   backgroundColor="#be3267"
-		   xmlns:skins="assets.skins.*"
 		   verticalScrollPolicy="off"
 		   horizontalScrollPolicy="off"
 		   width="635"
@@ -13,55 +11,20 @@
 		   initialize="group1_initializeHandler(event)">
 	<fx:Script>
 		<![CDATA[
+			import mx.graphics.GradientEntry;
+			import mx.graphics.LinearGradient;
+			import assets.skins.AR_SellButtonSkin;
+			import assets.skins.AR_SellCalculatorButtonSkin;
+			import assets.skins.AR_SellCancelButtonOverSkin;
+			import assets.skins.AR_SellCancelButtonSkin;
+			import assets.skins.AR_SellOkButtonOverSkin;
 			import assets.skins.CancelButtonDownSkin;
 			import assets.skins.CancelButtonOverSkin;
 			import assets.skins.SellOkButtonOverSkin;
 			import assets.skins.SellOkDownButton;
-			
-			import mx.graphics.GradientEntry;
-			import mx.graphics.LinearGradient;
+
 			include "../components/SelectionMenu.as"
 			include "../eventhandlers/SellOrders.as"
-
-			protected function btnSubmit_mouseOverHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", SellOkButtonOverSkin);
-			}
-
-			protected function btnSubmit_mouseDownHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", SellOkDownButton);
-			}
-
-			protected function btnSubmit_mouseOutHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", SellOkButtonOverSkin);
-			}
-
-			protected function btnSubmit_mouseUpHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", SellOkButtonOverSkin);
-			}
-
-			protected function btnCancel_mouseOverHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", CancelButtonOverSkin);
-			}
-
-			protected function btnCancel_mouseDownHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", CancelButtonDownSkin);
-			}
-
-			protected function btnCancel_mouseOutHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", CancelButtonOverSkin);
-			}
-
-			protected function btnCancel_mouseUpHandler(event:MouseEvent):void
-			{
-				event.target.setStyle("skinClass", CancelButtonOverSkin);
-			}
 
 			protected function bondPanel_creationCompleteHandler(event:FlexEvent):void
 			{
@@ -75,9 +38,103 @@
 				myFill.entries=[myFillColor, myFillColor1];
 				bondPanel.backgroundFill=myFill;
 			}
-			
-			
-			
+
+			protected function btnCancel_mouseDownHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", CancelButtonDownSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellCancelButtonOverSkin);
+				}
+			}
+
+			protected function btnCancel_mouseOutHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", CancelButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellCancelButtonSkin);
+				}
+			}
+
+			protected function btnCancel_mouseOverHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", CancelButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellCancelButtonSkin);
+				}
+
+			}
+
+			protected function btnCancel_mouseUpHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", CancelButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellCancelButtonSkin);
+				}
+			}
+
+			protected function btnSubmit_mouseDownHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", SellOkDownButton);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellOkButtonOverSkin);
+				}
+			}
+
+			protected function btnSubmit_mouseOutHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", SellOkButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellButtonSkin);
+				}
+			}
+
+			protected function btnSubmit_mouseOverHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", SellOkButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellButtonSkin);
+				}
+			}
+
+			protected function btnSubmit_mouseUpHandler(event:MouseEvent):void
+			{
+				if (FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					event.target.setStyle("skinClass", SellOkButtonOverSkin);
+				}
+				else
+				{
+					event.target.setStyle("skinClass", AR_SellButtonSkin);
+				}
+			}
 		]]>
 	</fx:Script>
 
@@ -126,26 +183,32 @@
 		<s:RadioButtonGroup id="rdogrpLmtMkt"
 							change="rdogrpLmtMkt_changeHandler(event)"/>
 		<mx:StringValidator source="{txtExchange}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="exchangeValidator"
 							required="true"/>
 		<mx:StringValidator source="{txtMarket}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="marketValidator"
 							required="true"/>
 		<mx:StringValidator source="{txtSymbol}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="symbolValidator"
 							required="true"/>
 		<mx:StringValidator source="{txtVolume}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="volumeValidator"
 							required="true"/>
 		<mx:StringValidator source="{txtPrice}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="priceValidator"
 							required="true"/>
 		<mx:StringValidator source="{txtAccount}"
+							requiredFieldError="{resourceManager.getString('marketwatch','thisFieldIsRequired')}"
 							property="text"
 							id="accountValidator"
 							required="true"/>
@@ -192,48 +255,49 @@
 						id="chkNgtd"
 						visible="false"
 						change="chkNgtd_changeHandler(event)"/>
-			<s:TextInput id="txtMsg"
-						 x="97"
-						 y="369"
-						 height="22"
-						 width="507"
-						 editable="false"/>
-			<mx:Text x="26"
-					 y="376"
+			<mx:Text id="messagesTxtLabel"
+					 y="369"
 					 width="72"
 					 height="22"
-					 text="Message:"
-					 id="messagesTxtLabel"
-					 textAlign="center"
-					 styleName="sellOrdersMessages"
 					 color="#FFFFFF"
+					 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 					 fontFamily="Verdana"
-					 fontWeight="bold"/>
+					 fontWeight="bold"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'246':'-262'}"
+					 styleName="buyOrdersMessage"
+					 text="{resourceManager.getString('marketwatch','messages')}"
+					 textAlign="center"/>
+			<s:TextInput id="txtMsg"
+						 y="369"
+						 width="507"
+						 height="22"
+						 editable="false"
+						 textAlign="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'right':'left'}"
+						 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+						 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-31':'26'}"/>
 			<s:Button x="438"
 					  y="341"
 					  label="Ok"
 					  id="btnSubmit"
 					  mouseOver="btnSubmit_mouseOverHandler(event)"
 					  mouseDown="btnSubmit_mouseDownHandler(event)"
-					  skinClass="assets.skins.SellOkButtonOverSkin"
+					  skinClass="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?assets.skins.AR_SellButtonSkin:assets.skins.SellOkButtonOverSkin}"
 					  mouseOut="btnSubmit_mouseOutHandler(event)"
 					  mouseUp="btnSubmit_mouseUpHandler(event)"
-					  click="ModelManager.getInstance().onSubmitSellOrderOnClick(event)"
-					  />
+					  click="ModelManager.getInstance().onSubmitSellOrderOnClick(event)"/>
 			<s:Button x="516"
 					  y="341"
 					  label="Cancel"
 					  id="btnCancel"
-					  skinClass="assets.skins.CancelButtonOverSkin"
+					  skinClass="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?assets.skins.AR_SellCancelButtonSkin:assets.skins.CancelButtonOverSkin}"
 					  mouseOver="btnCancel_mouseOverHandler(event)"
 					  mouseDown="btnCancel_mouseDownHandler(event)"
 					  mouseOut="btnCancel_mouseOutHandler(event)"
 					  mouseUp="btnCancel_mouseUpHandler(event)"
-					  click="btnCancel_clickHandler(event)"
-					  />
+					  click="btnCancel_clickHandler(event)"/>
 			<s:Label x="104.5"
 					 y="222"
-					 text="Bid"
+					 text="{resourceManager.getString('marketwatch','bid')}"
 					 id="marketDataBid"/>
 			<s:TextInput id="txtBuy"
 						 x="61"
@@ -244,7 +308,7 @@
 						 textAlign="right"/>
 			<s:Label x="492.5"
 					 y="223"
-					 text="Volume"
+					 text="{resourceManager.getString('marketwatch','volume')}"
 					 id="marketDataBuyVolume"/>
 			<s:TextInput id="txtBuyVolume"
 						 x="194"
@@ -255,7 +319,7 @@
 						 textAlign="right"/>
 			<s:Label x="370"
 					 y="223"
-					 text="Offer"
+					 text="{resourceManager.getString('marketwatch','offer')}"
 					 id="marketDataOffer"/>
 			<s:TextInput id="txtSell"
 						 x="333"
@@ -266,7 +330,7 @@
 						 textAlign="right"/>
 			<s:Label x="223.5"
 					 y="223"
-					 text="Volume"
+					 text="{resourceManager.getString('marketwatch','volume')}"
 					 id="marketDataVolume"/>
 			<s:TextInput id="txtSellVolume"
 						 x="470"
@@ -277,7 +341,7 @@
 						 textAlign="right"/>
 			<s:Label x="101"
 					 y="286"
-					 text="Last"
+					 text="{resourceManager.getString('marketwatch','last')}"
 					 id="marketDataLast"/>
 			<s:TextInput id="txtLast"
 						 x="61"
@@ -288,7 +352,7 @@
 						 textAlign="right"/>
 			<s:Label x="224"
 					 y="288"
-					 text="Change"
+					 text="{resourceManager.getString('marketwatch','change')}"
 					 id="marketDataChange"/>
 			<s:TextInput id="txtChange"
 						 x="194"
@@ -299,7 +363,7 @@
 						 textAlign="right"/>
 			<s:Label x="364"
 					 y="288"
-					 text="Turnover"
+					 text="{resourceManager.getString('marketwatch','turnover')}"
 					 id="marketDataTurnOver"/>
 			<s:TextInput id="txtTurnOver"
 						 x="333"
@@ -310,7 +374,7 @@
 						 textAlign="right"/>
 			<s:Label x="500.5"
 					 y="288"
-					 text="Flags"
+					 text="{resourceManager.getString('marketwatch','flags')}"
 					 id="marketDataFlags"/>
 			<s:TextInput id="txtFlags"
 						 x="470"
@@ -339,7 +403,7 @@
 					  strokeColor="#bb3769"/>
 			<s:Label x="53"
 					 y="206"
-					 text="Market Data"
+					 text="{resourceManager.getString('marketwatch','marketdata')}"
 					 id="marketDataTitle"/>
 			<mx:HRule x="36"
 					  y="331"
@@ -348,50 +412,68 @@
 					  id="marketDataBottomRule"
 					  strokeColor="#bb3769">
 			</mx:HRule>
-			<s:Label x="61.5"
-					 y="314"
-					 text="OPEN:"
-					 id="marketDataOpen"/>
-			<s:TextInput id="txtHigh"
-						 x="238"
-						 y="304"
-						 width="64"
-						 height="18"
-						 editable="false"
-						 textAlign="right"/>
-			<s:Label x="335.5"
-					 y="312"
-					 text="LOW:"
-					 id="marketDataLow"/>
-			<s:TextInput id="txtOpen"
-						 x="105"
-						 y="306"
-						 width="64"
-						 height="18"
-						 editable="false"
-						 textAlign="right"/>
-			<s:Label x="449.5"
-					 y="312"
-					 text="CURRENT:"
-					 id="marketDataCurrent"/>
-			<s:TextInput id="txtCurrent"
-						 x="514"
-						 y="306"
-						 width="64"
-						 height="18"
-						 editable="false"
-						 textAlign="right"/>
-			<s:TextInput id="txtLow"
-						 x="376"
-						 y="304"
-						 width="64"
-						 height="18"
-						 editable="false"
-						 textAlign="right"/>
-			<s:Label x="194.5"
-					 y="312"
-					 text="HIGH:"
-					 id="marketDataHigh"/>
+			<mx:HBox x="50"
+					 y="304"
+					 width="541"
+					 horizontalGap="20"
+					 height="22"
+					 verticalAlign="middle"
+					 id="ohlcHbox"
+					 layoutDirection="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}">
+				<s:Label x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?238:61.5}"
+						 y="314"
+						 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+						 text="{resourceManager.getString('marketwatch','open')}:"
+						 id="marketDataOpen"/>
+
+				<s:TextInput id="txtOpen"
+							 x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?61.5:105}"
+							 y="306"
+							 width="64"
+							 height="18"
+							 editable="false"
+							 textAlign="right"/>
+				<s:Label x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?376:335.5}"
+						 y="312"
+						 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+						 text="{resourceManager.getString('marketwatch','low')}:"
+						 id="marketDataLow"/>
+				<s:TextInput id="txtLow"
+							 x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?335.5:376}"
+							 y="304"
+							 width="64"
+							 height="18"
+							 editable="false"
+							 textAlign="right"/>
+				<s:Label x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?238:194.5}"
+						 y="312"
+						 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+						 text="{resourceManager.getString('marketwatch','high')}:"
+						 id="marketDataHigh"/>
+				<s:TextInput id="txtHigh"
+							 x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?194.5:238}"
+							 y="304"
+							 width="64"
+							 height="18"
+							 editable="false"
+							 textAlign="right"/>
+
+				<s:Label x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?514:449.5}"
+						 y="312"
+						 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+						 text="{resourceManager.getString('marketwatch','current')}:"
+						 id="marketDataCurrent"/>
+				<s:TextInput id="txtCurrent"
+							 x="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?449.5:514}"
+							 y="306"
+							 width="64"
+							 height="18"
+							 editable="false"
+							 textAlign="right"/>
+
+
+
+			</mx:HBox>
 			<mx:HRule x="132"
 					  y="208"
 					  width="472"
@@ -431,53 +513,56 @@
 				<s:Group id="grpBond"
 						 x="2"
 						 y="2"
+						 layoutDirection="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 						 height="75"
 						 width="518"
 						 visible="false">
-					<s:Label text="Best Bid (Price / Yield)"
+					<s:Label text="{resourceManager.getString('marketwatch','bestBid')+ '' + '('+resourceManager.getString('marketwatch','price')+ '/'+resourceManager.getString('marketwatch','yield')+')'}"
 							 x="1"
+							 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 							 y="8"/>
 					<s:TextInput width="49"
 								 height="20"
 								 id="txtBondBidPrice"
-								 x="128"
+								 x="126"
 								 y="3.5"
 								 editable="false"
 								 tabIndex="15"/>
-					
-					<s:Label text="Best Offer (Price / Yield)"
-							 x="244"
+
+					<s:Label text="{resourceManager.getString('marketwatch','offer')+ '' + '('+resourceManager.getString('marketwatch','price')+ '/'+resourceManager.getString('marketwatch','yield')+')'}"
+							 x="241"
+							 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 							 y="8"/>
 					<s:TextInput width="49"
 								 height="20"
 								 id="txtBondAskPrice"
-								 x="379"
+								 x="375"
 								 y="3.5"
 								 editable="false"
 								 tabIndex="16"/>
-					
+
 					<s:Label text="/"
-							 x="181"
+							 x="179"
 							 y="8"/>
-					<s:TextInput width="56"
+					<s:TextInput width="55"
 								 height="20"
 								 id="txtBondBidYield"
-								 x="188"
+								 x="186"
 								 y="3.5"
 								 editable="false"
 								 tabIndex="17"/>
-					
+
 					<s:Label text="/"
-							 x="430"
+							 x="426"
 							 y="8"/>
 					<s:TextInput width="55"
 								 height="20"
 								 id="txtBondAskYield"
-								 x="436"
+								 x="432"
 								 y="3.5"
 								 editable="false"
 								 tabIndex="18"/>
-					<s:Label text="Coupon Rate"
+					<s:Label text="{resourceManager.getString('marketwatch','couponrate')}"
 							 x="13"
 							 y="30"/>
 					<s:TextInput width="80"
@@ -487,7 +572,7 @@
 								 y="46"
 								 editable="false"
 								 tabIndex="19"/>
-					<s:Label text="Next Coupon"
+					<s:Label text="{resourceManager.getString('marketwatch','nextcoupon')}"
 							 x="98"
 							 y="30"/>
 					<s:TextInput width="80"
@@ -497,7 +582,7 @@
 								 y="46"
 								 editable="false"
 								 tabIndex="20"/>
-					<s:Label text="Maturity Date"
+					<s:Label text="{resourceManager.getString('marketwatch','maturityDate')}"
 							 x="181.5"
 							 y="30"/>
 					<s:TextInput width="80"
@@ -507,8 +592,8 @@
 								 y="46"
 								 editable="false"
 								 tabIndex="21"/>
-					
-					<s:Label text="Calculated Yield"
+
+					<s:Label text="{resourceManager.getString('marketwatch','calculatedYield')}"
 							 x="341.5"
 							 y="30"/>
 					<s:TextInput width="80"
@@ -518,17 +603,16 @@
 								 y="46"
 								 editable="false"
 								 tabIndex="21"/>
-					
-					
-					
-					<s:Button label="Calculator"
+
+					<s:Button label="{resourceManager.getString('marketwatch','calculator')}"
 							  width="99"
 							  height="17"
+							  visible="false"
 							  id="btnCalculator"
-							  x="351" visible="false"
+							  x="351"
 							  y="46"
 							  tabIndex="22"
-							  skinClass="assets.skins.CalculatorButtonSkin"/>
+							  skinClass="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?assets.skins.AR_SellCalculatorButtonSkin:assets.skins.CalculatorButtonSkin}"/>
 				</s:Group>
 				<mx:Image rollOverEffect="{glowButton}"
 						  rollOutEffect="{unglowButton}"
@@ -550,7 +634,7 @@
 			</s:BorderContainer>
 			<s:Label x="53"
 					 y="159"
-					 text="Additional Order Details"/>
+					 text="{resourceManager.getString('marketwatch','additionalOrderDetails')}"/>
 			<mx:HRule x="198"
 					  y="164"
 					  width="407"
@@ -606,34 +690,38 @@
 				  height="3"
 				  strokeColor="#bb3769">
 		</mx:HRule>
-		<s:Label x="62.5"
-				 y="48"
-				 text="Exchange: *"/>
-		<components:EZDropDownTextInput x="135"
-										y="42.55"
+
+		<s:Label y="33"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-146':'-211'}"
+				 text="{resourceManager.getString('marketwatch','exchange')}: *"/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-198':'-146'}"
+										y="28.55"
 										width="64"
 										height="19"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
 										tabIndex="3"/>
-		<s:Label x="241.5"
-				 y="48"
-				 text="Market: *"/>
-		<components:EZDropDownTextInput x="299"
-										y="42.55"
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'30':'-35'}"
+				 y="34"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','market')}: *"/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-27':'30'}"
+										y="28.55"
 										width="64"
 										height="19"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
 										tabIndex="4"/>
-		<s:Label x="423"
-				 y="47"
-				 text="Symbol: *"/>
-		<s:TextInput x="483"
-					 y="42.55"
-					 width="64"
+		<s:Label direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 y="34"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'230':'167'}"
+				 text="{resourceManager.getString('marketwatch','symbol')}: *"/>
+		<s:TextInput width="64"
+					 y="28.55"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'173':'230'}"
 					 height="17"
 					 id="txtSymbol"
 					 editable="true"
@@ -641,12 +729,13 @@
 					 focusOut="txtSymbol_focusOutHandler(event)"
 					 change="orderChangeHandler(event)"
 					 tabIndex="5"/>
-		<s:Label x="73.5"
-				 y="76"
-				 text="Volume: *"/>
-		<s:TextInput x="135"
-					 y="67.55"
-					 width="64"
+		<s:Label y="60"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-146':'-207'}"
+				 text="{resourceManager.getString('marketwatch','volume')}: *"/>
+		<s:TextInput width="64"
+					 y="60"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-198':'-146'}"
 					 restrict="[0-9]"
 					 height="18"
 					 id="txtVolume"
@@ -655,35 +744,43 @@
 					 focusOut="numberInput_focusOutHandler(event)"
 					 textAlign="right"
 					 tabIndex="6"/>
-		<s:Label x="252.5"
-				 y="76"
-				 text="Price: *"/>
-		<s:TextInput x="298"
-					 y="67.55"
-					 width="64"
+
+
+		<s:Label y="60"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'31':'-27'}"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','price')}: *"/>
+		<s:TextInput width="64"
+					 y="60"
 					 restrict="[0-9.]"
 					 height="18"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-27':'31'}"
 					 id="txtPrice"
 					 editable="true"
 					 change="orderChangeHandler(event)"
 					 focusOut="numberInput_focusOutHandler(event)"
 					 textAlign="right"
 					 tabIndex="7"/>
-		<s:Label x="422"
-				 y="76"
-				 text="Account: *"/>
-		<s:TextInput x="483"
-					 y="67.55"
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'230':'168'}"
+				 y="60"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','account')}: *"/>
+		<s:TextInput id="txtAccount"
+					 y="60"
 					 width="64"
 					 height="18"
-					 id="txtAccount"
 					 editable="true"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'173':'230'}"
 					 tabIndex="8"/>
-		<s:Label x="49"
-				 y="101"
-				 text="Disc. Volume:"/>
-		<s:TextInput x="134"
-					 y="92.55"
+		<!--///////////////////////////////////////////////////////////////////////-->
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-138':'-220'}"
+				 y="98"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','discVol')}:"/>
+		<s:TextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-198':'-145'}"
+					 y="87.65"
 					 width="64"
 					 height="18"
 					 id="txtDiscVol"
@@ -692,30 +789,39 @@
 					 focusOut="numberInput_focusOutHandler(event)"
 					 textAlign="right"
 					 tabIndex="9"/>
-		<s:Label x="214.5"
-				 y="100"
-				 text="Trigger Price:"/>
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'31':'-40'}"
+				 y="98"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','triggerPrice')}:"/>
 		<s:TextInput id="txtTriggerPrice"
-					 x="299"
-					 y="92.6"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-27':'31'}"
+					 y="87.65"
 					 width="64"
 					 height="18"
 					 editable="true"
 					 focusOut="numberInput_focusOutHandler(event)"
 					 textAlign="right"
 					 tabIndex="10"/>
-		<s:Label x="392.5"
-				 y="97"
-				 text="Time in Force:"/>
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'242':'162'}"
+				 y="98"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','timeinForce')}:"/>
 		<mx:DateField id="dateTIF"
-					  x="483"
-					  y="91.65"
+					  locale="ar_SA"
+					  horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'178':'240'}"
+					  y="87.65"
 					  width="74"
+					  yearSymbol="{resourceManager.getString('marketwatch','yearSymbol')}"
 					  tabIndex="11"/>
-		<s:Label x="89.5"
+
+		<!--//////////////////////////////////////////////////////////////-->
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-143':'-198'}"
 				 y="126"
-				 text="Ref #:"/>
-		<s:TextInput x="134"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','ref')} #:"/>
+		<s:TextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-198':'-143'}"
 					 y="117.85"
 					 width="64"
 					 height="18"
@@ -725,11 +831,13 @@
 					 change="txtOrderNum_changeHandler(event)"
 					 textAlign="right"
 					 tabIndex="12"/>
-		<s:Label x="261"
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'31':'-27'}"
 				 y="124"
-				 text="Type:"/>
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','type')}:"/>
 		<s:DropDownList id="ddType"
-						x="298"
+						horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-27':'31'}"
 						y="115.85"
 						width="64"
 						height="18"
@@ -737,10 +845,13 @@
 						dataProvider="{orderType}"
 						selectedIndex="0"
 						tabIndex="13"/>
-		<s:Label x="434.5"
+
+
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'230':'173'}"
 				 y="124"
-				 text="Trader:"/>
-		<mx:ComboBox x="483"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','trader')}:"/>
+		<mx:ComboBox horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'173':'230'}"
 					 y="116.85"
 					 width="64"
 					 editable="false"
@@ -749,6 +860,7 @@
 					 dataProvider="{tradersList}"
 					 tabIndex="14">
 		</mx:ComboBox>
+		<!--//////////////////////////////////////////////////////////////////////////-->
 		<mx:VRule x="602"
 				  y="13"
 				  width="3"
@@ -769,7 +881,7 @@
 	</s:BorderContainer>
 	<s:Label x="53"
 			 y="10"
-			 text="Standard Order Details"/>
+			 text="{resourceManager.getString('marketwatch','standardOrderDetails')}"/>
 	<mx:HRule x="198"
 			  y="12"
 			  width="407"

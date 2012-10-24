@@ -285,7 +285,7 @@ protected function firstorderButtonClickHandler(event:MouseEvent):void
 						}
 						else
 						{
-							Alert.show("No Order could be placed with emplty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
+							Alert.show("No Order could be placed with empty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
 						}
 					}
 				}
@@ -407,7 +407,7 @@ protected function secondorderButtonClickHandler(event:MouseEvent):void
 						}
 						else
 						{
-							Alert.show("No Order could be placed with emplty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
+							Alert.show("No Order could be placed with empty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
 						}
 					}
 				}
@@ -539,7 +539,7 @@ protected function thirdorderButtonClickHandler(event:MouseEvent):void
 						}
 						else
 						{
-							Alert.show("No Order could be placed with emplty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
+							Alert.show("No Order could be placed with empty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
 						}
 					}
 				}
@@ -655,7 +655,7 @@ protected function fourthorderButtonClickHandler(event:MouseEvent):void
 						}
 						else
 						{
-							Alert.show("No Order could be placed with emplty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
+							Alert.show("No Order could be placed with empty value for symbol "+ localQuickOrdersBO.SYMBOL,Messages.TITLE_ERROR);
 						}
 					}
 				}

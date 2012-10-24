@@ -36,7 +36,7 @@ protected function txtSymbol_keyDownHandler(event:KeyboardEvent):void
 
 private function updateBestPrices():void
 {
-	txtSymbol.text=txtSymbol.text.toUpperCase();
+//	txtSymbol.text=txtSymbol.text.toUpperCase();
 	internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 	symbolID=ModelManager.getInstance().exchangeModel.getSymbolID(internalExchangeID, internalMarketID, internalSymbolID);
 	if (symbolID > -1)

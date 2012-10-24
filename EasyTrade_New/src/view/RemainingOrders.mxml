@@ -31,6 +31,7 @@
 			import mx.printing.FlexPrintJob;
 			
 			import spark.events.IndexChangeEvent;
+			import mx.core.FlexGlobals;
 			
 //			public var fr:FileReference = new FileReference();
 			
@@ -79,12 +80,12 @@
 
 			private function fileIOError_Handler(event:IOErrorEvent):void
 			{
-				Alert.show(Messages.FILE_IO_ERROR, Messages.TITLE_ERROR);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileIOErr'), ResourceManager.getInstance().getString('marketwatch','error'));
 			}
 
 			private function fileSaved_Handler(event:Event):void
 			{
-				Alert.show(Messages.FILE_SAVED_SUCCESS);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileSuccessMsg'));
 			}
 
 			private function insertRecordInSheet(row:int, sheet:Sheet, record:Object):void
@@ -271,34 +272,37 @@
 				 source="{ImgPrint}" buttonMode="true" useHandCursor="true" />
 		<s:Image y="-1" buttonMode="true" click="btnExport_clickHandler(event)" visible="true"
 				 horizontalCenter="-415" source="{ImgXls}" useHandCursor="true"/>
-		<s:Label text="Exchange:"
-				 horizontalCenter="-295"
+		<s:Label text="{resourceManager.getString('marketwatch','exchange')}:"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-240':'-295'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-240"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-295':'-240'}"
 										top="2"/>
-		<s:Label text="Market:"
-				 horizontalCenter="-190"
+		<s:Label text="{resourceManager.getString('marketwatch','market')}:"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-144':'-190'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
-										horizontalCenter="-144"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-190':'-144'}"
 										top="2"/>
-		<s:Label text="Symbol:"
-				 horizontalCenter="-91"
+		<s:Label text="{resourceManager.getString('marketwatch','symbol')}:"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-11':'-91'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="7"/>
 		<s:TextInput width="110"
 					 height="20"
 					 id="txtSymbol"
 					 keyDown="txtSymbol_keyDownHandler(event)"
-					 horizontalCenter="-11"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-75':'-11'}"
 					 top="2"/>
 	</s:BorderContainer>
 	<components:EZDataGrid id="adgRemainingOrders"
@@ -312,7 +316,7 @@
 						   dataProvider="{modelManager.remainingOrdersModel.remainingOrders}">
 		<components:columns>
 			<!--mx:AdvancedDataGridColumn headerText="Market" dataField="MARKET" /-->
-			<mx:DataGridColumn headerText="Symbol"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 							   dataField="SYMBOL">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -323,7 +327,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Client"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','client')}"
 							   dataField="CLIENT_CODE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -334,7 +338,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Order Number"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','orderNumber')}"
 							   dataField="ORDER_NO">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -345,7 +349,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Bid/Offer"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','bid/offer')}"
 							   dataField="SIDE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -356,7 +360,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Price"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','price')}"
 							   dataField="PRICE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -367,7 +371,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Remaining"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 							   dataField="VOLUME">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -378,7 +382,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Disc. Volume"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','discVol')}"
 							   dataField="DISCLOSED_VOLUME">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -389,7 +393,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Time"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','time')}"
 							   dataField="ENTRY_DATETIME">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -398,7 +402,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Trigger Price"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','triggerPrice')}"
 							   dataField="TRIGGER_PRICE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -409,7 +413,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Type"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','type')}"
 							   dataField="TYPE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -439,15 +443,16 @@
 			  top="-1" useHandCursor="true" buttonMode="true"
 			  horizontalCenter="139"
 			  click="btnRefresh_clickHandler(event)"/>
-	<s:Label text="Trader:"
-			 horizontalCenter="235"
+	<s:Label text="{resourceManager.getString('marketwatch','trader')}:"
+			 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'295':'235'}" 
+			 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			 top="7"/>
 	<s:DropDownList width="75"
 					change="traders_changeHandler(event)"
 					dataProvider="{tradersList}"
 					height="20"
 					id="traders"
-					horizontalCenter="295"
+					horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'235':'295'}"
 					top="2"/>
 	<!--<mx:Image source="{ImgXls}" buttonMode="true" useHandCursor="true" toolTip="Export" width="20" height="20" id="btnExport" top="2" horizontalCenter="296" click="btnExport_clickHandler(event)"/> -->
 </s:Group>

@@ -45,6 +45,7 @@ import mx.core.IVisualElement;
 import mx.events.FlexEvent;
 import mx.formatters.DateFormatter;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 
 import services.LSListener;
 import services.QWClient;
@@ -253,7 +254,7 @@ public function txtSymbol_focusOutHandler(event:FocusEvent):void
 	}
 
 	var modelManager:ModelManager=ModelManager.getInstance();
-	txtSymbol.text=txtSymbol.text.toUpperCase();
+//	txtSymbol.text=txtSymbol.text.toUpperCase();
 	if (!isSymbolDataFetched)
 	{
 		/*var internalSymbolID:Number = modelManager.exchangeModel.getInternalSymbolIDByCode(
@@ -284,7 +285,7 @@ public function txtSymbol_focusOutHandler(event:FocusEvent):void
 
 		if (internalSymbolID < 0)
 		{
-			txtMsg.text=Messages.ERROR_INVALID_SYMBOL;
+			txtMsg.text=ResourceManager.getInstance().getString('marketwatch','invalidSymbol');;
 			txtSymbol.text="";
 			return;
 		}
@@ -293,7 +294,7 @@ public function txtSymbol_focusOutHandler(event:FocusEvent):void
 		var symbolID:Number=modelManager.exchangeModel.getSymbolID(internalExchangeID, internalMarketID, internalSymbolID);
 		if (symbolID < 0)
 		{
-			txtMsg.text=Messages.ERROR_INVALID_SYMBOL;
+			txtMsg.text=ResourceManager.getInstance().getString('marketwatch','invalidSymbol');;
 			txtSymbol.text="";
 			return;
 		}
@@ -362,6 +363,7 @@ public function updateSymbolStatsOrderFieldsByMWBO(mwbo:MarketWatchBO):void
 	if (txtLast)
 	{
 		txtLast.text=moneyFormatter.format(mwbo.LAST);
+		txtCurrent.text=moneyFormatter.format(mwbo.LAST);
 	}
 	if (txtChange)
 	{
@@ -468,6 +470,7 @@ public function updateOrderView(bestMarketAndSymbolSummary:BestMarketAndSymbolSu
 		if (bestMarketAndSymbolSummary.symbolSummary && bestMarketAndSymbolSummary.symbolSummary.stats)
 		{
 			txtLast.text=moneyFormatter.format(bestMarketAndSymbolSummary.symbolSummary.stats.lastTradePrice.toString());
+			txtCurrent.text=moneyFormatter.format(bestMarketAndSymbolSummary.symbolSummary.stats.lastTradePrice.toString());
 			txtChange.text=moneyFormatter.format(bestMarketAndSymbolSummary.symbolSummary.stats.netChange.toString());
 			txtTurnOver.text=numberFormatter.format(bestMarketAndSymbolSummary.symbolSummary.stats.turnover.toString());
 			txtOpen.text=moneyFormatter.format(bestMarketAndSymbolSummary.symbolSummary.stats.open.toString());
@@ -477,6 +480,7 @@ public function updateOrderView(bestMarketAndSymbolSummary:BestMarketAndSymbolSu
 		else
 		{
 			txtLast.text="";
+			txtCurrent.text="";
 			txtChange.text="";
 			txtTurnOver.text="";
 			txtOpen.text="";
@@ -812,7 +816,7 @@ public function updateOrderViewAfterRefetch():void
 		internalMarketID=-1;
 		internalSymbolID=-1;
 		symbolID=-1;
-		txtMsg.text=common.Messages.INVALID_INPUT;
+		txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 	}
 }
 
@@ -1106,13 +1110,13 @@ private var txtOpenPositionExpanded:Number=371;
 private var messagesTxtLabelPositionNormal:Number=369;
 
 [Bindable]
-private var messagesTxtLabelPositionExpanded:Number=434;
+private var messagesTxtLabelPositionExpanded:Number=440;
 
 [Bindable]
 private var txtMsgPositionNormal:Number=369;
 
 [Bindable]
-private var txtMsgPositionExpanded:Number=434;
+private var txtMsgPositionExpanded:Number=438;
 
 [Bindable]
 private var okButtonPostionNormal:Number=341;
@@ -1812,6 +1816,7 @@ public function updateSymbolStatsOrderFields(event:NonVisualItemUpdateEvent):voi
 	if (txtLast)
 	{
 		txtLast.text=moneyFormatter.format(LSListener.extractFieldData(event, LSListener.fieldSchemaSymbolStat[1]));
+		txtCurrent.text=moneyFormatter.format(LSListener.extractFieldData(event, LSListener.fieldSchemaSymbolStat[1]));
 	}
 	if (txtChange)
 	{
@@ -1871,14 +1876,16 @@ public function imgExpander_clickHandler(event:MouseEvent):void
 			txtBuy.y=txtBuyPositionNormal;
 			txtLast.y=txtLastPositionNormal;
 			marketDataLast.y=marketDataLastPositionNormal;
-			marketDataOpen.y=marketDataOpenPostionNormal;
-			txtOpen.y=txtOpenPositionNormal;
-			marketDataHigh.y=marketDataOpenPostionNormal;
-			txtHigh.y=txtOpenPositionNormal;
-			marketDataLow.y=marketDataOpenPostionNormal;
-			txtLow.y=txtOpenPositionNormal;
-			marketDataCurrent.y=marketDataOpenPostionNormal;
-			txtCurrent.y=txtOpenPositionNormal;
+//			marketDataOpen.y=marketDataOpenPostionNormal;
+//			txtOpen.y=txtOpenPositionNormal;
+//			marketDataHigh.y=marketDataOpenPostionNormal;
+//			txtHigh.y=txtOpenPositionNormal;
+//			marketDataLow.y=marketDataOpenPostionNormal;
+//			txtLow.y=txtOpenPositionNormal;
+//			marketDataCurrent.y=marketDataOpenPostionNormal;
+//			txtCurrent.y=txtOpenPositionNormal;
+			ohlcHbox.y = txtOpenPositionNormal;
+//			msgHbox.y = txtMsgPositionNormal;
 			messagesTxtLabel.y=messagesTxtLabelPositionNormal;
 			txtMsg.y=txtMsgPositionNormal;
 			btnSubmit.y=okButtonPostionNormal;
@@ -1926,14 +1933,16 @@ public function imgExpander_clickHandler(event:MouseEvent):void
 			txtBuy.y=txtBuyPositionExpanded;
 			txtLast.y=txtLastPositionExpanded;
 			marketDataLast.y=marketDataLastPositionExpanded;
-			marketDataOpen.y=marketDataOpenPostionExpanded;
-			txtOpen.y=txtOpenPositionExpanded;
-			marketDataHigh.y=marketDataOpenPostionExpanded;
-			txtHigh.y=txtOpenPositionExpanded;
-			marketDataLow.y=marketDataOpenPostionExpanded;
-			txtLow.y=txtOpenPositionExpanded;
-			marketDataCurrent.y=marketDataOpenPostionExpanded;
-			txtCurrent.y=txtOpenPositionExpanded;
+//			marketDataOpen.y=marketDataOpenPostionExpanded;
+//			txtOpen.y=txtOpenPositionExpanded;
+//			marketDataHigh.y=marketDataOpenPostionExpanded;
+//			txtHigh.y=txtOpenPositionExpanded;
+//			marketDataLow.y=marketDataOpenPostionExpanded;
+//			txtLow.y=txtOpenPositionExpanded;
+//			marketDataCurrent.y=marketDataOpenPostionExpanded;
+//			txtCurrent.y=txtOpenPositionExpanded;
+			ohlcHbox.y = txtOpenPositionExpanded;
+//			msgHbox.y = txtMsgPositionExpanded;
 			messagesTxtLabel.y=messagesTxtLabelPositionExpanded;
 			txtMsg.y=txtMsgPositionExpanded;
 			btnSubmit.y=okButtonPostionExpanded;

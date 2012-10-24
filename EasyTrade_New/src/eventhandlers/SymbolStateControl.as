@@ -101,7 +101,7 @@ protected function txtSymbol_keyDownHandler(event:KeyboardEvent):void
 {
 	if (event.keyCode == 9 || event.keyCode == 13)
 	{
-		txtSymbol.text=txtSymbol.text.toUpperCase();
+//		txtSymbol.text=txtSymbol.text.toUpperCase();
 		// modified on 6/4/2011
 		var obj:Object=ModelManager.getInstance().exchangeModel.getSymbolByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 

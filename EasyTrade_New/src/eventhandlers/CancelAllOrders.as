@@ -1,6 +1,6 @@
 import mx.controls.Alert;
+import mx.resources.ResourceManager;
 
-// ActionScript file
 public function applyFilter():void
 {
 }
@@ -29,7 +29,7 @@ public function txtSymbol_focusOutHandler(event:FocusEvent):void
 	internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 	if (internalSymbolID < 0)
 	{
-		Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 		txtSymbol.text="";
 	}
 	else

@@ -66,6 +66,7 @@ package common
 		public static const LIVE_MESSAGES_WINDOW_WINDOW_ID:String="view.Messages";
 		public static const RISK_INFORMATION_WINDOW_TITLE:String="Risk Information";
 		public static const RISK_INFORMATION_WINDOW_ID:String="view.RiskInformation";
+
 		public static const REJ_COLOR:String="#FF0000";
 		public static const REJ_COLOR_INT:uint=0xFF0000;
 		public static const BUY_COLOR:String="#3dbeff";
@@ -91,7 +92,7 @@ package common
 		public static const BORDER_TOP:int=2;
 		public static const TITLE_COLOR:int=0x000000;
 
-		//Constants for webservice endpoints
+
 		public static var SERVICE_URL:String="";
 		public static var SECURE_SERVICE_URL:String="";
 //		public static const SERVICE_URL:String						= "http://192.168.36.62:8080/QWService/";
@@ -100,40 +101,45 @@ package common
 //		public static const SECURE_SERVICE_URL:String				= "https://192.168.36.117:8443/QWService/";
 		//public static var QW_WSDL_END_POINT:String				= SERVICE_URL + "QueryWaitress?wsdl";
 		public static var QW_WSDL_END_POINT:String="QueryWaitress?wsdl";
-		
 		// modified on 7/1/2011 after discussion with Hashim
 		//public static const ORDERER_WSDL_END_POINT:String			= SECURE_SERVICE_URL + "Orderer?wsdl";
 //		public static var  ORDERER_WSDL_END_POINT:String			= SERVICE_URL + "Orderer?wsdl";
 //		public static var  ANNOUNCER_WSDL_END_POINT:String			= SERVICE_URL + "Announcer?wsdl";
 //		public static var LOGIN_MANAGER_WSDL_END_POINT:String		= SERVICE_URL + "LoginManager?wsdl";
-		public static var RS_WSDL_END_POINT:String="RiskSieve?wsdl";
+
 		public static var ORDERER_WSDL_END_POINT:String="Orderer?wsdl";
 		public static var ANNOUNCER_WSDL_END_POINT:String="Announcer?wsdl";
 		public static var LOGIN_MANAGER_WSDL_END_POINT:String="LoginManager?wsdl";
 		public static var LIGHTSTREAMER_SERVER:String="";
 		public static var LIGHTSTREAMER_PORT:Number=8085;
+		public static var RS_WSDL_END_POINT:String="RiskSieve?wsdl";
 
 		public static const ORDER_CONFIRMATION_DATA_ADAPTER:String="ORDER_CONFIRMATION";
 		public static const SYMBOL_STAT_DATA_ADAPTER:String="SYMBOL_STAT";
 		public static const BEST_MARKET_DATA_ADAPTER:String="BEST_MARKET";
-		public static const ANNOUNCEMENT_FEED_DATA_ADAPTER:String="ANNOUNCEMENT_FEED";  
+		public static const ANNOUNCEMENT_FEED_DATA_ADAPTER:String="ANNOUNCEMENT_FEED";
 
 		public static const ROW_COUNT_BEST_ORDERS:uint=10;
 		public static const ROW_COUNT_BEST_PRICES:uint=10;
 		public static const PAGE_COUNT_MARKET_WATCH:uint=6;
 		public static const ROW_COUNT_MARKET_WATCH:uint=360;
+
 		public static const EVENT_MENU_CLOSE:String="menuClose";
+ 
 		public static const TICKER_PAUSE_REASON_MOUSE_OVER:int=1;
+
 		public static const EXCHANGE_STATS_ADVANCED:String="Advanced";
 		public static const EXCHANGE_STATS_DECLINED:String="Declined";
 		public static const EXCHANGE_STATS_UNCHANGED:String="Unchanged";
 		public static const EXCHANGE_STATS_ZERO_VOLUME:String="Zero-Volume";
+
 		public static const ADMIN_ROLE:String="Admin";
 		public static const USER_LOGIN_PREFERENCES:String="USER_LOGIN_PREFERENCES";
-		public static const APPLICATION_TITLE:String="Easy Trade™";
-		public static const APPLICATION_VERSION:String="Version #\t\t\t\t\t  2.3.2 \nRelease Date\t\t	     13-7-2012 \nBuild Date\t\t\t 		13-7-2012 \n      Copyright © Easy Trade™ 2012";
+		public static const APPLICATION_TITLE:String="Easy Trade";
+		public static const APPLICATION_VERSION:String="Version #\t\t\t\t\t  2.0.6 \nRelease Date\t\t	     01-10-2012 \nBuild Date\t\t\t 		01-10-2012 \n      Copyright © Easy Trade™ 2012";
 		public static const BOND_ENABLED:Boolean=true;
-		public static const QUICK_ORDERS_DROP_DOWN_LIMIT:int=100000;
+
+		public static const QUICK_ORDERS_DROP_DOWN_LIMIT:int=1000;
 		public static const QUICK_ORDERS_MAX_SEGMENTS:int=4;
 	}
 }

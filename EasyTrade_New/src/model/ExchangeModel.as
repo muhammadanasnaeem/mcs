@@ -5,19 +5,19 @@ package model
 	import businessobjects.MarketBO;
 	import businessobjects.SymbolBO;
 	import businessobjects.SymbolOrderLimitBO;
-
+	
 	import common.Constants;
 	import common.Messages;
 	import common.States;
-
+	
 	import components.ComboBoxItem;
-
+	
 	import controller.ModelManager;
 	import controller.ProfileManager;
 	import controller.WindowManager;
-
+	
 	import flash.external.ExternalInterface;
-
+	
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
@@ -28,12 +28,13 @@ package model
 	import mx.messaging.config.ServerConfig;
 	import mx.messaging.events.MessageEvent;
 	import mx.messaging.events.MessageFaultEvent;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.LSListener;
 	import services.QWClient;
-
+	
 	import view.MarketScheduleControl;
 
 	public class ExchangeModel implements IModel
@@ -136,7 +137,7 @@ package model
 					//ModelManager.getInstance().remainingOrdersModel.isInit = true;
 
 					// added on 2/2/2011 to empty Market Watch Window before profile loading
-					modelManager.marketWatchModel.clearMarketWatchWindow();
+//					modelManager.marketWatchModel.clearMarketWatchWindow();
 
 					//modified on 13/12/2010 to resolve empty exchange list on relogin  
 					ProfileManager.getInstance().loadProfile();
@@ -198,7 +199,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			CursorManager.removeBusyCursor();
 		}
 
@@ -432,10 +433,35 @@ package model
 							for (var k:int=0; k < mkt.symbols.length; ++k)
 							{
 								var symbol:SymbolBO=mkt.symbols.getItemAt(k) as SymbolBO;
+//								var sBO:String = symbol.SYMBOL.toUpperCase();
+//								if(sBO == internalSymbolID)
+//								{
+//									symbolBO=symbol;
+//									break;
+//								}
 								if (symbol.INTERNAL_SYMBOL_ID == internalSymbolID)
 								{
 									symbolBO=symbol;
 									break;
+								}
+								try
+								{
+									WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text=WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text=WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text=WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text=WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text=WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.eventLog.txtSymbol.text=WindowManager.getInstance().viewManager.eventLog.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text=WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text=WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text=WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text=WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text.toUpperCase()
+									WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text=WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text=WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text.toUpperCase();
+								}
+								catch(e:Error)
+								{
+									trace(e.message);
 								}
 							}
 						}
@@ -477,7 +503,7 @@ package model
 
 		//End : added on 13/12/2010
 
-		public function getSymbolByCode(internalExchangeID:Number, internalMarketID:Number, symbolCode:String):Object
+		public function getSymbolByCode(internalExchangeID:Number, internalMarketID:Number, symbolCode:String,fromTextField:Boolean=false):Object
 		{
 			var symbolBO:Object=null;
 			for (var i:int=0; i < exchanges.length; ++i)
@@ -493,10 +519,36 @@ package model
 							for (var k:int=0; k < mkt.symbols.length; ++k)
 							{
 								var symbol:SymbolBO=mkt.symbols.getItemAt(k) as SymbolBO;
+								var sBO:String = symbol.SYMBOL.toUpperCase();
+								
 								if (symbol.SYMBOL == symbolCode)
 								{
 									symbolBO=symbol;
 									break;
+								}
+								if(sBO == symbolCode)
+								{
+									symbolBO=symbol;
+									break;
+								}
+								try
+								{
+									WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text=WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text=WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text=WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text=WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text=WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.eventLog.txtSymbol.text=WindowManager.getInstance().viewManager.eventLog.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text=WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text=WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text=WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text=WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text.toUpperCase()
+									WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text=WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text=WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text.toUpperCase();
+								}
+								catch(e:Error)
+								{
+									trace(e.message);
 								}
 							}
 						}
@@ -527,11 +579,31 @@ package model
 									symbolID=symbol.SYMBOL_ID;
 									break;
 								}
+								
 							}
 						}
 					}
 				}
 			}
+//			try
+//			{
+//				WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text=WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text=WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text=WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text=WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text=WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.eventLog.txtSymbol.text=WindowManager.getInstance().viewManager.eventLog.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text=WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text=WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text=WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text=WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text.toUpperCase()
+//				WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text=WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text.toUpperCase();
+//				WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text=WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text.toUpperCase();
+//			}
+//			catch(e:Error)
+//			{
+//				trace(e.message);
+//			}
 			return symbolID;
 		}
 
@@ -551,7 +623,13 @@ package model
 							for (var k:int=0; k < mkt.symbols.length; ++k)
 							{
 								var symbol:SymbolBO=mkt.symbols.getItemAt(k) as SymbolBO;
+								var sO:String = symbol.SYMBOL.toUpperCase();
 								if (symbol.SYMBOL == symbolCode)
+								{
+									internalSymbolID=symbol.INTERNAL_SYMBOL_ID;
+									break;
+								}
+								if(sO == symbolCode)
 								{
 									internalSymbolID=symbol.INTERNAL_SYMBOL_ID;
 									break;
@@ -580,10 +658,35 @@ package model
 							for (var k:int=0; k < mkt.symbols.length; ++k)
 							{
 								var symbol:SymbolBO=mkt.symbols.getItemAt(k) as SymbolBO;
+//								var sBO:String = symbol.SYMBOL.toUpperCase();
+//								if(sBO == internalSymbolID)
+//								{
+//									symbolCode=symbol.SYMBOL;
+//									break;
+//								}
 								if (symbol.INTERNAL_SYMBOL_ID == internalSymbolID)
 								{
 									symbolCode=symbol.SYMBOL;
 									break;
+								}
+								try
+								{
+									WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text=WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text=WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text=WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text=WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text=WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.eventLog.txtSymbol.text=WindowManager.getInstance().viewManager.eventLog.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text=WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text=WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text=WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text=WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text.toUpperCase()
+									WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text=WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text=WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text.toUpperCase();
+								}
+								catch(e:Error)
+								{
+									trace(e.message);
 								}
 							}
 						}
@@ -613,6 +716,25 @@ package model
 								{
 									symbolState=symbol.STATE;
 									break;
+								}
+								try
+								{
+									WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text=WindowManager.getInstance().viewManager.buyOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text=WindowManager.getInstance().viewManager.sellOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text=WindowManager.getInstance().viewManager.cancelOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text=WindowManager.getInstance().viewManager.changeOrder.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text=WindowManager.getInstance().viewManager.liveSymbolChart.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.eventLog.txtSymbol.text=WindowManager.getInstance().viewManager.eventLog.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text=WindowManager.getInstance().viewManager.symbolBrowser.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text=WindowManager.getInstance().viewManager.orderLimitControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text=WindowManager.getInstance().viewManager.symbolStateControl.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text=WindowManager.getInstance().viewManager.bestPrices.txtSymbol.text.toUpperCase()
+									WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text=WindowManager.getInstance().viewManager.bestOrders.txtSymbol.text.toUpperCase();
+									WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text=WindowManager.getInstance().viewManager.symbolSummary.txtSymbol.text.toUpperCase();
+								}
+								catch(e:Error)
+								{
+									trace(e.message);
 								}
 							}
 						}

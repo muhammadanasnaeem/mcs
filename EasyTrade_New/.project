@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>EasyTradeWeb_JSCurrent</name>
+	<name>binappletestMDI</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -19,7 +19,7 @@
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeWeb_JS_NEW</location>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeTest</location>
 		</link>
 		<link>
 			<name>bin-release</name>
@@ -30,6 +30,31 @@
 			<name>bin-release1</name>
 			<type>2</type>
 			<location>C:/Users/anas.naeem/Desktop/easytrade1</location>
+		</link>
+		<link>
+			<name>bin-release2</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeWeb_JSCurrentt</location>
+		</link>
+		<link>
+			<name>bin-release3</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeWeb</location>
+		</link>
+		<link>
+			<name>bin-release4</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeWebLocalized</location>
+		</link>
+		<link>
+			<name>bin-release5</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeBM</location>
+		</link>
+		<link>
+			<name>bin-release6</name>
+			<type>2</type>
+			<location>C:/Program Files/Apache Software Foundation/Apache Tomcat 6.0.26/webapps/ROOT/EasyTradeEhsan</location>
 		</link>
 	</linkedResources>
 </projectDescription>

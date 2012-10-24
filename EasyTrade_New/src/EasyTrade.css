@@ -4,7 +4,7 @@
 
 Project ATS (Easy Trade)
 
-Version 2.0.3 
+Version 1.0 
 
 */
 @namespace s "library://ns.adobe.com/flex/spark";
@@ -404,6 +404,7 @@ mx|Panel {
 	textRollOverColor: #FFFFFF;
 	fontSize: 11;
 }
+
 mx|NumericStepper
 {	
 	backgroundColor:#dfdee4;
@@ -434,20 +435,6 @@ mx|NumericStepper
 	/*openDuration: 753;
 	closeDuration: 753;*/
 	dropdownStyleName: "myComboBoxDropDowns";
-}
-.grybtn
-{
-	cornerRadius: 0;
-	color: #000000;
-	backgroundColor:#FFFFFF;
-	borderColor: #b7babc;
-	iconColor: #003300;
-	highlightAlphas: 0.35, 0;
-	fillAlphas: 1, 1, 1, 1;
-	fillColors: #414141, #858585, #858585, #404040;
-	arrowButtonWidth: 0;
-	backgroundAlpha: 1;
-	useRollOver: true;
 }
 
 .mygreyComboBoxDropDowns {

@@ -62,7 +62,7 @@
 				  y="0"
 				  width="70%"
 				  height="98%">
-			<s:Label text="Top Advances (By Price)"
+			<s:Label text="{resourceManager.getString('marketwatch','topAdvances')+' '+resourceManager.getString('marketwatch','byPrice')}"
 					 width="100%"
 					 textAlign="center"
 					 fontWeight="bold"/>
@@ -74,17 +74,17 @@
 						 rowCount="{ConfigurationManager.getInstance().exchangeStatsConf.ROW_COUNT_TOP_ADVANCES}"
 						 dataProvider="{ModelManager.getInstance().exchangeStatsModel.exchangeStats.advancedSymbols}">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Symbol"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 									   dataField="SYMBOL_CODE"/>
-					<mx:DataGridColumn headerText="Last Price"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','lastPrice')}"
 									   dataField="lastTradePrice"/>
-					<mx:DataGridColumn headerText="Change"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','change')}"
 									   dataField="netChange"/>
-					<mx:DataGridColumn headerText="Volume"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 									   dataField="lastTradeSize"/>
 				</mx:columns>
 			</mx:DataGrid>
-			<s:Label text="Top Decliners (By Price)"
+			<s:Label text="{resourceManager.getString('marketwatch','topDecliners')+' '+resourceManager.getString('marketwatch','byPrice')}"
 					 width="100%"
 					 textAlign="center"
 					 fontWeight="bold"/>
@@ -96,13 +96,13 @@
 						 rowCount="{ConfigurationManager.getInstance().exchangeStatsConf.ROW_COUNT_TOP_DECLINERS}"
 						 dataProvider="{ModelManager.getInstance().exchangeStatsModel.exchangeStats.declinedSymbols}">
 				<mx:columns>
-					<mx:DataGridColumn headerText="Symbol"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 									   dataField="SYMBOL_CODE"/>
-					<mx:DataGridColumn headerText="Last Price"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','lastPrice')}"
 									   dataField="lastTradePrice"/>
-					<mx:DataGridColumn headerText="Change"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','change')}"
 									   dataField="netChange"/>
-					<mx:DataGridColumn headerText="Volume"
+					<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 									   dataField="lastTradeSize"/>
 				</mx:columns>
 			</mx:DataGrid>

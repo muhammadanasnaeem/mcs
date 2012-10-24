@@ -23,6 +23,7 @@ import mx.controls.Alert;
 import mx.events.FlexEvent;
 import mx.formatters.DateFormatter;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 
 import services.LSListener;
 
@@ -315,7 +316,7 @@ protected function txtMarket_clickHandlerForSymbol(event:MouseEvent):void
 {
 	if (internalExchangeID < 0)
 	{
-		Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;

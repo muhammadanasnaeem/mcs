@@ -14,6 +14,7 @@ import flash.events.KeyboardEvent;
 import mx.charts.HitData;
 import mx.controls.Alert;
 import mx.events.FlexEvent;
+import mx.resources.ResourceManager;
 
 import services.LSListener;
 
@@ -46,7 +47,7 @@ protected function txtSymbol_keyDownHandler(event:KeyboardEvent):void
 		internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 		if (internalSymbolID < 0)
 		{
-			Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 			txtSymbol.text="";
 		}
 		else

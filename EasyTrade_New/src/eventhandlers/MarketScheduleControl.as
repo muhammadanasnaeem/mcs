@@ -58,7 +58,6 @@ protected function group1_initializeHandler(event:FlexEvent):void
 			marketStateList.addItem(cbi);
 		}
 	}
-
 	resetFields();
 }
 
@@ -136,29 +135,35 @@ protected function txtRequestedMarketState_clickHandler(event:MouseEvent):void
 
 protected function requestedMarketStateMenuClosed(event:Event):void
 {
-	if (!event.currentTarget.lstList.selectedItem)
+	try
 	{
-		return;
-	}
-	txtRequestedMarketState.text=event.currentTarget.lstList.selectedItem.label;
-	selectedState=event.currentTarget.lstList.selectedItem.value;
-	if ((marketSchedule && marketSchedule.SCHEDULE.length == States.MARKET_STATES.StateCount) || (selectedState != States.MARKET_STATES.Suspend))
-	{
-		for (var i:int=0; i < marketSchedule.SCHEDULE.length; ++i)
+		if (!event.currentTarget.lstList.selectedItem)
 		{
-			if (event.currentTarget.lstList.selectedItem.label == marketSchedule.SCHEDULE[i].state_)
-			{
-				selectedState=i;
-				break;
-			}
+			return;
 		}
-		dgMarketStates.selectedIndex=selectedState;
-	}
-	else
+		txtRequestedMarketState.text=event.currentTarget.lstList.selectedItem.label;
+		selectedState=event.currentTarget.lstList.selectedItem.value;
+		if ((marketSchedule && marketSchedule.SCHEDULE.length == States.MARKET_STATES.StateCount) || (selectedState != States.MARKET_STATES.Suspend))
+		{
+			for (var i:int=0; i < marketSchedule.SCHEDULE.length; ++i)
+			{
+				if (event.currentTarget.lstList.selectedItem.label == marketSchedule.SCHEDULE[i].state_)
+				{
+					selectedState=i;
+					break;
+				}
+			}
+			dgMarketStates.selectedIndex=selectedState;
+		}
+		else
+		{
+			dgMarketStates.selectedIndex=-1;
+		}
+		dgMarketStates_clickHandler(null);
+	}catch(e:Error)
 	{
-		dgMarketStates.selectedIndex=-1;
+		trace(e.message);
 	}
-	dgMarketStates_clickHandler(null);
 }
 
 protected function btnUpdate_clickHandler(event:MouseEvent):void

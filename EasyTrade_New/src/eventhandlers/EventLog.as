@@ -62,7 +62,7 @@ protected function txtSymbol_keyDownHandler(event:KeyboardEvent):void
 {
 	if (event.keyCode == 9 || event.keyCode == 13)
 	{
-		txtSymbol.text=txtSymbol.text.toUpperCase();
+//		txtSymbol.text=txtSymbol.text.toUpperCase();
 		internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 		applyFilter();
 	}

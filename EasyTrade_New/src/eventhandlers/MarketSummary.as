@@ -21,6 +21,7 @@ import mx.events.DataGridEvent;
 import mx.events.FlexEvent;
 import mx.events.ItemClickEvent;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 
 import view.SelectionMenu;
 
@@ -59,7 +60,7 @@ protected function txtMarket_MarketSumm_clickHandler(event:MouseEvent):void
 {
 	if (internalExchangeID < 0)
 	{
-		var alt:Alert=Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+		var alt:Alert=Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 		alt.cacheAsBitmap=false;
 		alt.isPopUp=false;
 		return;

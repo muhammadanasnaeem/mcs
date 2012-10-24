@@ -55,9 +55,13 @@ public function menubarMain_itemClickHandler(event:MenuEvent):void
 		menuItemSetting_itemClickHandler(event);
 	}
 	//added on 21/12/2010
-	else if (event.item.@id == "liveSym") // Charts event.item.@id == "liveSym"
+	else if (event.item.@id == "liveSym") // Charts event.item.@id == "liveSym"  historicalSymbolDataCharts
 	{
 		menuitemLiveSymbolChart_itemClickHandler(event);
+	}
+	else if (event.item.@id == "historicalSymbolDataCharts") // Charts event.item.@id == "liveSym"  historicalSymbolDataCharts
+	{
+		menuitemhistoricalSymbolDataChart_itemClickHandler(event);
 	}
 	//added on 17/1/2011
 	else if (event.item.@id == "about") // About
@@ -377,10 +381,10 @@ public function menuItemWatch_itemClickHandler(event:MenuEvent):void
 		case 2: // Best Prices
 			menuitemBestPrices_itemClickHandler(event);
 			break;
-		case 5: // Exchange Stats
+		case 4: // Exchange Stats
 			menuitemExchangeStats_itemClickHandler(event);
 			break;
-		case 6: // Market States
+		case 5: // Market States
 			menuitemMarketStates_itemClickHandler(event);
 			break;
 		case 3: // Market Messages
@@ -504,17 +508,20 @@ public function menuItemReports_itemClickHandler(event:MenuEvent):void
 		case 2:
 			menuitemEventLog_itemClickHandler(event);
 			break;
-		case 4:
+		case 3:
 			menuitemSymbolBrowser_itemClickHandler(event);
 			break;
-		case 5:
+		case 4:
 			menuitemSymbolSumm_itemClickHandler(event);
 			break;
-		case 6:
+		case 5:
 			menuitemMarketSummary_itemClickHandler(event);
 			break;
-		case 8:
+		case 6:
 			menuItemRiskInformation_itemClickHandler(event);
+			break;
+		case 7:
+			menuItemHistoricalSymbolData_itemClickHandler(event);
 			break;
 	}
 }
@@ -531,7 +538,7 @@ public function menuitemReminingOrders_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	if (windowManager.remainingOrdersWindow && windowManager.canvas.windowManager.container.contains(windowManager.remainingOrdersWindow))
@@ -557,7 +564,7 @@ public function menuitemLastDayReminingOrders_itemClickHandler(event:MenuEvent):
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	if (windowManager.lastDayRemainingOrdersWindow && windowManager.canvas.windowManager.container.contains(windowManager.lastDayRemainingOrdersWindow))
@@ -583,7 +590,7 @@ public function menuitemUserTradeHistory_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -610,7 +617,7 @@ public function menuitemEventLog_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -637,7 +644,7 @@ public function menuitemSymbolBrowser_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -665,7 +672,7 @@ public function menuitemSymbolSumm_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -694,7 +701,7 @@ public function menuitemMarketSummary_itemClickHandler(event:MenuEvent):void
 	//This shouldn't be called when the user isn't logged in but just in case... 
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 
@@ -720,7 +727,7 @@ public function menuItemRiskInformation_itemClickHandler(event:MenuEvent):void
 	var windowManager:WindowManager=WindowManager.getInstance();
 	if (!theApp.isUserLoggedin())
 	{
-		Alert.show(Messages.USR_NOT_LOGGEDIN, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	
@@ -733,6 +740,30 @@ public function menuItemRiskInformation_itemClickHandler(event:MenuEvent):void
 	windowManager.initRiskInformationWindow();
 	
 	windowManager.canvas.windowManager.add(windowManager.riskInformationWindow);
+}
+
+/////////////////////////////////////Historical Symbol Data////////////////////////////
+public function menuItemHistoricalSymbolData_itemClickHandler(event:MenuEvent):void
+{
+	var theApp:EasyTradeApp=EasyTradeApp.getInstance();
+	var modelManager:ModelManager=ModelManager.getInstance();
+	var viewManager:ViewManager=ViewManager.getInstance();
+	var windowManager:WindowManager=WindowManager.getInstance();
+	if (!theApp.isUserLoggedin())
+	{
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','usrNotLoggedIn'), ResourceManager.getInstance().getString('marketwatch','error'));
+		return;
+	}
+	
+	if (windowManager.historicalSymbolWindow && windowManager.canvas.windowManager.container.contains(windowManager.historicalSymbolWindow))
+	{
+		windowManager.canvas.windowManager.bringToFront(windowManager.historicalSymbolWindow);
+		return;
+	}
+	
+	windowManager.inithistoricalSymbolWindow();
+	
+	windowManager.canvas.windowManager.add(windowManager.historicalSymbolWindow);
 }
 
 ////////////////////////////////////System Menu Handlers/////////////////////////////////////////
@@ -930,6 +961,23 @@ public function menuitemLiveSymbolChart_itemClickHandler(event:MenuEvent):void
 	windowManager.canvas.windowManager.add(windowManager.liveSymbolChartWindow);
 }
 
+public function menuitemhistoricalSymbolDataChart_itemClickHandler(event:MenuEvent):void
+{
+	//	(event.item.@id == "liveSym").@label = ResourceManager.getInstance().getString('marketwatch','file');
+	var theApp:EasyTradeApp=EasyTradeApp.getInstance();
+	var modelManager:ModelManager=ModelManager.getInstance();
+	var viewManager:ViewManager=ViewManager.getInstance();
+	var windowManager:WindowManager=WindowManager.getInstance();
+	
+	if (windowManager.historicalSymbolDataCharts && windowManager.canvas.windowManager.container.contains(windowManager.historicalSymbolDataCharts))
+	{
+		windowManager.canvas.windowManager.bringToFront(windowManager.historicalSymbolDataCharts);
+		return;
+	}
+	windowManager.inithistoricalSymbolDataChartsWindow();
+	windowManager.canvas.windowManager.add(windowManager.historicalSymbolDataCharts);
+}
+
 /*
 * About menu
 */
@@ -942,15 +990,6 @@ public function menuitemChange_itemClickHandler(event:MenuEvent):void
 {
 	try
 	{
-		var theApp:EasyTradeApp=EasyTradeApp.getInstance();
-		var arr:Array = theApp.easyTrade.menubarMain.menuBarItems;
-		var resourceManager:IResourceManager = ResourceManager.getInstance();
-		resourceManager.localeChain = ['sv_SE'];
-		var str:String = resourceManager.getString('marketwatch', 'file');
-//		((theApp.easyTrade.menubarMain.menuBarItems[0]as MenuBarItem).data as XML).@label = resourceManager.getString('marketwatch', 'file');
-		var xm:XML = (arr[0] as MenuBarItem).data as XML;
-		xm.@label = resourceManager.getString('marketwatch', 'file').toString();
-		trace(xm.@label);
 		
 	}catch(e:Error)
 	{

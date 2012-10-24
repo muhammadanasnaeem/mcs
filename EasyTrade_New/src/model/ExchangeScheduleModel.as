@@ -7,23 +7,24 @@ package model
 	import businessobjects.MarketStateInfo;
 	import businessobjects.MarketWatchBO;
 	import businessobjects.SymbolStateInfo;
-
+	
 	import common.Constants;
 	import common.Messages;
 	import common.States;
-
+	
 	import controller.ModelManager;
 	import controller.WindowManager;
-
+	
 	import filters.Filters;
-
+	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.AnnouncerClient;
 	import services.QWClient;
 
@@ -144,9 +145,9 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 //			isDirty = true;
-//			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+//			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 //			CursorManager.removeBusyCursor();
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			WindowManager.getInstance().viewManager.marketScheduleControl.resetFields(false);
 			CursorManager.removeBusyCursor();
 		}

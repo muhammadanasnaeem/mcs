@@ -1,22 +1,23 @@
 package model
 {
 	import businessobjects.SymbolTradeBO;
-
+	
 	import common.Constants;
 	import common.Messages;
-
+	
 	import controller.ModelManager;
 	import controller.ProfileManager;
 	import controller.WindowManager;
-
+	
 	import flash.external.ExternalInterface;
-
+	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.LSListener;
 	import services.QWClient;
 
@@ -63,7 +64,7 @@ package model
 			symbolID=ModelManager.getInstance().exchangeModel.getSymbolID(WindowManager.getInstance().viewManager.liveSymbolChart.internalExchangeID, WindowManager.getInstance().viewManager.liveSymbolChart.internalMarketID, WindowManager.getInstance().viewManager.liveSymbolChart.internalSymbolID);
 			QWClient.getInstance().getSymbolTradeHistory(exchangeID, marketID, symbolID);
 		}
-
+		
 		public function onResult(event:ResultEvent):void
 		{
 			symbolTrades.removeAll();
@@ -113,12 +114,14 @@ package model
 			}
 
 		}
+		
+		
 
 		public function onFault(event:FaultEvent):void
 		{
 			ModelManager.getInstance().orderModel.isDirty=false;
 			CursorManager.removeBusyCursor();
-			Alert.show(event.fault.message, Messages.TITLE_ERROR);
+			Alert.show(event.fault.message, ResourceManager.getInstance().getString('marketwatch','error'));
 		}
 	}
 }

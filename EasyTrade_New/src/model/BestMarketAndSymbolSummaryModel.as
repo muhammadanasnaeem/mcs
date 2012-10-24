@@ -26,6 +26,7 @@ package model
 	import mx.controls.Alert;
 	import mx.core.mx_internal;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -614,7 +615,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			CursorManager.removeBusyCursor();
 		}
 

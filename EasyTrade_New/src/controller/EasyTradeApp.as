@@ -1,10 +1,9 @@
 package controller
 {
 	import businessobjects.ExchangeBO;
-	
 	import common.Constants;
 	import common.HashMap;
-	
+
 	import flash.display.DisplayObject;
 	import flash.events.MouseEvent;
 	import flash.external.ExternalInterface;
@@ -31,7 +30,6 @@ package controller
 	
 	import windows.LoginWindow;
 	
-//	[ResourceBundle("marketwatch")] 
 	public class EasyTradeApp 
 	{
 		//Members
@@ -49,7 +47,7 @@ package controller
 		{
 			if (instance)
 			{
-				throw new Error("EasyTradeApp can only be accessed through QWClient.getInstance()");
+				throw new Error("EasyTradeApp can only be accessed through EasyTradeApp.getInstance()");
 			}
 		}
 
@@ -68,7 +66,7 @@ package controller
 			ConfigurationManager.getInstance().screenConf.height=(easyTrade_.canvas.parent as Group).screen.height - easyTrade_.menubarMain.height - easyTrade_.newsTapeTicker.height - easyTrade_.symbolTapeTicker.height;
 
 			toggleMenuBarVisibility(false);
-			ViewManager.getInstance().init();
+//			ViewManager.getInstance().init();
 			WindowManager.getInstance().init(easyTrade_.canvas)
 			ModelManager.getInstance().easyTradeApp=this;
 		}
@@ -148,8 +146,6 @@ package controller
 					ModelManager.getInstance().subscribedItems.put(itemName, itemName);
 					ExternalInterface.call("subscribeItem", Constants.ORDER_CONFIRMATION_DATA_ADAPTER, "tblOrderConfirmation__" + k.toString(), itemName, "fieldSchemaOrderConfirmation", "handleOrderConfirmation", ProfileManager.getInstance().userName, ProfileManager.getInstance().password);
 				}
-
-
 			}
 
 			itemNamesMap.clear();

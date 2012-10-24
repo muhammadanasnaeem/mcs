@@ -136,7 +136,7 @@ package services
 
 			webService.getSymbolTradeHistory(exchangeID, marketID, symbolID);
 		}
-
+		
 		public function getRemainingOrders(requesterUserId:Number, userID:Number):void
 		{
 			var webService:WebService=createService(Constants.QW_WSDL_END_POINT);
@@ -247,6 +247,25 @@ package services
 			webService.addEventListener("fault", ModelManager.getInstance().yieldModel.onFault);
 			webService.calculateYield(yield);
 		}
-		// Chnages by Anas completed.26/03/2012.
+		// Chnages by Anas completed.26/03/2012 completed.
+		
+		// Chnages by Anas completed.18/10/2012. for the symbol historical data reports and charts.
+		public function getSymbolHistoricalReport(symExchange:String,symMarket:String,symName:String,sDate:Date,eDate:Date):void
+		{
+			var webService:WebService=createService(Constants.QW_WSDL_END_POINT);
+			webService.addEventListener("result", ModelManager.getInstance().historicalSymbolDataModel.onResult);
+			webService.addEventListener("result", ModelManager.getInstance().historicalSymbolDataModel.onFault);
+			webService.getSymbolHistoricalReport(symExchange,symMarket,symName,sDate,eDate);
+		}
+		
+		public function getSymbolHistoricalGraph(exchangeID:Number, marketID:Number, symbolID:Number,sDate:Date, eDate:Date):void
+		{
+			var webService:WebService=createService(Constants.QW_WSDL_END_POINT);
+			webService.addEventListener("result", ModelManager.getInstance().historicalSymbolDataChartsModel.onResult);
+			webService.addEventListener("fault", ModelManager.getInstance().symbolTradeHistoryModel.onFault);
+			
+			webService.getSymbolHistoricalGraph(exchangeID, marketID, symbolID, sDate, eDate);
+		}
+		// Chnages by Anas completed.18/10/2012 completed.
 	}
 }

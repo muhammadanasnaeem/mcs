@@ -4,7 +4,7 @@
 		 xmlns:mx="library://ns.adobe.com/flex/mx"
 		 xmlns:flexlib="http://code.google.com/p/flexlib/"
 		 xmlns:components="components.*"
-		 width="100%"
+		 width="100%" horizontalCenter="0"
 		 height="100%"
 		 initialize="group1_initializeHandler(event)">
 	<fx:Script>
@@ -46,7 +46,7 @@
 				}
 				if (internalExchangeID < 0)
 				{
-					Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+					Alert.show(ResourceManager.getInstance().getString('marketwatch','selectExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 					return;
 				}
 				var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;
@@ -195,7 +195,7 @@
 			{
 				if (internalExchangeID == -1 || internalMarketID == -1 || internalSymbolID == -1 || brokerID == -1 || symbolID == -1)
 				{
-					Alert.show("Please make a selection.", "Error");
+					Alert.show("Please make a selection.", ResourceManager.getInstance().getString('marketwatch','error'));
 					return;
 				}
 				var cao:CancelAllOrdersBO=new CancelAllOrdersBO();
@@ -284,16 +284,15 @@
 	</fx:Script>
 
 
-	<s:BorderContainer id="bcMain"
-					   x="0"
-					   y="0"
+	<s:BorderContainer id="bcMain"  borderVisible="false"
+					   horizontalCenter="0"
 					   width="100%"
 					   height="100%">
 
-		<s:Label x="15.5"
-				 y="22"
-				 text="Exchange: "/>
-		<components:EZDropDownTextInput x="81"
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-360':'-421'}"
+				 y="22" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','exchange')}: "/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-411':'-355'}"
 										y="14.7"
 										width="74"
 										height="20"
@@ -301,17 +300,17 @@
 										editable="false"
 										click="txtExchange_clickHandler(event)"
 										tabIndex="1"/>
-		<s:CheckBox x="176"
-					y="17"
-					label="All Exchanges"
+		<s:CheckBox x="166"
+					y="17" 
+					label="{resourceManager.getString('marketwatch','allExchanges')}"
 					id="chkAllExchanges"
 					change="chkAllExchanges_changeHandler(event)"
 					tabIndex="2"/>
 
-		<s:Label x="33.5"
-				 y="47"
-				 text="Market: "/>
-		<components:EZDropDownTextInput x="81"
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-360':'-415'}"
+				 y="47" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','market')}: "/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-411':'-355'}"
 										y="39.65"
 										width="74"
 										height="20"
@@ -319,17 +318,17 @@
 										editable="false"
 										click="txtMarket_clickHandler1(event)"
 										tabIndex="3"/>
-		<s:CheckBox x="176"
+		<s:CheckBox x="166"
 					y="42"
-					label="All Markets"
-					id="chkAllMarkets"
+					label="{resourceManager.getString('marketwatch','allMarkets')}"
+					id="chkAllMarkets" 
 					change="chkAllMarkets_changeHandler(event)"
 					tabIndex="4"/>
 
-		<s:Label x="29.5"
-				 y="71"
-				 text="Symbol: "/>
-		<components:EZDropDownTextInput x="81"
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-360':'-415'}"
+				 y="71" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','symbol')}: "/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-411':'-355'}"
 										y="64.9"
 										width="74"
 										height="20"
@@ -337,17 +336,17 @@
 										editable="false"
 										click="txtSymbol_clickHandler(event)"
 										tabIndex="5"/>
-		<s:CheckBox x="176"
-					y="66"
-					label="All Symbols"
+		<s:CheckBox x="166"
+					y="66" 
+					label="{resourceManager.getString('marketwatch','allSymbols')}"
 					id="chkAllSymbols"
 					change="chkAllSymbols_changeHandler(event)"
 					tabIndex="6"/>
 
-		<s:Label x="33.5"
-				 y="97"
-				 text="Broker: "/>
-		<components:EZDropDownTextInput x="81"
+		<s:Label horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-360':'-415'}"
+				 y="97" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 text="{resourceManager.getString('marketwatch','broker')}: "/>
+		<components:EZDropDownTextInput horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-411':'-355'}"
 										y="89.7"
 										width="74"
 										height="20"
@@ -355,24 +354,24 @@
 										editable="false"
 										click="txtBroker_clickHandler(event)"
 										tabIndex="7"/>
-		<s:CheckBox x="176"
-					y="92"
-					label="All Brokers"
+		<s:CheckBox x="166"
+					y="92" 
+					label="{resourceManager.getString('marketwatch','allBrokers')}"
 					id="chkAllBrokers"
 					change="chkAllBrokers_changeHandler(event)"
 					tabIndex="7"/>
 
 		<s:Button id="btnSubmit"
-				  label="Cancel All Orders"
+				  label="{resourceManager.getString('marketwatch','cancelAllOrders')}"
 				  click="btnSubmit_clickHandler(event)"
-				  x="31"
+				  horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-350':'-350'}"
 				  y="125"
 				  tabIndex="8"/>
 
 		<s:Button id="btnReset"
-				  label="Reset"
+				  label="{resourceManager.getString('marketwatch','reset')}"
 				  click="btnReset_clickHandler(event)"
-				  x="163"
+				  horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-250':'-250'}"
 				  y="125"
 				  tabIndex="9"/>
 

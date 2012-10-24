@@ -6,6 +6,7 @@
 		<![CDATA[
 			import controller.ModelManager;
 			
+			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
 			
 			include "../eventhandlers/RiskInformation.as"
@@ -20,7 +21,7 @@
 		<components:EZNumberFormatter id="numberFormatter"/>
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
-	<s:BorderContainer width="100%">
+	<s:BorderContainer width="100%" layoutDirection="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}">
 		
 	
 	<mx:Grid verticalGap="3"
@@ -34,21 +35,21 @@
 		<mx:GridRow>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Client Code"/>
+				<s:Label text="{resourceManager.getString('marketwatch','clientCode')}"/>
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="true" id="txtClientCode" enter="txtClientCode_enterHandler(event)"/>		
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="By Pass Risk "/>		
+				<s:Label text="{resourceManager.getString('marketwatch','byPassRisk')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtByPassRisk" />		
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Active"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','active')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtActive"/>
@@ -57,21 +58,21 @@
 		<mx:GridRow>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Allow Short Sell"/>
+				<s:Label text="{resourceManager.getString('marketwatch','allowShortSell')}"/>
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false"  id="txtShortSell"/>
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="110">
-				<s:Label text="Use Open Position"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','useopenPosition')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtUseOpenPosition" />		
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Cash"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','cash')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtCash"/>
@@ -81,21 +82,21 @@
 		<mx:GridRow>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Buying Power"/>
+				<s:Label text="{resourceManager.getString('marketwatch','buyingPower')}"/>
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false"  id="txtBuyingPower"/>
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="140">
-				<s:Label text="Remaining Buying Power"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','remainingbuyingPower')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtRemainigBuyingPower" />		
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Margin"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','margin')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtMargin"/>
@@ -106,21 +107,21 @@
 		<mx:GridRow>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Share Value"/>
+				<s:Label text="{resourceManager.getString('marketwatch','shareValue')}"/>
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false"  id="txtShareValue"/>
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="110">
-				<s:Label text="Open Position"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','openPosition')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtOpenPosition" />		
 			</mx:GridItem>
 			<mx:GridItem verticalAlign="middle"
 						 width="102">
-				<s:Label text="Profit Loss"/>		
+				<s:Label text="{resourceManager.getString('marketwatch','profitLoss')}"/>		
 			</mx:GridItem>
 			<mx:GridItem>
 				<s:TextInput editable="false" id="txtProfitLoss"/>
@@ -129,7 +130,7 @@
 		
 	</mx:Grid>
 	</s:BorderContainer>
-	<s:HGroup y="110" width="1110" height="607" horizontalCenter="1">
+	<s:HGroup y="110" width="100%" height="100%" horizontalCenter="1">
 		<components:EZDataGrid id="adgRemainingOrders"
 							   right="1"
 							   left="1"
@@ -140,7 +141,7 @@
 							   dataProvider="{modelManager.riskInformationModel.holdings}">
 			<components:columns>
 				<!--mx:AdvancedDataGridColumn headerText="Market" dataField="MARKET" /-->
-				<mx:DataGridColumn headerText="Symbol Code"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 								   dataField="SYMBOL_CODE">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -151,7 +152,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Hair Cut"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','hairCut')}"
 								   dataField="HAIR_CUT">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -162,7 +163,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Market Rate"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','marketRate')}"
 								   dataField="MARKET_RATE">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -173,7 +174,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Quantity"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','quantity')}"
 								   dataField="QUANTITY">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -184,7 +185,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Value"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','value')}"
 								   dataField="VALUE">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -195,7 +196,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Access Value"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','accessVal')}"
 								   dataField="ACCESS_VALUE">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -206,7 +207,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Open Position"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','openPosition')}"
 								   dataField="OPEN_POSITION" >
 					<mx:itemRenderer>
 						<fx:Component>
@@ -217,7 +218,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Queued Sale Volume"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','queuedSaleVolume')}"
 								   dataField="QUEUED_SALE_VOLUME" >
 					<mx:itemRenderer>
 						<fx:Component>
@@ -228,7 +229,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Sale Volume"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','saleVolume')}"
 								   dataField="SALE_VOLUME" >
 					<mx:itemRenderer>
 						<fx:Component>
@@ -239,7 +240,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Purchase Volume"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','purchaseVolume')}"
 								   dataField="PURCHASE_VOLUME" >
 					<mx:itemRenderer>
 						<fx:Component>

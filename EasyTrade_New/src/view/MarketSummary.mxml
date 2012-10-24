@@ -78,12 +78,12 @@
 			
 			private function fileIOError_Handler(event:IOErrorEvent):void
 			{
-				Alert.show(Messages.FILE_IO_ERROR, Messages.TITLE_ERROR);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileIOErr'), ResourceManager.getInstance().getString('marketwatch','error'));
 			}
 			
 			private function fileSaved_Handler(event:Event):void
 			{
-				Alert.show(Messages.FILE_SAVED_SUCCESS);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileSuccessMsg'));
 			}
 			
 			private function insertRecordInSheet(row:int, sheet:Sheet, record:Object):void
@@ -154,26 +154,28 @@
 					   height="30"
 					   horizontalCenter="0"
 					   top="0">
-		<s:Label text="Exchange:"
+		<s:Label text="{resourceManager.getString('marketwatch','exchange')}:"
 				 top="7"
-				 horizontalCenter="-132"/>
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-79':'-132'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-79"/>
-		<s:Label text="Market:"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-132':'-79'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch','market')}:"
 				 top="7"
-				 horizontalCenter="-27"/>
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'17':'-27'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_MarketSumm_clickHandler(event)"
-										horizontalCenter="17"/>
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-27':'17'}" />
 
 	</s:BorderContainer>
 	<mx:DataGrid right="1"
@@ -186,16 +188,16 @@
 				 dataProvider="{ModelManager.getInstance().marketSummaryModel.symbols}"
 				 headerRelease="adgMarketSummary_headerReleaseHandler(event)">
 		<mx:columns>
-			<mx:DataGridColumn headerText="Market"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','market')}"
 							   dataField="isSummary"
 							   sortable="false">
 				<mx:itemRenderer>
 					<fx:Component>
-						<mx:Label text="{!data.isSummary ? outerDocument.modelManager.exchangeModel.getMarketCode(outerDocument.internalExchangeID, outerDocument.internalMarketID) : ''}"/>
+						<mx:Label text="{(data.isSummary==true) ? outerDocument.modelManager.exchangeModel.getMarketCode(outerDocument.internalExchangeID, outerDocument.internalMarketID)  : ' '}"/>
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Symbol"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 							   dataField="SYMBOL"
 							   width="75"
 							   draggable="false">
@@ -207,7 +209,7 @@
 			</mx:DataGridColumn>
 
 
-			<mx:DataGridColumn headerText="Volume"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 							   dataField="TOTAL_SIZE_TRADED"
 							   draggable="false">
 				<mx:itemRenderer>
@@ -218,7 +220,7 @@
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 
-			<mx:DataGridColumn headerText="Value"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','value')}"
 							   dataField="VALUE"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -229,7 +231,7 @@
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 
-			<mx:DataGridColumn headerText="Prev Close"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','prevClose')}"
 							   dataField="LAST_DAY_CLOSE_PRICE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -238,7 +240,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="High"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','high')}"
 							   dataField="HIGH">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -247,7 +249,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Low"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','low')}"
 							   dataField="LOW">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -256,7 +258,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Open"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','open')}"
 							   dataField="OPEN">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -265,7 +267,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Close"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','close')}"
 							   dataField="CLOSE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -274,7 +276,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Avg"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','average')}"
 							   dataField="AVERAGE">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -283,7 +285,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Trades"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','trades')}"
 							   dataField="TRADES">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -312,7 +314,7 @@
 			</mx:DataGridColumn>
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Button label="Refresh"
+	<s:Button label="{resourceManager.getString('marketwatch','refresh')}"
 			  width="75"
 			  height="20"
 			  id="btnRefresh"

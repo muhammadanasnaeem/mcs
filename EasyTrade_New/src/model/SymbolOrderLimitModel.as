@@ -1,14 +1,15 @@
 package model
 {
 	import businessobjects.SymbolOrderLimitBO;
-
+	
 	import common.Messages;
-
+	
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.AnnouncerClient;
 
 	public class SymbolOrderLimitModel implements IModel
@@ -55,7 +56,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			CursorManager.removeBusyCursor();
 		}
 	}

@@ -17,6 +17,7 @@ package model
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -109,7 +110,10 @@ package model
 
 		public function execute():void
 		{
-			OrdererClient.getInstance().submitOrder(orderBO);
+//			for(var i:int=0 ; i<= orderBO.VOLUME ; i++) // For Benchmarking the Application.
+//			{
+				OrdererClient.getInstance().submitOrder(orderBO);
+//			}
 		}
 
 		public function executeLastDayRemainigOrders(submittedOrders:ArrayCollection):void
@@ -265,7 +269,7 @@ package model
 		{
 			ModelManager.getInstance().orderModel.isDirty=false;
 			CursorManager.removeBusyCursor();
-			Alert.show(event.fault.message, Messages.TITLE_ERROR);
+			Alert.show(event.fault.message, ResourceManager.getInstance().getString('marketwatch','error'));
 		}
 
 		public function fillOrderBO(order:Order):void

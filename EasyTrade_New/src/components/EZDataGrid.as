@@ -2,13 +2,13 @@ package components
 {
 
 	import businessobjects.OrderBO;
-
+	
 	import common.Constants;
-
+	
 	import flash.display.Graphics;
 	import flash.display.Shape;
 	import flash.display.Sprite;
-
+	
 	import mx.collections.ListCollectionView;
 	import mx.controls.DataGrid;
 	import mx.controls.dataGridClasses.DataGridListData;
@@ -27,6 +27,8 @@ package components
 
 		override protected function drawRowBackground(s:Sprite, rowIndex:int, y:Number, height:Number, color:uint, dataIndex:int):void
 		{
+			try
+			{
 			index=dataIndex;
 			var contentHolder:ListBaseContentHolder=ListBaseContentHolder(s.parent);
 			var background:Shape;
@@ -65,6 +67,10 @@ package components
 			g.beginFill(color, getStyle("color"));
 			g.drawRect(0, 0, contentHolder.width, height);
 			g.endFill();
+			}catch(e:Error)
+			{
+				trace(e.message);
+			}
 		}
 
 		public function drawArrows():void

@@ -1,7 +1,8 @@
 package model
 {
+	import mx.collections.ArrayCollection;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.QWClient;
 
 	public class BestMarketModel implements IModel

@@ -17,8 +17,9 @@
 		<components:EZNumberFormatter id="numberFormatter"/>
 
 	</fx:Declarations>
-	<s:Label text="  Exchange:"
-			 horizontalCenter="-163"
+	<s:Label text="{resourceManager.getString('marketwatch','exchange')}:"
+			 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-110':'-163'}" 
+			 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			 top="7"
 			 color="#FFFFFF"/>
 	<components:EZDropDownTextInput width="49"
@@ -26,10 +27,10 @@
 									id="txtExchange"
 									editable="false"
 									click="txtExchange_clickHandler(event)"
-									horizontalCenter="-110"
+									horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-163':'-110'}"
 									top="2"/>
-	<s:Label text="Market:"
-			 horizontalCenter="-60"
+	<s:Label text="{resourceManager.getString('marketwatch','market')}:"
+			 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-14':'-60'}" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			 top="7"
 			 color="#ffffff"/>
 	<components:EZDropDownTextInput width="49"
@@ -37,17 +38,18 @@
 									id="txtMarket"
 									editable="false"
 									click="txtMarket_clickHandlerForSymbol(event)"
-									horizontalCenter="-14"
+									horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-60':'-14'}"
 									top="2"/>
-	<s:Label text="Symbol:"
-			 horizontalCenter="37"
+	<s:Label text="{resourceManager.getString('marketwatch','symbol')}:"
+			 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'119':'37'}"
+			 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			 top="7"
 			 color="#ffffff"/>
 	<s:TextInput width="110"
 				 height="20"
 				 id="txtSymbol"
 				 keyDown="txtSymbol_keyDownHandler(event)"
-				 horizontalCenter="119"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'37':'119'}"
 				 top="2"/>
 
 
@@ -65,7 +67,7 @@
 			<mx:DataGridColumn headerText="Is Spot" dataField="ispost"  />
 		</mx:columns>
 	</mx:Grid> -->
-	<s:BorderContainer top="30"
+	<s:BorderContainer top="30" layoutDirection="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 					   horizontalCenter="0"
 					   bottom="2"
 					   id="mainContainer">
@@ -84,7 +86,7 @@
 			<mx:GridRow>
 				<mx:GridItem verticalAlign="middle"
 							 width="102">
-					<s:Label text="Symbol"/>
+					<s:Label text="{resourceManager.getString('marketwatch','symbol')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -92,7 +94,7 @@
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle"
 							 width="102">
-					<s:Label text="High"/>
+					<s:Label text="{resourceManager.getString('marketwatch','high')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -101,7 +103,7 @@
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle"
 							 width="102">
-					<s:Label text="Trades"/>
+					<s:Label text="{resourceManager.getString('marketwatch','trades')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -111,7 +113,7 @@
 			</mx:GridRow>
 			<mx:GridRow>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Sector"/>
+					<s:Label text="{resourceManager.getString('marketwatch','sectors')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -119,7 +121,7 @@
 								 toolTip="{symbol.SECTOR}"/>
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Low"/>
+					<s:Label text="{resourceManager.getString('marketwatch','low')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false" id="lowValue"
@@ -127,7 +129,7 @@
 								 text="{moneyFormatter.format(symbol.LOW)}"/>
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Last Day"/>
+					<s:Label text="{resourceManager.getString('marketwatch','lastDay')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -137,14 +139,14 @@
 			</mx:GridRow>
 			<mx:GridRow>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="State"/>
+					<s:Label text="{resourceManager.getString('marketwatch','state')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
 								 text="{symbol.STATE}"/>
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Open"/>
+					<s:Label text="{resourceManager.getString('marketwatch','open')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -152,7 +154,7 @@
 								 text="{moneyFormatter.format(symbol.OPEN)}"/>
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Volume"/>
+					<s:Label text="{resourceManager.getString('marketwatch','volume')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -162,7 +164,7 @@
 			</mx:GridRow>
 			<mx:GridRow>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Last Trade"/>
+					<s:Label text="{resourceManager.getString('marketwatch','lastTrade')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -170,7 +172,7 @@
 								 text="{moneyFormatter.format(moneyFormatter.format(symbol.LAST))}"/>
 				</mx:GridItem>
 				<mx:GridItem verticalAlign="middle">
-					<s:Label text="Change"/>
+					<s:Label text="{resourceManager.getString('marketwatch','change')}"/>
 				</mx:GridItem>
 				<mx:GridItem>
 					<s:TextInput editable="false"
@@ -208,7 +210,7 @@
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
 						<s:Label color="{Constants.BUY_COLOR_INT}"
-								 text="Bid"/>
+								 text="{resourceManager.getString('marketwatch','bid')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -223,8 +225,8 @@
 
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
-						<s:Label color="{Constants.SELL_COLOR_INT}"
-								 text="Offer"/>
+						<s:Label color="{Constants.SELL_COLOR_INT}" visible="true"
+								 text="{resourceManager.getString('marketwatch','offer')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -251,7 +253,7 @@
 			</mx:Grid>
 		</s:BorderContainer>
 
-		<s:Label text="Limits"
+		<s:Label text="{resourceManager.getString('marketwatch','limits')}"
 				 fontSize="12"
 				 fontWeight="bold"
 				 paddingLeft="5"/>
@@ -267,7 +269,7 @@
 				<mx:GridRow width="702">
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
-						<s:Label text="High Order Limit"/>
+						<s:Label text="{resourceManager.getString('marketwatch','highOrderLimit')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -276,7 +278,7 @@
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle"
 								 width="121">
-						<s:Label  text="Max Order Volume"/>
+						<s:Label  text="{resourceManager.getString('marketwatch','maxOrderVolume')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -285,7 +287,7 @@
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
-						<s:Label text="Max Order Value"/>
+						<s:Label text="{resourceManager.getString('marketwatch','maxOrderValue')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -295,7 +297,7 @@
 				</mx:GridRow>
 				<mx:GridRow width="703">
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Low Order Limit"/>
+						<s:Label text="{resourceManager.getString('marketwatch','lowOrderLimit')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -303,7 +305,7 @@
 									 text="{moneyFormatter.format(symbol.LOWER_CIRCUIT_BREAKER_LIMIT)}"/>
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Min Order Volume"/>
+						<s:Label text="{resourceManager.getString('marketwatch','minOrderVolume')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -311,7 +313,7 @@
 									 text="{numberFormatter.format(symbol.LOWER_ORDER_VOLUME_LIMIT)}"/>
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Min Order Value"/>
+						<s:Label text="{resourceManager.getString('marketwatch','minOrderValue')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -321,7 +323,7 @@
 				</mx:GridRow>
 				<mx:GridRow width="703">
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Lot Size"/>
+						<s:Label text="{resourceManager.getString('marketwatch','lotSize')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -329,7 +331,7 @@
 									 text="{numberFormatter.format(symbol.BOARD_LOT)}"/>
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Status"/>
+						<s:Label text="{resourceManager.getString('marketwatch','status')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -338,7 +340,7 @@
 				</mx:GridRow>
 			</mx:Grid>
 		</s:BorderContainer>
-		<s:Label text="Instrument Specific Info"
+		<s:Label text="{resourceManager.getString('marketwatch','instrumentSpecificInfo')}"
 				 fontSize="12"
 				 fontWeight="bold"
 				 paddingLeft="5"
@@ -356,7 +358,7 @@
 				<mx:GridRow>
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
-						<s:Label text="Issue Date"/>
+						<s:Label text="{resourceManager.getString('marketwatch','issueDate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -364,7 +366,7 @@
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle"
 								 width="102">
-						<s:Label text="Discount Rate"/>
+						<s:Label text="{resourceManager.getString('marketwatch','discountRate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -382,7 +384,7 @@
 
 				<mx:GridRow>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Next Coupon Date"/>
+						<s:Label text="{resourceManager.getString('marketwatch','nextcoupondate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -400,7 +402,7 @@
 
 				<mx:GridRow>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Maturity Date"/>
+						<s:Label text="{resourceManager.getString('marketwatch','maturityDate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -418,7 +420,7 @@
 
 				<mx:GridRow>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Maturity Days"/>
+						<s:Label text="{resourceManager.getString('marketwatch','maturityDays')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -426,7 +428,7 @@
 									 text=""/>
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Base Rate"/>
+						<s:Label text="{resourceManager.getString('marketwatch','baserate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -437,7 +439,7 @@
 
 				<mx:GridRow>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Year Days"/>
+						<s:Label text="{resourceManager.getString('marketwatch','yearDays')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -445,7 +447,7 @@
 									 text=""/>
 					</mx:GridItem>
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Spread Rate"/>
+						<s:Label text="{resourceManager.getString('marketwatch','spreadrate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"
@@ -460,7 +462,7 @@
 					</mx:GridItem>
 
 					<mx:GridItem verticalAlign="middle">
-						<s:Label text="Coupon Rate"/>
+						<s:Label text="{resourceManager.getString('marketwatch','couponrate')}"/>
 					</mx:GridItem>
 					<mx:GridItem>
 						<s:TextInput editable="false"

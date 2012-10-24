@@ -21,36 +21,39 @@
 					   height="62"
 					   horizontalCenter="0"
 					   top="0">
-		<s:Label text="  Exchange:"
-				 horizontalCenter="-163"
+		<s:Label text="{resourceManager.getString('marketwatch','exchange')}:"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-110':'-163'}"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler_BestOrders(event)"
-										horizontalCenter="-110"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-163':'-110'}"
 										top="2"/>
-		<s:Label text="Market:"
-				 horizontalCenter="-60"
+		<s:Label text="{resourceManager.getString('marketwatch','market')}:"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-14':'-60'}"
 				 top="7"/>
 		<components:EZDropDownTextInput width="49"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler_BestOrders(event)"
-										horizontalCenter="-14"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-60':'-14'}"
 										top="2"/>
-		<s:Label text="Symbol:"
-				 horizontalCenter="37"
+		<s:Label text="{resourceManager.getString('marketwatch','symbol')}:"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'119':'37'}"
 				 top="7"/>
 		<s:TextInput width="110"
 					 height="20"
 					 id="txtSymbol"
 					 keyDown="txtSymbol_keyDownHandler(event)"
-					 horizontalCenter="119"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'37':'119'}"
 					 top="2"/>
-		<s:Button label="Refresh"
+		<s:Button label="{resourceManager.getString('marketwatch','refresh')}"
 				  width="75"
 				  height="20"
 				  id="btnRefresh"
@@ -58,25 +61,28 @@
 				  horizontalCenter="219"
 				  click="btnRefresh_clickHandler(event)"/>
 
-		<s:Label text="Total Buy:"
-				 horizontalCenter="-120"
+		<s:Label text="{resourceManager.getString('marketwatch','totalBuy')}:"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-50':'-120'}"
 				 top="38"/>
 		<s:TextInput id="txtTotalBuy"
+					 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 					 width="80"
 					 text="{ModelManager.getInstance().bestOrdersModel.totalBuy}"
 					 enabled="false"
 					 editable="false"
-					 horizontalCenter="-50"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-120':'-50'}"
 					 top="33"/>
-		<s:Label text="Total Sell:"
-				 horizontalCenter="20"
+		<s:Label text="{resourceManager.getString('marketwatch','totalSell')}:"
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'88':'20'}"
 				 top="38"/>
 		<s:TextInput id="txtTotalSell"
 					 width="80"
 					 text="{ModelManager.getInstance().bestOrdersModel.totalSell}"
 					 enabled="false"
 					 editable="false"
-					 horizontalCenter="88"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'20':'88'}"
 					 top="33"/>
 	</s:BorderContainer>
 	<mx:DataGrid id="adgBestOrders"
@@ -90,13 +96,13 @@
 				 sortableColumns="false">
 		<mx:columns>
 			<mx:DataGridColumn dataField="BUY_FLAGS"
-							   headerText="Flag"
+							   headerText="{resourceManager.getString('marketwatch','flag')}"
 							   backgroundColor="{Constants.BUY_COLOR_INT}"/>
 			<mx:DataGridColumn dataField="BUY_VOLUME"
-							   headerText="Volume"
+							   headerText="{resourceManager.getString('marketwatch','volume')}"
 							   backgroundColor="{Constants.BUY_COLOR_INT}"/>
 			<mx:DataGridColumn dataField="BUY_PRICE"
-							   headerText="Price"
+							   headerText="{resourceManager.getString('marketwatch','price')}"
 							   backgroundColor="{Constants.BUY_COLOR_INT}">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -107,7 +113,7 @@
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 			<mx:DataGridColumn dataField="SELL_PRICE"
-							   headerText="Price"
+							   headerText="{resourceManager.getString('marketwatch','price')}"
 							   backgroundColor="{Constants.SELL_COLOR_INT}">
 				<mx:itemRenderer>
 					<fx:Component>
@@ -118,10 +124,10 @@
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 			<mx:DataGridColumn dataField="SELL_VOLUME"
-							   headerText="Volume"
+							   headerText="{resourceManager.getString('marketwatch','volume')}"
 							   backgroundColor="{Constants.SELL_COLOR_INT}"/>
 			<mx:DataGridColumn dataField="SELL_FLAGS"
-							   headerText="Flag"
+							   headerText="{resourceManager.getString('marketwatch','flags')}"
 							   backgroundColor="{Constants.SELL_COLOR_INT}"/>
 		</mx:columns>
 	</mx:DataGrid>

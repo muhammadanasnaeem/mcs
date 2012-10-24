@@ -10,22 +10,23 @@
 		 initialize="group1_initializeHandler(event)"
 		 xmlns:controls="com.yahoo.astra.mx.controls.*">
 	<fx:Script>
-		<![CDATA[
+		<![CDATA[   
 			include "../components/SelectionMenu.as"
 			include "../eventhandlers/MarketScheduleControl.as"
 		]]>
 	</fx:Script>
 	<fx:Declarations>
 		<mx:DateFormatter id="dateFormatter"
-						  formatString="JJ:NN:SS"/>
+						  formatString="L:NN:SS A"/>
 		<!--mx:DateFormatter id="dateFormatter" formatString="EEE MMM DD JJ:NN:SS YYYY" /-->
 	</fx:Declarations>
 	<s:BorderContainer x="0"
 					   y="0"
 					   width="100%"
 					   height="100%">
-		<s:Label text="Exchange:"
-				 horizontalCenter="-180"
+		<s:Label text="{resourceManager.getString('marketwatch','exchange')} :"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-76':'-143.5'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="22"/>
 		<components:EZDropDownTextInput width="115"
 										top="17"
@@ -33,9 +34,10 @@
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-55"/>
-		<s:Label text="Market:"
-				 horizontalCenter="-189"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-151':'-55'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch','market')} :"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-76':'-136'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="47"/>
 		<components:EZDropDownTextInput width="115"
 										top="42"
@@ -43,34 +45,37 @@
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
-										horizontalCenter="-55"/>
-		<s:Label text="Current State:"
-				 horizontalCenter="-173"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-151':'-55'}" />
+		<s:Label  text="{resourceManager.getString('marketwatch','currentState')}:"
+				  horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-65':'-153'}" 
+				  direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="72"/>
 		<s:TextInput width="115"
 					 height="22"
 					 id="txtCurrentState"
 					 editable="false"
-					 horizontalCenter="-55"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-151':'-55'}"
 					 top="67"/>
-		<s:Label text="Requested State:"
-				 horizontalCenter="-163"
+		<s:Label text="{resourceManager.getString('marketwatch','requestedState')} :"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-65':'-163'}" 
+				 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="98"/>
 		<components:EZDropDownTextInput width="115"
 										height="22"
 										id="txtRequestedMarketState"
 										editable="false"
-										horizontalCenter="-55"
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-151':'-55'}" 
 										top="93"
 										click="txtRequestedMarketState_clickHandler(event)"/>
-		<s:Label text="Requested Time:"
-				 horizontalCenter="-163"
+		<s:Label text="{resourceManager.getString('marketwatch','requestedTime')} :"
+			horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-73':'-163'}" 
+			direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 				 top="124"/>
 		<controls:TimeInput showSeconds="true"
 							showAMPM="true"
 							width="115"
 							height="22"
-							horizontalCenter="-55"
+							horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-151':'-50'}" 
 							top="119"
 							id="txtTimeInput"
 							change="txtTimeInput_changeHandler(event)"/>
@@ -84,7 +89,7 @@
 					 id="dgMarketStates"
 					 height="182">
 			<mx:columns>
-				<mx:DataGridColumn headerText="State"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','state')}"
 								   draggable="false">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -92,7 +97,7 @@
 						</fx:Component>
 					</mx:itemRenderer>
 				</mx:DataGridColumn>
-				<mx:DataGridColumn headerText="Time"
+				<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','time')}"
 								   draggable="false">
 					<mx:itemRenderer>
 						<fx:Component>
@@ -102,20 +107,20 @@
 				</mx:DataGridColumn>
 			</mx:columns>
 		</mx:DataGrid>
-		<s:Button label="Update"
+		<s:Button label="{resourceManager.getString('marketwatch','update')}"
 				  id="btnUpdate"
 				  horizontalCenter="-142"
 				  top="167"
 				  click="btnUpdate_clickHandler(event)"/>
-		<s:Button label="Reset"
+		<s:Button label="{resourceManager.getString('marketwatch','reset')}"
 				  id="btnReset"
 				  click="btnReset_clickHandler(event)"
 				  horizontalCenter="-64"
 				  top="167"/>
-		<s:TextInput id="txtStatus"
-					 width="420"
+		<s:TextInput id="txtStatus" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+					 width="420" 
 					 editable="false"
-					 top="196"
+					 top="196" textAlign="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'right':'left'}"
 					 horizontalCenter="-2"/>
 	</s:BorderContainer>
 </s:Group>

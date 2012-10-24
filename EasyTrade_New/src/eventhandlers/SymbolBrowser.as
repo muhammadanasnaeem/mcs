@@ -2,12 +2,18 @@ import businessobjects.MarketBO;
 import businessobjects.SymbolBO;
 import businessobjects.SymbolBrowserBO;
 import businessobjects.SymbolSummaryBO;
+
 import common.Messages;
+
 import components.ComboBoxItem;
+
 import controller.ModelManager;
+
 import flash.events.KeyboardEvent;
+
 import mx.controls.Alert;
 import mx.events.FlexEvent;
+import mx.resources.ResourceManager;
 import mx.utils.StringUtil;
 
 [Bindable]
@@ -31,11 +37,11 @@ protected function txtSymbol_keyDownHandler(event:KeyboardEvent):void
 {
 	if (event.keyCode == 9 || event.keyCode == 13)
 	{
-		txtSymbol.text=txtSymbol.text.toUpperCase();
+//		txtSymbol.text=txtSymbol.text.toUpperCase();
 		internalSymbolID=ModelManager.getInstance().exchangeModel.getInternalSymbolIDByCode(internalExchangeID, internalMarketID, txtSymbol.text);
 		if (StringUtil.trim(txtSymbol.text).length > 0 && internalSymbolID < 0)
 		{
-			Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 			txtSymbol.text="";
 		}
 		else

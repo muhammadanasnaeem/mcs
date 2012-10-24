@@ -34,11 +34,11 @@
 								 childrenField="SCHEDULE"/>
 		</components:dataProvider>
 		<components:columns>
-			<mx:AdvancedDataGridColumn headerText="Exchange"
+			<mx:AdvancedDataGridColumn headerText="{resourceManager.getString('marketwatch','exchange')}"
 									   dataField="CODE"/>
-			<mx:AdvancedDataGridColumn headerText="State"
+			<mx:AdvancedDataGridColumn headerText="{resourceManager.getString('marketwatch','state')}"
 									   dataField="state_"/>
-			<mx:AdvancedDataGridColumn headerText="Time"
+			<mx:AdvancedDataGridColumn headerText="{resourceManager.getString('marketwatch','time')}"
 									   dataField="startDateTime_">
 				<mx:itemRenderer>
 					<fx:Component>

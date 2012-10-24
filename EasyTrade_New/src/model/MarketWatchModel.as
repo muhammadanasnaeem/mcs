@@ -2,20 +2,21 @@ package model
 {
 	import businessobjects.MarketBO;
 	import businessobjects.MarketWatchBO;
-
+	
 	import common.Constants;
 	import common.Messages;
-
+	
 	import controller.ModelManager;
 	import controller.WindowManager;
-
+	
 	import filters.Filters;
-
+	
 	import mx.collections.ArrayCollection;
 	import mx.controls.Alert;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.QWClient;
 
 	public class MarketWatchModel implements IModel
@@ -94,7 +95,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 		}
 
 		public function isSymbolSubscribed(internalExchangeID:Number, internalMarketID:Number, symbolCode:String):Boolean

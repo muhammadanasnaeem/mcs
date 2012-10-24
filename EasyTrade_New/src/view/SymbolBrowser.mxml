@@ -191,34 +191,34 @@
 					   height="30"
 					   horizontalCenter="0"
 					   top="0">
-		<s:Label text="Exchange:"
-				 top="7"
-				 horizontalCenter="-108"/>
+		<s:Label text="{resourceManager.getString('marketwatch', 'exchange')}:"
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-53':'-108'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-53"/>
-		<s:Label text="Market:"
-				 top="7"
-				 horizontalCenter="1"/>
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-108':'-53'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch', 'market')}:"
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'47':'1'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
-										horizontalCenter="47"/>
-		<s:Label text="Symbol:"
-				 top="7"
-				 horizontalCenter="98"/>
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'1':'47'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch', 'symbol')}:" 
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'205':'98'}"/>
 		<s:TextInput width="110"
 					 top="2"
-					 height="20"
+					 height="20" 
 					 id="txtSymbol"
-					 horizontalCenter="180"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'118':'180'}"
 					 keyDown="txtSymbol_keyDownHandler(event)"/>
 	</s:BorderContainer>
 	<mx:DataGrid dataProvider="{ModelManager.getInstance().symbolBrowserModel.symbols}"
@@ -233,44 +233,44 @@
 			<!--mx:DataGridColumn headerText="Exchange" dataField="EXCHANGE_CODE" />
 			<mx:DataGridColumn headerText="Market" dataField="MARKET_CODE" /-->
 			<mx:DataGridColumn editable="false" width="120"
-							   headerText="Add To Watch">
+							   headerText="{resourceManager.getString('marketwatch','addtoWatch')}">
 				<mx:itemRenderer>
 					<fx:Component>
-						<mx:Button label="Add To Watch" width="120"
+						<mx:Button label="{resourceManager.getString('marketwatch','addtoWatch')}" width="120"
 								   click="outerDocument.addSymbolToWatch(data);"/>
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 			<mx:DataGridColumn editable="false" width="170"
-							   headerText="Add To Quick Orders">
+							   headerText="{resourceManager.getString('marketwatch','addtoQuickOrders')}">
 				<mx:itemRenderer>
 					<fx:Component>
-						<mx:Button label="Add To Quick Orders" width="170"
+						<mx:Button label="{resourceManager.getString('marketwatch','addtoQuickOrders')}" width="170"
 								   click="outerDocument.addSymbolToQuickOrders(data);"/>
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Symbol"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 							   dataField="SYMBOL_CODE"/>
-			<mx:DataGridColumn headerText="Company Name"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','companyName')}"
 							   dataField="company"/>
-			<mx:DataGridColumn headerText="STATE"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','state')}"
 							   dataField=""/>
-			<mx:DataGridColumn headerText="Is Spot"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','isSpot')}"
 							   dataField="isspot"/>
 			<mx:DataGridColumn editable="false"
 							   width="60">
 				<mx:itemRenderer>
 					<fx:Component>
 						<mx:Button width="60"
-								   label="Details"
+								   label="{resourceManager.getString('marketwatch','details')}"
 								   enabled="false"/>
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Watch"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','watch')}"
 							   dataField="SYMBOL_CODE"/>
-			<mx:DataGridColumn headerText="Quick Orders"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','quickOrder')}"
 							   dataField="SYMBOL_CODE"/>
 		</mx:columns>
 	</mx:DataGrid>

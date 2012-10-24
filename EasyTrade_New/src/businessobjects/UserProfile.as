@@ -11,7 +11,7 @@ package businessobjects
 
 		public var userName:String;
 		public var password:String;
-
+		public var brokerId:int;
 		public var grants:ArrayCollection;
 
 		public var grantedUsers:ArrayCollection;

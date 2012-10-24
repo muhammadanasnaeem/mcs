@@ -20,23 +20,32 @@
 			import com.as3xls.xls.Cell;
 			import com.as3xls.xls.ExcelFile;
 			import com.as3xls.xls.Sheet;
+			import com.lightstreamer.as_client.events.NonVisualItemUpdateEvent;
 			
 			import controller.WindowManager;
 			
 			import flash.ui.ContextMenu;
 			
 			import mx.collections.ArrayCollection;
-			import mx.controls.*;
+			import mx.controls.Alert;
+			import mx.controls.TextInput;
+			import mx.core.FlexGlobals;
 			import mx.events.FlexEvent;
 			import mx.events.ScrollEvent;
 			
-			import org.alivepdf.display.Display;
-			import org.alivepdf.layout.Orientation;
-			import org.alivepdf.layout.Size;
-			import org.alivepdf.layout.Unit;
-			import org.alivepdf.pdf.PDF;
-			import org.alivepdf.saving.Method;
+//			import org.alivepdf.display.Display;
+//			import org.alivepdf.layout.Orientation;
+//			import org.alivepdf.layout.Size;
+//			import org.alivepdf.layout.Unit;
+//			import org.alivepdf.pdf.PDF;
+//			import org.alivepdf.saving.Method;
 			
+			import services.LSListener;
+			
+			import spark.components.RichEditableText;
+			import spark.components.RichText;
+			import spark.components.TextArea;
+			import spark.components.TextInput;
 			import spark.components.VGroup;
 			import spark.effects.Resize;
 //			include "../eventhandlers/MarketMessage.as"
@@ -75,46 +84,108 @@
 			private var tradeactivityUp:Class;
 			
 			[Bindable]
+			[Embed(source="../images/1.jpg")]
+			private var AR_BulletinsUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/2.jpg")]
+			private var AR_BulletinsOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/11 (1).jpg")]
+			private var AR_CorporateUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/11 (3).jpg")]
+			private var AR_CorporateOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/12 (1).jpg")]
+			private var AR_NewsUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/12 (3).jpg")]
+			private var AR_NewsOver:Class;
+			
+			[Bindable]
+			[Embed(source="../images/3 (1).jpg")]
+			private var AR_tradeActivityUp:Class;
+			
+			[Bindable]
+			[Embed(source="../images/3 (3).jpg")]
+			private var AR_tradeActivityOver:Class;
+			
+			[Bindable]
 			private var windowManager:WindowManager=WindowManager.getInstance();
 			
 			[Bindable]
 			public var messagesArrayCol:ArrayCollection = new ArrayCollection();
 			
-			public var textBullet1:TextInput;
+			public var textBullet1:mx.controls.TextInput;
 			public var flag2:Boolean=true;
-			public var textBullet3:TextInput;
+			public var textBullet3:mx.controls.TextInput;;
 			public var flag3:Boolean=true;
-			public var textBullet:TextInput;
+			public var textBullet:mx.controls.TextInput;;
 			public var flag:Boolean=true;
-			public var textBullet2:TextInput;
+			public var textBullet2:mx.controls.TextInput;;
 			public var marketMessages:Boolean=true
 			private var item1:ContextMenuItem;
 			public var fr:FileReference = new FileReference();
-			public var tp:TextInput;
+			public var tp:mx.controls.TextInput;
+			public var txIp:spark.components.TextInput;
+			public var txIp2:spark.components.TextInput
 			[Bindable]
 			private var pdfByte:ByteArray = new ByteArray();
 			// we create the PDF
 			[Bindable]
-			private var myPDF:PDF = new PDF(  Orientation.PORTRAIT, Unit.MM, Size.A4 );
+//			private var myPDF:PDF = new PDF(  Orientation.PORTRAIT, Unit.MM, Size.A4 );
 			
 			protected function corporateAnnouncementsMouseOverHandler(event:MouseEvent):void
 			{
-				corporateAnnouncements.source=corporateAnnouncementsOver;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					corporateAnnouncements.source=corporateAnnouncementsOver;
+				}
+				else
+				{
+					corporateAnnouncements.source=AR_CorporateOver;
+				}
 			}
 			
 			protected function corporateAnnouncementsMouseOutHandler(event:MouseEvent):void
-			{
-				corporateAnnouncements.source=corporateAnnouncementsUp;
+			{  
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					corporateAnnouncements.source=corporateAnnouncementsUp;
+				}
+				else
+				{
+					corporateAnnouncements.source=AR_CorporateUp;
+				}
 			}
 			
 			protected function bulletinsMouseOutHandler(event:MouseEvent):void
 			{
-				bulletins.source=bulletinsUp;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					bulletins.source=bulletinsUp;
+				}
+				else
+				{
+					bulletins.source=AR_BulletinsUp;
+				}
 			}
 			
 			protected function bulletinsMouseOverHandler(event:MouseEvent):void
 			{
-				bulletins.source=bulletinsOver;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					bulletins.source=bulletinsOver;
+				}
+				else
+				{
+					bulletins.source=AR_BulletinsOver;
+				}
 			}
 			
 			protected function tradeActivityMouseOutHandler(event:MouseEvent):void
@@ -127,33 +198,88 @@
 			
 			protected function newsMouseOverHandler(event:MouseEvent):void
 			{
-				messages.source=newsOver;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					messages.source=newsOver;
+				}
+				else
+				{
+					messages.source=AR_NewsOver;
+				}
 			}
 			
 			protected function newsMouseOutHandler(event:MouseEvent):void
 			{
-				messages.source=newsUp;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					messages.source=newsUp;
+				}
+				else
+				{
+					messages.source=AR_NewsUp;
+				}
 			}
 			
 			protected function messagesBar_clickHandler(event:MouseEvent):void
 			{
 				if (event.currentTarget.id == "messages")
 				{
-					corporateAnnouncements.source=corporateAnnouncementsUp;
-					bulletins.source=bulletinsUp;
-					messages.source=newsOver;
-					tradeActivity.source = tradeactivityUp;
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						corporateAnnouncements.source=corporateAnnouncementsUp;
+						bulletins.source=bulletinsUp;
+						tradeActivity.source = tradeactivityUp;
+					}
+					else
+					{
+						corporateAnnouncements.source=AR_CorporateUp;
+						bulletins.source=AR_BulletinsUp;
+						tradeActivity.source = AR_tradeActivityUp;
+					}
+					
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						messages.source=newsOver;
+					}
+					else
+					{
+						messages.source=AR_NewsOver;
+					}
+					
 					txaMessagess.visible=true;
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txaMessagess.setStyle('direction','rtl');
+						txaMessagess.setStyle('layoutDirection','rtl');
+					}
 					txaMessages.visible=false;
 					txaCorporateAnnouncements.visible=false;
 					txaBulletins.visible=false;
 				}
 				else if (event.currentTarget.id == "corporateAnnouncements")
 				{
-					tradeActivity.source = tradeactivityUp;
-					corporateAnnouncements.source=corporateAnnouncementsOver;
-					messages.source=newsUp;
-					bulletins.source=bulletinsUp;
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						messages.source=newsUp;
+						bulletins.source=bulletinsUp;
+						tradeActivity.source = tradeactivityUp;
+					}
+					else
+					{
+						messages.source=AR_NewsUp;
+						bulletins.source=AR_BulletinsUp;
+						tradeActivity.source = AR_tradeActivityUp;
+					}
+					
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						corporateAnnouncements.source=corporateAnnouncementsOver;
+					}
+					else
+					{
+						corporateAnnouncements.source=AR_CorporateOver;
+					}
+					
 					txaMessages.visible=false;
 					txaCorporateAnnouncements.visible=true;
 					txaBulletins.visible=false;
@@ -161,21 +287,61 @@
 				}
 				else if (event.currentTarget.id == "bulletins")
 				{
-					tradeActivity.source = tradeactivityUp;
-					messages.source=newsUp;
-					corporateAnnouncements.source=corporateAnnouncementsUp;
-					bulletins.source=bulletinsOver;
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						messages.source=newsUp;
+						corporateAnnouncements.source=corporateAnnouncementsUp;
+						tradeActivity.source = tradeactivityUp;
+					}
+					else
+					{
+						messages.source=AR_NewsUp;
+						corporateAnnouncements.source=AR_CorporateUp;
+						tradeActivity.source = AR_tradeActivityUp;
+					}
+					
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						bulletins.source=bulletinsOver;
+					}
+					else
+					{
+						bulletins.source=AR_BulletinsOver;
+					}
 					txaMessages.visible=false;
 					txaCorporateAnnouncements.visible=false;
 					txaBulletins.visible=true;
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txaBulletins.setStyle('direction','rtl');
+						txaBulletins.setStyle('layoutDirection','rtl');
+					}
 					txaMessagess.visible=false;
 				}
 				else if (event.currentTarget.id == "tradeActivity")
 				{
-					tradeActivity.source = tradeactivityOver
-					messages.source=newsUp;
-					corporateAnnouncements.source=corporateAnnouncementsUp;
-					bulletins.source=bulletinsUp;
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						messages.source=newsUp;
+						corporateAnnouncements.source=corporateAnnouncementsUp;
+						bulletins.source=bulletinsUp;
+					}
+					else
+					{
+						messages.source=AR_NewsUp;
+						corporateAnnouncements.source=AR_CorporateUp;
+						bulletins.source=AR_BulletinsUp;
+					}
+					
+					if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+					{
+						tradeActivity.source = tradeactivityOver
+					}
+					else
+					{
+						tradeActivity.source = AR_tradeActivityOver;
+					}
+					
 					txaMessages.visible=true;
 					txaCorporateAnnouncements.visible=false;
 					txaBulletins.visible=false;
@@ -186,7 +352,14 @@
 			protected function bordercontainer1creationCompleteHandler(event:FlexEvent):void
 			{
 				customizeContextMenu();  
-				tradeActivity.source = tradeactivityOver
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					tradeActivity.source = tradeactivityOver;
+				}
+				else
+				{
+					tradeActivity.source = AR_tradeActivityOver;
+				}
 				txaMessages.visible=true;
 				txaCorporateAnnouncements.visible=false;
 				txaBulletins.visible=false;
@@ -270,18 +443,18 @@
 						{  
 							var record:Object = messagesArrayCol.getItemAt(r);
 							
-							tp = new TextInput();
+							tp = new mx.controls.TextInput();
 							tp.text = record.toString();
 							vb.addChild(tp);
 							i++;
 						}
 							vgg.addChild(vb);
-						myPDF.setDisplayMode ( Display.FULL_WIDTH ); 
-						var ar:Array = vgg.getChildren();
-						myPDF.addPage();
-						myPDF.addImage(vgg);
-						
-						pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
+//						myPDF.setDisplayMode ( Display.FULL_WIDTH ); 
+//						var ar:Array = vgg.getChildren();
+//						myPDF.addPage();
+//						myPDF.addImage(vgg);
+//						
+//						pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
 						
 						fr.addEventListener(Event.COMPLETE,fileReference_Complete);
 						fr.save(pdfByte,"messages.pdf");	
@@ -312,18 +485,18 @@
 				{
 				
 				// we set the zoom to 100%
-				myPDF.setDisplayMode ( Display.FULL_PAGE ); 
-				
-				
-				// we add a page
-				myPDF.addPage();
-				
-				myPDF.addImage(vgg);
-				// to save the PDF your specificy the path to the create.php script
-				// alivepdf takes care of the rest, if you are using AIR and want to save the PDF locally just use Method.LOCAL
-				// and save the returned bytes on the disk through the FileStream class
-				pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
-				
+//				myPDF.setDisplayMode ( Display.FULL_PAGE ); 
+//				
+//				
+//				// we add a page
+//				myPDF.addPage();
+//				
+//				myPDF.addImage(vgg);
+//				// to save the PDF your specificy the path to the create.php script
+//				// alivepdf takes care of the rest, if you are using AIR and want to save the PDF locally just use Method.LOCAL
+//				// and save the returned bytes on the disk through the FileStream class
+//				pdfByte = myPDF.save( Method.LOCAL,  "messages.pdf" );
+//				
 				fr.addEventListener(Event.COMPLETE,fileReference_Complete);
 				fr.save(pdfByte,"messages.pdf");	
 				}catch(e:Error)
@@ -332,67 +505,251 @@
 				}
 			}
 			
-			public function updateStatus2(msg:String):void
+			public function updateStatus2(event:NonVisualItemUpdateEvent,msg:String):void
 			{
+				textBullet1=new mx.controls.TextInput();
+				textBullet1.visible = false;
+				txIp2 = new spark.components.TextInput();
+				
+				
 				if (marketMessages == true)
 				{
 					messagesArrayCol.addItem(msg);
-					textBullet1=new TextInput();
-					textBullet1.setStyle("borderStyle", "none");
-					textBullet1.setStyle("color", 0xffffff);
-					textBullet1.setStyle("backgroundColor", 0x000000);
-					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
-					textBullet1.width=vgroup.width
-					textBullet1.editable=false;
+//					txIp2.setStyle('direction',(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr');
+					txIp2.setStyle("borderStyle", "none");
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "2") // change
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[23]) == "1")//negotiated
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					else
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")//submit
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "4") // rejected
+					{
+						txIp2.setStyle("color", 0xFF0000);
+//						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+//						{
+//							txIp2.setStyle("color", 0x3dbeff);
+//						}
+//						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+//						{
+//							txIp2.setStyle("color", 0xe65cd4);
+//						}
+					}
+					else if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "1") // cancel
+					{
+						txIp2.setStyle("color", 0xFC0606);
+					}
+					else if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "3") // exe
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					txIp2.setStyle("contentBackgroundColor", 0x000000);
+					txIp2.setStyle("borderVisible", "false");
+					txIp2.setStyle("borderThickness", 0);
+//					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txIp2.setStyle('textAlign','right');
+						txIp2.setStyle('direction','rtl');
+					}
+					else
+					{
+						txIp2.setStyle('direction','ltr');
+						txIp2.setStyle('textAlign','left');
+					}
+					txIp2.width=vgroup.width
+					txIp2.editable=false;
 					vgroup1.setStyle("backgroundColor", 0x000000);
-					vgroup1.addChild(textBullet1);
+					txIp2.text = msg;
+					vgroup1.addChild(txIp2);
 					marketMessages=false;
 				}
 				else
 				{
 					messagesArrayCol.addItem(msg);
-					textBullet1=new TextInput();
-					textBullet1.setStyle("color", 0xffffff);
-					textBullet1.setStyle("borderStyle", "none");
-					textBullet1.setStyle("backgroundColor", 0x1e1e1e);
-					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
-					textBullet1.width=vgroup.width
-					textBullet1.editable=false;
+					txIp2.setStyle('direction',(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr');
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "2") // change
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[23]) == "1")//negotiated
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					else
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")//submit
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					
+					
+					if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "4") // rejected
+					{
+						txIp2.setStyle("color", 0xFF0000);
+//						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+//						{
+//							txIp2.setStyle("color", 0x3dbeff);
+//						}
+//						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+//						{
+//							txIp2.setStyle("color", 0xe65cd4);
+//						}
+					}
+					else if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "1") // cancel
+					{
+						txIp2.setStyle("color", 0xFC0606);
+					}
+					else if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "3") // exe
+					{
+						if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
+						{
+							txIp2.setStyle("color", 0x3dbeff);
+						}
+						else//if(LSListener.extractFieldData(event, LSListener.fieldSchemaBestMarket[0] == "4")
+						{
+							txIp2.setStyle("color", 0xe65cd4);
+						}
+					}
+					txIp2.setStyle("borderStyle", "none");
+					txIp2.setStyle("contentBackgroundColor", 0x1e1e1e);
+					txIp2.setStyle("borderVisible", "false");
+					txIp2.setStyle("borderThickness", 0);
+//					textBullet1.htmlText+="<TEXTFORMAT>" + msg + "</font><br /></TEXTFORMAT>";
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txIp2.setStyle('textAlign','right');
+						txIp2.setStyle('direction','rtl');
+					}
+					else
+					{
+						txIp2.setStyle('direction','ltr');
+						txIp2.setStyle('textAlign','left');
+					}
+					txIp2.width=vgroup.width
+					txIp2.editable=false;
 					vgroup1.setStyle("backgroundColor", 0x1e1e1e);
-					vgroup1.addChild(textBullet1);
+					txIp2.text = msg;
+					vgroup1.addChild(txIp2);
 					marketMessages=true;
 				}
 			}
 			
 			public function updateStatus(msg:String):void
 			{
+				textBullet1=new mx.controls.TextInput();
+				txIp = new spark.components.TextInput();
+				textBullet1.visible = false;
 				messagesArrayCol.addItem(msg);
 				txaMessages.visible=true;
 				if (flag2 == true)
 				{
-					textBullet1=new TextInput();
-					textBullet1.setStyle("color", 0xffffff);
-					textBullet1.setStyle("borderStyle", "none");
-					textBullet1.setStyle("backgroundColor", 0x000000);
 					textBullet1.htmlText+="<TEXTFORMAT><font color='#FFFFFF'>" + msg + "</font><br /></TEXTFORMAT>";
-					textBullet1.width=vgroup.width
-					textBullet1.editable=false;
+					txIp.setStyle("color", 0xffffff);
+					txIp.setStyle("borderStyle", "none");
+					txIp.setStyle("contentBackgroundColor", 0x000000);
+					txIp.setStyle("borderVisible", "false");
+					txIp.setStyle("borderThickness", 0);
+					txIp.text = msg;
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txIp.setStyle('direction','rtl');
+						txIp.setStyle('textAlign','right');
+					}
+					else
+					{
+						txIp.setStyle('direction','ltr');
+						txIp.setStyle('textAlign','left');
+					}
+					txIp.width=vgroup.width
+					txIp.editable=false;
 					vgroup1.setStyle("backgroundColor", 0x000000);
-					vgroup1.addChild(textBullet1);
+					vgroup1.addChild(txIp);
 					flag2=false;
 				}
 				else if (flag2 == false)
 				{
 					messagesArrayCol.addItem(msg);
-					textBullet1=new TextInput();
-					textBullet1.setStyle("color", 0xffffff);
-					textBullet1.setStyle("borderStyle", "none");
-					textBullet1.setStyle("backgroundColor", 0x1e1e1e);
+					txIp.setStyle("color", 0xffffff);
+					txIp.setStyle("borderStyle", "none");
+					txIp.setStyle("borderVisible", "false");
+					txIp.setStyle("borderThickness", 0);
+					txIp.setStyle("contentBackgroundColor", 0x1e1e1e);
 					textBullet1.htmlText+="<TEXTFORMAT><font color='#FFFFFF'>" + msg + "</font><br /></TEXTFORMAT>";
-					textBullet1.width=vgroup.width
-					textBullet1.editable=false;
+					txIp.text = msg;
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						txIp.setStyle('direction','rtl');
+						txIp.setStyle('textAlign','right');
+					}
+					else
+					{
+						txIp.setStyle('direction','ltr');
+						txIp.setStyle('textAlign','left');
+					}
+					txIp.width=vgroup.width
+					txIp.editable=false;
 					vgroup1.setStyle("backgroundColor", 0x1e1e1e);
-					vgroup1.addChild(textBullet1);
+					vgroup1.addChild(txIp);
 					flag2=true;
 				}
 				
@@ -404,11 +761,17 @@
 				if (flag == true)
 				{
 					messagesArrayCol.addItem(msg);
-					textBullet=new TextInput();
+					textBullet=new mx.controls.TextInput();
 					textBullet.setStyle("color", 0xffffff);
 					textBullet.setStyle("borderStyle", "none");
 					textBullet.setStyle("backgroundColor", 0x000000);
 					textBullet.htmlText+="<TEXTFORMAT><span style='background-color:#222021;'><font color='#FFFFFF'>" + msg + "</font><span><br /></TEXTFORMAT>";
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+//						textBullet.setStyle('direction','rtl');
+						textBullet.setStyle('textAlign','right');
+//						textBullet.setStyle('layoutDirection','rtl');
+					}
 					textBullet.width=vgroup.width
 					textBullet.editable=false;
 					vgroup.setStyle("backgroundColor", 0x000000);
@@ -418,11 +781,15 @@
 				else
 				{
 					messagesArrayCol.addItem(msg);
-					textBullet=new TextInput();
+					textBullet=new mx.controls.TextInput();
 					textBullet.setStyle("color", 0xffffff);
 					textBullet.setStyle("borderStyle", "none");
 					textBullet.setStyle("backgroundColor", 0x1e1e1e);
 					textBullet.htmlText+="<TEXTFORMAT><span style='background-color:#222021;'><font color='#FFFFFF'>" + msg + "</font><span><br /></TEXTFORMAT>";
+					if((FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA'))
+					{
+						textBullet.setStyle('textAlign','right');
+					}
 					textBullet.width=vgroup.width
 					textBullet.editable=false;
 					vgroup.setStyle("backgroundColor", 0x1e1e1e);
@@ -432,26 +799,25 @@
 			}
 		]]>
 	</fx:Script>
-		
 	<mx:Canvas  visible="false" width="100%"  id="vgg"/>
 	<mx:Canvas borderStyle="none"
-			   id="txaMessages"
-			   width="100%"
+			   id="txaMessages" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+			   width="100%" layoutDirection="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			   left="0"
 			   height="167"
 			   backgroundColor="#000000"
 			   minHeight="200"
 			   color="#ffffff">
-		<mx:VBox id="vgroup1"
+		<mx:VBox id="vgroup1" 
 				 width="100%" 
 				 verticalGap="-2"
 				 horizontalScrollPolicy="auto"
-				 borderStyle="none"
+				 borderStyle="none" 
 				 borderColor="#000000"/>
 	</mx:Canvas>
 	<mx:Canvas borderStyle="none"
-			   id="txaMessagess"
-			   width="100%"
+			   id="txaMessagess"  
+			   width="100%" 
 			   left="0"
 			   height="167" visible="false"
 			   backgroundColor="#000000"
@@ -464,32 +830,31 @@
 				 borderStyle="none"
 				 borderColor="#000000"/>
 	</mx:Canvas>
-	
 	<mx:Canvas borderStyle="none"
 			   id="txaCorporateAnnouncements"
-			   width="100%"
-			   left="0"
+			   width="100%" 
+			   left="0" 
 			   height="167"
 			   backgroundColor="#000000"
 			   minHeight="200"
 			   color="#ffffff">
 		<mx:VBox id="vgroup2"
-				 width="100%"
+				 width="100%" 
 				 verticalGap="-2"
 				 horizontalScrollPolicy="auto"
 				 borderStyle="none"
 				 borderColor="#000000"/>
 	</mx:Canvas>
 	<mx:Canvas borderStyle="none"
-			   id="txaBulletins"
-			   width="100%"
+			   id="txaBulletins" 
+			   width="100%" 
 			   left="0"
 			   height="167"
 			   backgroundColor="#000000"
 			   minHeight="200"
 			   color="#ffffff">
-		<mx:VBox id="vgroup"
-				 width="100%"
+		<mx:VBox id="vgroup" 
+				 width="100%" 
 				 verticalGap="-2"
 				 horizontalScrollPolicy="auto"
 				 borderStyle="none"
@@ -500,23 +865,23 @@
 			 y="165"
 			 width="100%"
 			 horizontalGap="0">
-		<s:Image source="@Embed('../images/tardeactivityup.jpg')"
+		<s:Image source="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')?tradeactivityUp:AR_tradeActivityUp}"
 				 id="tradeActivity" useHandCursor="true" buttonMode="true"
 				 click="messagesBar_clickHandler(event)"
 				 />
-		<s:Image source="@Embed('../images/newsup.jpg')"
+		<s:Image source="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')?newsUp:AR_NewsUp}"
 				 id="messages"
 				 buttonMode="true"
 				 useHandCursor="true"
 				 click="messagesBar_clickHandler(event)"
 				 />
-		<s:Image source="@Embed('../images/coporateannouceup.jpg')"
+		<s:Image source="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')?corporateAnnouncementsUp:AR_CorporateUp}"
 				 id="corporateAnnouncements"
 				 buttonMode="true"
 				 useHandCursor="true"
 				 click="messagesBar_clickHandler(event)"
 				 />
-		<s:Image source="@Embed('../images/bulletinsupdown.jpg')"
+		<s:Image source="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')?bulletinsUp:AR_BulletinsUp}"
 				 id="bulletins"
 				 buttonMode="true"
 				 useHandCursor="true"

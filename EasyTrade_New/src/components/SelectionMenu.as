@@ -3,6 +3,7 @@ import common.Messages;
 
 import components.ComboBoxItem;
 import components.EZDropDownTextInput;
+import components.FormPrintView;
 
 import controller.ModelManager;
 import controller.ProfileManager;
@@ -13,7 +14,9 @@ import flash.geom.Point;
 
 import mx.collections.ArrayList;
 import mx.controls.Alert;
+import mx.core.FlexGlobals;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 
 import spark.components.CheckBox;
 import spark.components.TextInput;
@@ -21,7 +24,6 @@ import spark.components.TextInput;
 import view.BulletinControl;
 import view.MarketSummary;
 import view.SelectionMenu;
-import components.FormPrintView;
 
 [Bindable]
 public var internalExchangeID:Number=-1;
@@ -44,6 +46,7 @@ protected function txtExchange_clickHandler(event:MouseEvent):void
 		return;
 	}
 	var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;
+	menu.layoutDirection = (FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr';
 	menu.lstList.dataProvider=exchangeList;
 	positionMenu(event, menu);
 	menu.addEventListener(Constants.EVENT_MENU_CLOSE, exchangeSelectionMenuClosed);
@@ -57,7 +60,7 @@ protected function txtMarket_clickHandler(event:MouseEvent):void
 	}
 	if (internalExchangeID < 0)
 	{
-		Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','selectExchange'), ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;
@@ -69,6 +72,7 @@ protected function txtMarket_clickHandler(event:MouseEvent):void
 
 private function positionMenu(event:MouseEvent, menu:SelectionMenu):void
 {
+	
 	var ptCell:Point=new Point(event.currentTarget.x, event.currentTarget.y);
 	var ptMenu:Point=this.contentToGlobal(ptCell);
 	if (menu.height + ptMenu.y > event.currentTarget.parent.height)

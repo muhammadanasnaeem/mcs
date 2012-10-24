@@ -18,6 +18,7 @@
 			import components.FormPrintView;
 			import components.UserTradeHistoryFormPrintView;
 			
+			import mx.core.FlexGlobals;
 			import mx.events.DataGridEvent;
 			import mx.printing.FlexPrintJob;
 			
@@ -70,12 +71,12 @@
 			
 			private function fileIOError_Handler(event:IOErrorEvent):void
 			{
-				Alert.show(Messages.FILE_IO_ERROR, Messages.TITLE_ERROR);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileIOErr'), ResourceManager.getInstance().getString('marketwatch','error'));
 			}
 			
 			private function fileSaved_Handler(event:Event):void
 			{
-				Alert.show(Messages.FILE_SAVED_SUCCESS);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','fileSuccessMsg'));
 			}
 			
 			private function insertRecordInSheet(row:int, sheet:Sheet, record:Object):void
@@ -267,34 +268,34 @@
 				 source="{ImgPrint}" buttonMode="true" useHandCursor="true" />
 		<s:Image y="-1" buttonMode="true" click="btnExport_clickHandler(event)" visible="true"
 				 horizontalCenter="-415" source="{ImgXls}" useHandCursor="true"/>
-		<s:Label text="Exchange:"
-				 top="7"
-				 horizontalCenter="-282"/>
+		<s:Label text="{resourceManager.getString('marketwatch','exchange')}:"
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-229':'-282'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtExchange"
 										editable="false"
 										click="txtExchange_clickHandler(event)"
-										horizontalCenter="-229"/>
-		<s:Label text="Market:"
-				 top="7"
-				 horizontalCenter="-177"/>
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-282':'-229'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch','market')}:"
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-133':'-177'}"/>
 		<components:EZDropDownTextInput width="49"
 										top="2"
 										height="20"
 										id="txtMarket"
 										editable="false"
 										click="txtMarket_clickHandler(event)"
-										horizontalCenter="-133"/>
-		<s:Label text="Symbol:"
-				 top="7"
-				 horizontalCenter="-80"/>
+										horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-177':'-133'}"/>
+		<s:Label text="{resourceManager.getString('marketwatch','symbol')}:"
+				 top="7" direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
+				 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'3':'-80'}"/>
 		<s:TextInput width="110"
 					 top="2"
 					 height="20"
 					 id="txtSymbol"
-					 horizontalCenter="3"
+					 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'-62':'3'}"
 					 keyDown="txtSymbol_keyDownHandler(event)"/>
 	</s:BorderContainer>
 	<components:EZDataGrid right="1"
@@ -307,7 +308,7 @@
 						   dataProvider="{ModelManager.getInstance().userTradeHistoryModel.userTradeHistoryGroups}"
 						   headerRelease="adgUserTradeHistory_headerReleaseHandler(event)">
 		<components:columns>
-			<mx:DataGridColumn headerText="Symbol"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','symbol')}"
 							   dataField="SYMBOL_CODE"
 							   draggable="false">
 				<mx:itemRenderer>
@@ -319,7 +320,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="User"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','user')}"
 							   dataField="USER"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -330,7 +331,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Client"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','client')}"
 							   dataField="CLIENT_CODE"
 							   draggable="false">
 				<mx:itemRenderer>
@@ -342,7 +343,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Order Number"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','orderNumber')}"
 							   dataField="ORDER_ID"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -380,13 +381,13 @@
 								]]>
 							</fx:Script>
 						</mx:Label>
-
+    
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
 			<!--mx:DataGridColumn headerText="Exchange" dataField="EXCHANGE_CODE" />
-			<mx:DataGridColumn headerText="Market" dataField="MARKET_CODE" /-->
-			<mx:DataGridColumn headerText="Price"
+			<mx:DataGridColumn headerText="Market" dataField="MARKET_CODE" /--> 
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','price')}"
 							   dataField="PRICE"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -426,7 +427,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Volume"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','volume')}"
 							   dataField="VOLUME"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -466,7 +467,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Ticket ID"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','ticketId')}"
 							   dataField="TICKET_ID"
 							   sortable="false">
 				<mx:itemRenderer>
@@ -506,7 +507,7 @@
 					</fx:Component>
 				</mx:itemRenderer>
 			</mx:DataGridColumn>
-			<mx:DataGridColumn headerText="Time"
+			<mx:DataGridColumn headerText="{resourceManager.getString('marketwatch','time')}"
 							   dataField="ENTRY_DATETIME"
 							   width="150"
 							   sortable="false">
@@ -535,14 +536,15 @@
 			  top="-1" useHandCursor="true" buttonMode="true"
 			  horizontalCenter="139"
 			  click="btnRefresh_clickHandler(event)"/>
-	<s:Label text="Trader:"
-			 horizontalCenter="235"
+	<s:Label text="{resourceManager.getString('marketwatch','trader')}:"
+			 horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'295':'235'}" 
+			 direction="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'rtl':'ltr'}"
 			 top="7"/>
 	<s:DropDownList width="75"
 					change="traders_changeHandler(event)"
 					dataProvider="{tradersList}"
 					height="20"
 					id="traders"
-					horizontalCenter="295"
+					horizontalCenter="{(FlexGlobals.topLevelApplication.parameters.LOCALE == 'ar_SA')?'235':'295'}"
 					top="2"/>
 </s:Group>

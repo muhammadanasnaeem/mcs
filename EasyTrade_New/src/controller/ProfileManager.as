@@ -19,6 +19,7 @@ package controller
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
+	import mx.resources.ResourceManager;
 	
 	import services.LSListener;
 	
@@ -336,7 +337,7 @@ package controller
 			switch (event.info.code)
 			{
 				case "SharedObject.Flush.Failed":
-					Alert.show(Messages.LOCAL_DATA_NOT_WRITABLE);
+					Alert.show(ResourceManager.getInstance().getString('marketwatch','noWritePermissions'));
 					break;
 			}
 		}

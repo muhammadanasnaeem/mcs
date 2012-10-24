@@ -3,26 +3,27 @@ package model
 	import businessobjects.Bulletin;
 	import businessobjects.GrantBO;
 	import businessobjects.UserProfile;
-
+	
 	import common.Constants;
 	import common.Messages;
-
+	
 	import components.ComboBoxItem;
-
+	
 	import controller.ModelManager;
 	import controller.ProfileManager;
 	import controller.WindowManager;
-
+	
 	import flash.net.SharedObject;
-
+	
 	import mx.collections.ArrayCollection;
 	import mx.collections.ArrayList;
 	import mx.controls.Alert;
 	import mx.core.INavigatorContent;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
-
+	
 	import services.AnnouncerClient;
 	import services.LoginManagerClient;
 
@@ -130,6 +131,8 @@ package model
 
 		public function onResult(event:ResultEvent):void
 		{
+//			var sobj:SharedObject = ProfileManager.getInstance().sharedObject;
+//			ProfileManager.getInstance().loadMarketWatchSymbolData(sobj);
 			// added on 11/1/2011
 			var modelManager:ModelManager=ModelManager.getInstance();
 			if (event.result && event.result.userId && event.result.userId > -1)
@@ -141,6 +144,7 @@ package model
 				this.userProfile.roles=event.result.roles; // added on 29/11/2010
 				// added on 16/3/2011
 				this.userProfile.grants=event.result.grants;
+				this.userProfile.brokerId = event.result.brokerId;// added on 06/10/2012 (nonsense people making code sloppy by placing a single attribute at more than single place and then playing blame game)
 				for each (var grant:Object in this.userProfile.grants)
 				{
 					modelManager.distinctModel.brokers.put(grant.brokerCode, grant.brokerId.toString());
@@ -157,7 +161,7 @@ package model
 				if (WindowManager.getInstance().loginWindow.chckRememberMe.selected)
 				{
 					userProfileRemSO.data.userName=WindowManager.getInstance().loginWindow.txtUserID.text;
-					userProfileRemSO.data.password=WindowManager.getInstance().loginWindow.txtPassword.text;
+//					userProfileRemSO.data.password=WindowManager.getInstance().loginWindow.txtPassword.text;
 					//userProfileRemSO.addEventListener(NetStatusEvent.NET_STATUS, ProfileManager.getInstance().netStatusHandler);
 					userProfileRemSO.flush();
 				}
@@ -174,7 +178,7 @@ package model
 			{
 				modelManager.userID=-1;
 				modelManager.brokerID=-1;
-				Alert.show(Messages.ERROR_LOGGING_IN, Messages.TITLE_ERROR);
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','sysCouldNotLogin'), ResourceManager.getInstance().getString('marketwatch','error'));
 			}
 			CursorManager.removeBusyCursor();
 		}
@@ -183,7 +187,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			CursorManager.removeBusyCursor();
 		}
 

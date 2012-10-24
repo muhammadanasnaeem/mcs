@@ -47,6 +47,8 @@ package controller
 	import model.ExchangeModel;
 	import model.ExchangeScheduleModel;
 	import model.ExchangeStatsModel;
+	import model.HistoricalSymbolDataChartModel;
+	import model.HistoricalSymbolDataModel;
 	import model.IModel;
 	import model.LastDayRemainingOrdersModel;
 	import model.MarketSummaryModel;
@@ -76,6 +78,7 @@ package controller
 	import mx.managers.CursorManager;
 	import mx.managers.CursorManagerPriority;
 	import mx.managers.FocusManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -88,7 +91,6 @@ package controller
 	import view.EventLog;
 	import view.MarketSchedule;
 	import view.Order;
-	import view.RiskInformation;
 	import view.SellOrder;
 	import view.UserTradeHistory;
 
@@ -195,6 +197,34 @@ package controller
 		public function set exchangeStatsModel(value:ExchangeStatsModel):void
 		{
 			exchangeStatsModel_=value;
+		}
+		
+		/////////////////////Historical Symbol Data Model///////////////////
+		private var historicalSymbolDataModel_:HistoricalSymbolDataModel=new HistoricalSymbolDataModel();
+		
+		[Bindable]
+		public function get historicalSymbolDataModel():HistoricalSymbolDataModel
+		{
+			return historicalSymbolDataModel_;
+		}
+		
+		public function set historicalSymbolDataModel(value:HistoricalSymbolDataModel):void
+		{
+			historicalSymbolDataModel_=value;
+		}
+		
+		/////////////////////Historical Symbol Data Charts Model///////////////////
+		private var historicalSymbolDataChartsModel_:HistoricalSymbolDataChartModel=new HistoricalSymbolDataChartModel();
+		
+		[Bindable]
+		public function get historicalSymbolDataChartsModel():HistoricalSymbolDataChartModel
+		{
+			return historicalSymbolDataChartsModel_;
+		}
+		
+		public function set historicalSymbolDataChartsModel(value:HistoricalSymbolDataChartModel):void
+		{
+			historicalSymbolDataChartsModel_=value;
 		}
 
 		/////////////////////Market Model///////////////////
@@ -696,6 +726,21 @@ package controller
 				{
 					symbolTradeHistoryModel.execute();
 				}
+				if ( windowManager.viewManager.histsymDataCharts.internalExchangeID > -1 && windowManager.viewManager.histsymDataCharts.internalMarketID > -1 && windowManager.viewManager.histsymDataCharts.internalSymbolID > -1 && 
+						windowManager.viewManager.histsymDataCharts.startDate != null && windowManager.viewManager.histsymDataCharts.endDate != null
+						&& windowManager.viewManager.histsymDataCharts.endDate >= windowManager.viewManager.histsymDataCharts.startDate
+						&& windowManager.viewManager.histsymDataCharts.startDate.text != null && windowManager.viewManager.histsymDataCharts.startDate.text != ''
+						&& windowManager.viewManager.histsymDataCharts.endDate.text != null && windowManager.viewManager.histsymDataCharts.endDate.text != ''
+				)
+				{
+					historicalSymbolDataChartsModel.execute();
+				}
+				else
+				{
+					windowManager.viewManager.histsymDataCharts.startDate.text = '';
+					windowManager.viewManager.histsymDataCharts.startDate.text = '';
+					Alert.show('Please Correct the Input','Error');
+				}
 			}
 			catch(e:Error)
 			{
@@ -718,7 +763,7 @@ package controller
 		public function onCancelAllOrdersFault(event:FaultEvent):void
 		{
 			CursorManager.removeBusyCursor();
-			Alert.show(event.fault.message, Messages.TITLE_ERROR);
+			Alert.show(event.fault.message, ResourceManager.getInstance().getString('marketwatch','error'));
 		}
 
 		public function updateEventLog():void
@@ -726,9 +771,14 @@ package controller
 			eventLogModel_.execute();
 		}
 		
+		public function updateSymbolHistoryReport():void
+		{
+			historicalSymbolDataModel_.execute();
+		}
+		
 		public function updateRiskInformation():void
 		{
-			riskInformationModel_.execute();
+//			riskInformationModel_.execute();
 		}
 
 		public function updateExchangeSchedule():void
@@ -813,7 +863,8 @@ package controller
 			if(event == null || buyOrder.txtSymbol.text == '' || buyOrder.txtVolume.text == '' ||
 				buyOrder.txtPrice.text == '' || buyOrder.txtAccount.text == '')
 			{
-				buyOrder.txtMsg.text = 'Please fill the required fields.';
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields'),ResourceManager.getInstance().getString('marketwatch','error'));
+//				buyOrder.txtMsg.text = ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields')+' ';
 				return;	
 			}
 			buyOrder.txtSymbol.text=buyOrder.txtSymbol.text.toUpperCase();
@@ -838,14 +889,14 @@ package controller
 					var symbol:SymbolBO=ModelManager.getInstance().exchangeModel.getSymbolDetail(exchangeId, marketId, symbolId) as SymbolBO;
 					if (volume < symbol.LOWER_ORDER_VOLUME_LIMIT || volume > symbol.UPPER_ORDER_VOLUME_LIMIT)
 					{
-						txtMessage="Volume limits are " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+' ' + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
 						buyOrder.txtMsg.text=txtMessage;
 						return;
 					}
 					
 					if (!((volume / symbol.BOARD_LOT) is uint))
 					{
-						txtMessage="Volume lot size is  " + symbol.BOARD_LOT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLotSize')+' ' + symbol.BOARD_LOT;
 						buyOrder.txtMsg.text=txtMessage;
 						return;
 					}
@@ -885,21 +936,21 @@ package controller
 			{
 				if (buyOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(buyOrder.internalExchangeID, buyOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
-					buyOrder.txtMsg.text="BUY ";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
+					buyOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','buy')+' ';
 					buyOrder.txtMsg.text+=buyOrder.txtVolume.text;
 					buyOrder.txtMsg.text+=" " + unit;
-					buyOrder.txtMsg.text+="s of ";
+					buyOrder.txtMsg.text+="s "+ResourceManager.getInstance().getString('marketwatch','of')+' ';
 					buyOrder.txtMsg.text+=buyOrder.txtSymbol.text;
-					buyOrder.txtMsg.text+=" at "
+					buyOrder.txtMsg.text+=' '+ResourceManager.getInstance().getString('marketwatch','at')+' ';
 					buyOrder.txtMsg.text+=buyOrder.txtPrice.text;
-					buyOrder.txtMsg.text+=" per " + unit + "?";
+					buyOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per') + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (buyOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(buyOrder.txtDiscVol.text)))
 					{
-						buyOrder.txtMsg.text+=" Disclosed volume is " + buyOrder.txtDiscVol.text;
+						buyOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + buyOrder.txtDiscVol.text;
 					}
 					buyOrder.isFirstSubmission=false;
 				}
@@ -933,7 +984,7 @@ package controller
 				}
 				else
 				{
-					buyOrder.txtMsg.text="Please correct the input.";
+//					buyOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				
 				buyOrder.isFirstSubmission=true;
@@ -974,14 +1025,14 @@ package controller
 					var symbol:SymbolBO=ModelManager.getInstance().exchangeModel.getSymbolDetail(exchangeId, marketId, symbolId) as SymbolBO;
 					if (volume < symbol.LOWER_ORDER_VOLUME_LIMIT || volume > symbol.UPPER_ORDER_VOLUME_LIMIT)
 					{
-						txtMessage="Volume limits are " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+" " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
 						buyOrder.txtMsg.text=txtMessage;
 						return;
 					}
 
 					if (!((volume / symbol.BOARD_LOT) is uint))
 					{
-						txtMessage="Volume lot size is  " + symbol.BOARD_LOT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLotSize')+" " + symbol.BOARD_LOT;
 						buyOrder.txtMsg.text=txtMessage;
 						return;
 					}
@@ -1021,21 +1072,21 @@ package controller
 			{
 				if (buyOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(buyOrder.internalExchangeID, buyOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
-					buyOrder.txtMsg.text="BUY ";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
+					buyOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','buy')+" ";
 					buyOrder.txtMsg.text+=buyOrder.txtVolume.text;
 					buyOrder.txtMsg.text+=" " + unit;
-					buyOrder.txtMsg.text+="s of ";
+					buyOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					buyOrder.txtMsg.text+=buyOrder.txtSymbol.text;
-					buyOrder.txtMsg.text+=" at "
+					buyOrder.txtMsg.text+="  "+ResourceManager.getInstance().getString('marketwatch','at')+' ' ;
 					buyOrder.txtMsg.text+=buyOrder.txtPrice.text;
-					buyOrder.txtMsg.text+=" per " + unit + "?";
+					buyOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (buyOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(buyOrder.txtDiscVol.text)))
 					{
-						buyOrder.txtMsg.text+=" Disclosed volume is " + buyOrder.txtDiscVol.text;
+						buyOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + buyOrder.txtDiscVol.text;
 					}
 					buyOrder.isFirstSubmission=false;
 				}
@@ -1068,7 +1119,7 @@ package controller
 				}
 				else
 				{
-					buyOrder.txtMsg.text="Please correct the input.";
+//					buyOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 
 				buyOrder.isFirstSubmission=true;
@@ -1110,14 +1161,14 @@ package controller
 
 					if (volume < symbol.LOWER_ORDER_VOLUME_LIMIT || volume > symbol.UPPER_ORDER_VOLUME_LIMIT)
 					{
-						txtMessage="Volume limits are " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+" " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
 						sellOrder.txtMsg.text=txtMessage;
 						return;
 					}
 
 					if (!((volume / symbol.BOARD_LOT) is uint))
 					{
-						txtMessage="Volume lot size is  " + symbol.BOARD_LOT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+" " + symbol.BOARD_LOT;
 						sellOrder.txtMsg.text=txtMessage;
 						return;
 					}
@@ -1159,21 +1210,21 @@ package controller
 			{
 				if (sellOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(sellOrder.internalExchangeID, sellOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
-					sellOrder.txtMsg.text="SELL ";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
+					sellOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','sell')+" ";
 					sellOrder.txtMsg.text+=sellOrder.txtVolume.text;
 					sellOrder.txtMsg.text+=" " + unit;
-					sellOrder.txtMsg.text+="s of ";
+					sellOrder.txtMsg.text+="s"+ ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					sellOrder.txtMsg.text+=sellOrder.txtSymbol.text;
-					sellOrder.txtMsg.text+=" at "
+					sellOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','at')+' ';
 					sellOrder.txtMsg.text+=sellOrder.txtPrice.text;
-					sellOrder.txtMsg.text+=" per " + unit + "?";
+					sellOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (sellOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(sellOrder.txtDiscVol.text)))
 					{
-						sellOrder.txtMsg.text+=" Disclosed volume is " + sellOrder.txtDiscVol.text;
+						sellOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + sellOrder.txtDiscVol.text;
 					}
 					sellOrder.isFirstSubmission=false;
 				}
@@ -1204,7 +1255,7 @@ package controller
 				}
 				else
 				{
-					sellOrder.txtMsg.text="Please correct the input.";
+//					sellOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				sellOrder.isFirstSubmission=true;
 			}
@@ -1219,7 +1270,8 @@ package controller
 			if(event == null || sellOrder.txtSymbol.text == '' || sellOrder.txtVolume.text == '' ||
 				sellOrder.txtPrice.text == '' || sellOrder.txtAccount.text == '')
 			{
-				sellOrder.txtMsg.text = 'Please fill the required fields.';
+//				sellOrder.txtMsg.text = ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields');
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields'),ResourceManager.getInstance().getString('marketwatch','error'));
 				return;
 			}
 			sellOrder.txtSymbol.text=sellOrder.txtSymbol.text.toUpperCase();
@@ -1245,14 +1297,14 @@ package controller
 					
 					if (volume < symbol.LOWER_ORDER_VOLUME_LIMIT || volume > symbol.UPPER_ORDER_VOLUME_LIMIT)
 					{
-						txtMessage="Volume limits are " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+" " + symbol.LOWER_ORDER_VOLUME_LIMIT + " - " + symbol.UPPER_ORDER_VOLUME_LIMIT;
 						sellOrder.txtMsg.text=txtMessage;
 						return;
 					}
 					
 					if (!((volume / symbol.BOARD_LOT) is uint))
 					{
-						txtMessage="Volume lot size is  " + symbol.BOARD_LOT;
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volLotSize')+" " + symbol.BOARD_LOT;
 						sellOrder.txtMsg.text=txtMessage;
 						return;
 					}
@@ -1294,21 +1346,21 @@ package controller
 			{
 				if (sellOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(sellOrder.internalExchangeID, sellOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
-					sellOrder.txtMsg.text="SELL ";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
+					sellOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','sell')+" ";
 					sellOrder.txtMsg.text+=sellOrder.txtVolume.text;
 					sellOrder.txtMsg.text+=" " + unit;
-					sellOrder.txtMsg.text+="s of ";
+					sellOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					sellOrder.txtMsg.text+=sellOrder.txtSymbol.text;
-					sellOrder.txtMsg.text+=" at "
+					sellOrder.txtMsg.text+=' ' +ResourceManager.getInstance().getString('marketwatch','at')+" "
 					sellOrder.txtMsg.text+=sellOrder.txtPrice.text;
-					sellOrder.txtMsg.text+=" per " + unit + "?";
+					sellOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (sellOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(sellOrder.txtDiscVol.text)))
 					{
-						sellOrder.txtMsg.text+=" Disclosed volume is " + sellOrder.txtDiscVol.text;
+						sellOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + sellOrder.txtDiscVol.text;
 					}
 					sellOrder.isFirstSubmission=false;
 				}
@@ -1340,7 +1392,7 @@ package controller
 				}
 				else
 				{
-					sellOrder.txtMsg.text="Please correct the input.";
+//					sellOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				sellOrder.isFirstSubmission=true;
 			}
@@ -1363,22 +1415,22 @@ package controller
 			{
 				if (changeOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(changeOrder.internalExchangeID, changeOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
 
 					if (changeOrder.isNgtdPanelExpanded)
 					{
-						changeOrder.txtMsg.text="ACCEPT ";
+						changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','accept')+' ';
 					}
 					else
 					{
-						changeOrder.txtMsg.text="CHANGE ";
+						changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','change')+" ";
 					}
 					if (changeOrder.side == "sell")
 					{
-						changeOrder.txtMsg.text+="SELL ";
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','sell')+" ";
 						var rect:Rect = new Rect();
 						var myFillo:LinearGradient=new LinearGradient();
 						myFillo.rotation=90;
@@ -1429,7 +1481,7 @@ package controller
 					}
 					else if (changeOrder.side == "buy")
 					{
-						changeOrder.txtMsg.text+="BUY ";
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','buy');
 						
 						
 						
@@ -1479,14 +1531,14 @@ package controller
 					}
 					changeOrder.txtMsg.text+=changeOrder.txtVolume.text;
 					changeOrder.txtMsg.text+=" " + unit;
-					changeOrder.txtMsg.text+="s of ";
+					changeOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					changeOrder.txtMsg.text+=changeOrder.txtSymbol.text;
-					changeOrder.txtMsg.text+=" at "
+					changeOrder.txtMsg.text+=' ' +ResourceManager.getInstance().getString('marketwatch','at')+" "
 					changeOrder.txtMsg.text+=changeOrder.txtPrice.text;
-					changeOrder.txtMsg.text+=" per " + unit + "?";
+					changeOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (changeOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(changeOrder.txtDiscVol.text)))
 					{
-						changeOrder.txtMsg.text+=" Disclosed volume is " + changeOrder.txtDiscVol.text;
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + changeOrder.txtDiscVol.text;
 					}
 					changeOrder.isFirstSubmission=false;
 				}
@@ -1557,7 +1609,7 @@ package controller
 				}
 				else
 				{
-					changeOrder.txtMsg.text="Please correct the input.";
+//					changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				changeOrder.isFirstSubmission=true;
 			}
@@ -1569,7 +1621,8 @@ package controller
 			var changeOrderWindow:Order = WindowManager.getInstance().viewManager.changeOrder;
 			if (event == null || changeOrderWindow.txtOrderNum.text == '')
 			{
-				changeOrderWindow.txtMsg.text = 'Please fill the required fields.';
+//				changeOrderWindow.txtMsg.text = ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields')+' ';
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields'),ResourceManager.getInstance().getString('marketwatch','error'));
 				return;
 			}
 			var changeOrder:Order=WindowManager.getInstance().viewManager.changeOrder;
@@ -1589,22 +1642,22 @@ package controller
 			{
 				if (changeOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(changeOrder.internalExchangeID, changeOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
 					
 					if (changeOrder.isNgtdPanelExpanded)
 					{
-						changeOrder.txtMsg.text="ACCEPT ";
+						changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','accept')+" ";
 					}
 					else
 					{
-						changeOrder.txtMsg.text="CHANGE ";
+						changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','change')+" ";
 					}
 					if (changeOrder.side == "sell")
 					{
-						changeOrder.txtMsg.text+="SELL ";
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','sell');
 						var rect:Rect = new Rect();
 						var myFillo:LinearGradient=new LinearGradient();
 						myFillo.rotation=90;
@@ -1655,7 +1708,7 @@ package controller
 					}
 					else if (changeOrder.side == "buy")
 					{
-						changeOrder.txtMsg.text+="BUY ";
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','buy');
 						
 						
 						
@@ -1705,14 +1758,14 @@ package controller
 					}
 					changeOrder.txtMsg.text+=changeOrder.txtVolume.text;
 					changeOrder.txtMsg.text+=" " + unit;
-					changeOrder.txtMsg.text+="s of ";
+					changeOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					changeOrder.txtMsg.text+=changeOrder.txtSymbol.text;
-					changeOrder.txtMsg.text+=" at "
+					changeOrder.txtMsg.text+=' ' +ResourceManager.getInstance().getString('marketwatch','at')+" "
 					changeOrder.txtMsg.text+=changeOrder.txtPrice.text;
-					changeOrder.txtMsg.text+=" per " + unit + "?";
+					changeOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (changeOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(changeOrder.txtDiscVol.text)))
 					{
-						changeOrder.txtMsg.text+=" Disclosed volume is " + changeOrder.txtDiscVol.text;
+						changeOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + changeOrder.txtDiscVol.text;
 					}
 					changeOrder.isFirstSubmission=false;
 				}
@@ -1783,7 +1836,7 @@ package controller
 				}
 				else
 				{
-					changeOrder.txtMsg.text="Please correct the input.";
+//					changeOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				changeOrder.isFirstSubmission=true;
 			}
@@ -1805,22 +1858,22 @@ package controller
 			{
 				if (cancelOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(cancelOrder.internalExchangeID, cancelOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
 					if (cancelOrder.isNgtdPanelExpanded)
 					{
-						cancelOrder.txtMsg.text="REJECT ";
+						cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','reject');
 					}
 					else
 					{
-						cancelOrder.txtMsg.text="CANCEL ";
+						cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','cancel');
 					}
 
 					if (cancelOrder.side == "sell")
 					{
-						cancelOrder.txtMsg.text+="SELL ";
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','sell');
 						var rect:Rect = new Rect();
 						var myFill:LinearGradient=new LinearGradient();
 						myFill.rotation=90;
@@ -1872,7 +1925,7 @@ package controller
 					}
 					else if (cancelOrder.side == "buy")
 					{
-						cancelOrder.txtMsg.text+="BUY ";
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','buy');
 						var myFill2:LinearGradient=new LinearGradient();
 						myFill2.rotation=90;
 						var myFillColor3:GradientEntry=new GradientEntry(0x94d9fa);
@@ -1923,14 +1976,14 @@ package controller
 					}
 					cancelOrder.txtMsg.text+=cancelOrder.txtVolume.text;
 					cancelOrder.txtMsg.text+=" " + unit;
-					cancelOrder.txtMsg.text+="s of ";
+					cancelOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					cancelOrder.txtMsg.text+=cancelOrder.txtSymbol.text;
-					cancelOrder.txtMsg.text+=" at "
+					cancelOrder.txtMsg.text+=' ' +ResourceManager.getInstance().getString('marketwatch','at')+" "
 					cancelOrder.txtMsg.text+=cancelOrder.txtPrice.text;
-					cancelOrder.txtMsg.text+=" per " + unit + "?";
+					cancelOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (cancelOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(cancelOrder.txtDiscVol.text)))
 					{
-						cancelOrder.txtMsg.text+=" Disclosed volume is " + cancelOrder.txtDiscVol.text;
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + cancelOrder.txtDiscVol.text;
 					}
 					cancelOrder.isFirstSubmission=false;
 				}
@@ -1994,7 +2047,7 @@ package controller
 				}
 				else
 				{
-					cancelOrder.txtMsg.text="Please correct the input.";
+//					cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				cancelOrder.isFirstSubmission=true;
 			}
@@ -2010,7 +2063,8 @@ package controller
 			var cancelOrderWindow:Order = WindowManager.getInstance().viewManager.cancelOrder;
 			if(event == null || cancelOrderWindow.txtOrderNum.text == '' )
 			{
-				cancelOrderWindow.txtMsg.text = 'Please fill the required fields.';
+//				cancelOrderWindow.txtMsg.text = ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields')+' ';
+				Alert.show(ResourceManager.getInstance().getString('marketwatch','plzfilltheReqFields'),ResourceManager.getInstance().getString('marketwatch','error'));
 				return;	
 			}
 			var cancelOrder:Order=WindowManager.getInstance().viewManager.cancelOrder;
@@ -2023,22 +2077,22 @@ package controller
 			{
 				if (cancelOrder.isFirstSubmission)
 				{
-					var unit:String='share';
+					var unit:String=ResourceManager.getInstance().getString('marketwatch','share');
 					var isBond:Boolean=ModelManager.getInstance().exchangeModel.isBondMarket(cancelOrder.internalExchangeID, cancelOrder.internalMarketID);
 					if (isBond)
-						unit="bond";
+						unit=ResourceManager.getInstance().getString('marketwatch','bond');
 					if (cancelOrder.isNgtdPanelExpanded)
 					{
-						cancelOrder.txtMsg.text="REJECT ";
+						cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','reject');
 					}
 					else
 					{
-						cancelOrder.txtMsg.text="CANCEL ";
+						cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','cancel');
 					}
 					
 					if (cancelOrder.side == "sell")
 					{
-						cancelOrder.txtMsg.text+="SELL ";
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','sell');
 						var rect:Rect = new Rect();
 						var myFill:LinearGradient=new LinearGradient();
 						myFill.rotation=90;
@@ -2090,7 +2144,7 @@ package controller
 					}
 					else if (cancelOrder.side == "buy")
 					{
-						cancelOrder.txtMsg.text+="BUY ";
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','buy');
 						var myFill2:LinearGradient=new LinearGradient();
 						myFill2.rotation=90;
 						var myFillColor3:GradientEntry=new GradientEntry(0x94d9fa);
@@ -2141,14 +2195,14 @@ package controller
 					}
 					cancelOrder.txtMsg.text+=cancelOrder.txtVolume.text;
 					cancelOrder.txtMsg.text+=" " + unit;
-					cancelOrder.txtMsg.text+="s of ";
+					cancelOrder.txtMsg.text+="s" +ResourceManager.getInstance().getString('marketwatch','of')+" ";
 					cancelOrder.txtMsg.text+=cancelOrder.txtSymbol.text;
-					cancelOrder.txtMsg.text+=" at "
+					cancelOrder.txtMsg.text+=' ' +ResourceManager.getInstance().getString('marketwatch','at')+" "
 					cancelOrder.txtMsg.text+=cancelOrder.txtPrice.text;
-					cancelOrder.txtMsg.text+=" per " + unit + "?";
+					cancelOrder.txtMsg.text+=" "+ResourceManager.getInstance().getString('marketwatch','per')+' ' + unit + ResourceManager.getInstance().getString('marketwatch','?');
 					if (cancelOrder.txtDiscVol.text.length > 0 && !isNaN(parseInt(cancelOrder.txtDiscVol.text)))
 					{
-						cancelOrder.txtMsg.text+=" Disclosed volume is " + cancelOrder.txtDiscVol.text;
+						cancelOrder.txtMsg.text+=ResourceManager.getInstance().getString('marketwatch','discVolis')+' ' + cancelOrder.txtDiscVol.text;
 					}
 					cancelOrder.isFirstSubmission=false;
 				}
@@ -2212,7 +2266,7 @@ package controller
 				}
 				else
 				{
-					cancelOrder.txtMsg.text="Please correct the input.";
+//					cancelOrder.txtMsg.text=ResourceManager.getInstance().getString('marketwatch','plzCorrctInpt');
 				}
 				cancelOrder.isFirstSubmission=true;
 			}
@@ -2326,7 +2380,7 @@ package controller
 				if (currentState == "" || !(States.MARKET_STATES[currentState] == States.MARKET_STATES['Open'] || States.MARKET_STATES[currentState] == States.MARKET_STATES['PreOpen']))
 				{
 					var strMarketCode:String=exchangeModel.getMarketCode(order.internalExchangeID, order.internalMarketID);
-					txtMessage="Marktet state of " + strMarketCode + " is " + currentState;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','marketStateOf')+" " + strMarketCode + "  "+ResourceManager.getInstance().getString('marketwatch','is')+' ' + currentState;
 					return false;
 				}
 
@@ -2342,7 +2396,7 @@ package controller
 				//!order.ddSymbol.selectedItem ||
 				(order.rdogrpLmtMkt.selectedValue == "limit" && !order.txtPrice.text.length > 0) || !order.txtVolume.text.length > 0 ||
 				// added on 8/12/2010 to validate price
-				// commented on 9/6/2011 and asked WHY??? What were you thinking???
+				// commented on 9/6/2011 and asked WHY??? What were you thinking??? "man these guys dont even know that what they have to achieve and what they had already achieved so dont worry ustad g i appreciate you through out..."
 				//!order.txtPrice.text.length > 0 ||
 				!order.txtAccount.text.length > 0 )
 			{
@@ -2385,19 +2439,19 @@ package controller
 //						var browser:SymbolBrowserBO = bestMarketAndSymbolSummary.symbolSummary.browser;
 //						if(volume < browser.lowerVolumeLimit || volume > browser.upperVolumeLimit )
 //						{
-//							txtMessage = "Volume limits are "+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;
+//							txtMessage = ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+' '+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;
 //							return false;				
 //						}
 //						
 //						if(!((volume / browser.lotSize) is uint) )
 //						{
-//							txtMessage = "Volume lot size is  "+browser.lotSize;
+//							txtMessage = ResourceManager.getInstance().getString('marketwatch','volLotSize')+' '+browser.lotSize;
 //							return false;
 //						}
 //						
 //						if(price <= browser.circuitBreakerDown || price >= browser.circuitBreakerUp )
 //						{
-//							txtMessage = "Circuit breaker limits are "+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;
+//							txtMessage = ResourceManager.getInstance().getString('marketwatch','circuitBreakLimit')+' '+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;
 //							return false;				
 //						}
 //
@@ -2410,7 +2464,7 @@ package controller
 //						
 //						if((price * volume) < browser.lowerValueLimit || (price * volume) > browser.upperValueLimit )
 //						{
-//							txtMessage = "Value limits are "+browser.lowerValueLimit + " - "+browser.upperValueLimit;
+//							txtMessage = ResourceManager.getInstance().getString('marketwatch','valLimitsAre')+' '+browser.lowerValueLimit + " - "+browser.upperValueLimit;
 //							return false;
 //						}
 //					}
@@ -2421,19 +2475,19 @@ package controller
 
 				if (volume < symbolObj.LOWER_ORDER_VOLUME_LIMIT || volume > symbolObj.UPPER_ORDER_VOLUME_LIMIT)
 				{
-					txtMessage="Volume limits are " + symbolObj.LOWER_ORDER_VOLUME_LIMIT + " - " + symbolObj.UPPER_ORDER_VOLUME_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+' ' + symbolObj.LOWER_ORDER_VOLUME_LIMIT + " - " + symbolObj.UPPER_ORDER_VOLUME_LIMIT;
 					return false;
 				}
 
 				if (!((volume / symbolObj.BOARD_LOT) is uint))
 				{
-					txtMessage="Volume lot size is  " + symbolObj.BOARD_LOT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','volLotSize')+' ' + symbolObj.BOARD_LOT;
 					return false;
 				}
 
 				if (order.rdogrpLmtMkt.selectedValue == "limit" && (price <= symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT || price >= symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT))
 				{
-					txtMessage="Circuit breaker limits are " + symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT + " - " + symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','circuitBreakLimit')+' ' + symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT + " - " + symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT;
 					return false;
 				}
 
@@ -2446,13 +2500,13 @@ package controller
 
 				if (order.rdogrpLmtMkt.selectedValue == "limit" && ((price * volume) < symbolObj.LOWER_ORDER_VALUE_LIMIT || (price * volume) > symbolObj.UPPER_ORDER_VALUE_LIMIT))
 				{
-					txtMessage="Value limits are " + symbolObj.LOWER_ORDER_VALUE_LIMIT + " - " + symbolObj.UPPER_ORDER_VALUE_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','valLimitsAre')+' ' + symbolObj.LOWER_ORDER_VALUE_LIMIT + " - " + symbolObj.UPPER_ORDER_VALUE_LIMIT;
 					return false;
 				}
 
 				if (order.chkNgtd && order.chkNgtd.selected && order.txtCounterPartyUserName.text.length == 0)
 				{
-					txtMessage="Counter user name is must.";
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','cntrUserNameMust')+' ';
 					return false;
 				}
 				if (order.txtDiscVol.text.length > 0 && !isNaN(parseInt(order.txtDiscVol.text)) && !isCancelOrder)
@@ -2460,17 +2514,17 @@ package controller
 					var disclosed_volume:Number=new Number(order.txtDiscVol.text.replace(delimRegExp, ""));
 					if (disclosed_volume > volume)
 					{
-						txtMessage="Disclosed volume can not be greater than volume.";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','discVolCantBeGreatThanVol')+' ';
 						return false;
 					}
 					else if (volume % disclosed_volume != 0)
 					{
-						txtMessage="Volume should be multiple of disclosed volume.";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volShudBeMultipleOfDiscVol')+' ';
 						return false;
 					}
 					else if (disclosed_volume % symbolObj.BOARD_LOT != 0)
 					{
-						txtMessage="Disclosed volume should be multiple of board lot";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','discVolShouldBeMultipleOfBoardLot')+' ';
 						return false;
 					}
 				}
@@ -2478,12 +2532,6 @@ package controller
 			
 			return retVal;
 		}
-
-
-
-
-
-
 
 		private function validateOrder1(order:SellOrder, isCancelOrder:Boolean=false):Boolean
 		{
@@ -2507,7 +2555,7 @@ package controller
 				if (currentState == "" || !(States.MARKET_STATES[currentState] == States.MARKET_STATES['Open'] || States.MARKET_STATES[currentState] == States.MARKET_STATES['PreOpen']))
 				{
 					var strMarketCode:String=exchangeModel.getMarketCode(order.internalExchangeID, order.internalMarketID);
-					txtMessage="Marktet state of " + strMarketCode + " is " + currentState;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','marketStateOf')+" " + strMarketCode + "  "+ResourceManager.getInstance().getString('marketwatch','is')+' ' + currentState;
 					return false;
 				}
 
@@ -2567,19 +2615,19 @@ package controller
 				//						var browser:SymbolBrowserBO = bestMarketAndSymbolSummary.symbolSummary.browser;
 				//						if(volume < browser.lowerVolumeLimit || volume > browser.upperVolumeLimit )
 				//						{
-				//							txtMessage = "Volume limits are "+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;
+				//							txtMessage = ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+' '+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;
 				//							return false;				
 				//						}
 				//						
 				//						if(!((volume / browser.lotSize) is uint) )
 				//						{
-				//							txtMessage = "Volume lot size is  "+browser.lotSize;
+				//							txtMessage = ResourceManager.getInstance().getString('marketwatch','volLotSize')+' '+browser.lotSize;
 				//							return false;
 				//						}
 				//						
 				//						if(price <= browser.circuitBreakerDown || price >= browser.circuitBreakerUp )
 				//						{
-				//							txtMessage = "Circuit breaker limits are "+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;
+				//							txtMessage = ResourceManager.getInstance().getString('marketwatch','circuitBreakLimit')+' '+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;
 				//							return false;				
 				//						}
 				//
@@ -2592,7 +2640,7 @@ package controller
 				//						
 				//						if((price * volume) < browser.lowerValueLimit || (price * volume) > browser.upperValueLimit )
 				//						{
-				//							txtMessage = "Value limits are "+browser.lowerValueLimit + " - "+browser.upperValueLimit;
+				//							txtMessage = ResourceManager.getInstance().getString('marketwatch','valLimitsAre')+' '+browser.lowerValueLimit + " - "+browser.upperValueLimit;
 				//							return false;
 				//						}
 				//					}
@@ -2603,19 +2651,19 @@ package controller
 
 				if (volume < symbolObj.LOWER_ORDER_VOLUME_LIMIT || volume > symbolObj.UPPER_ORDER_VOLUME_LIMIT)
 				{
-					txtMessage="Volume limits are " + symbolObj.LOWER_ORDER_VOLUME_LIMIT + " - " + symbolObj.UPPER_ORDER_VOLUME_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','volLimitsAre')+' ' + symbolObj.LOWER_ORDER_VOLUME_LIMIT + " - " + symbolObj.UPPER_ORDER_VOLUME_LIMIT;
 					return false;
 				}
 
 				if (!((volume / symbolObj.BOARD_LOT) is uint))
 				{
-					txtMessage="Volume lot size is  " + symbolObj.BOARD_LOT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','volLotSize')+' ' + symbolObj.BOARD_LOT;
 					return false;
 				}
 
 				if (order.rdogrpLmtMkt.selectedValue == "limit" && (price <= symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT || price >= symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT))
 				{
-					txtMessage="Circuit breaker limits are " + symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT + " - " + symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','circuitBreakLimit')+' ' + symbolObj.LOWER_CIRCUIT_BREAKER_LIMIT + " - " + symbolObj.UPPER_CIRCUIT_BREAKER_LIMIT;
 					return false;
 				}
 
@@ -2628,13 +2676,13 @@ package controller
 
 				if (order.rdogrpLmtMkt.selectedValue == "limit" && ((price * volume) < symbolObj.LOWER_ORDER_VALUE_LIMIT || (price * volume) > symbolObj.UPPER_ORDER_VALUE_LIMIT))
 				{
-					txtMessage="Value limits are " + symbolObj.LOWER_ORDER_VALUE_LIMIT + " - " + symbolObj.UPPER_ORDER_VALUE_LIMIT;
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','valLimitsAre')+' ' + symbolObj.LOWER_ORDER_VALUE_LIMIT + " - " + symbolObj.UPPER_ORDER_VALUE_LIMIT;
 					return false;
 				}
 
 				if (order.chkNgtd && order.chkNgtd.selected && order.txtCounterPartyUserName.text.length == 0)
 				{
-					txtMessage="Counter user name is must.";
+					txtMessage=ResourceManager.getInstance().getString('marketwatch','cntrUserNameMust')+' ';
 					return false;
 				}
 				if (order.txtDiscVol.text.length > 0 && !isNaN(parseInt(order.txtDiscVol.text)) && !isCancelOrder)
@@ -2642,17 +2690,17 @@ package controller
 					var disclosed_volume:Number=new Number(order.txtDiscVol.text.replace(delimRegExp, ""));
 					if (disclosed_volume > volume)
 					{
-						txtMessage="Disclosed volume can not be greater than volume.";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','discVolCantBeGreatThanVol')+' ';
 						return false;
 					}
 					else if (volume % disclosed_volume != 0)
 					{
-						txtMessage="Volume should be multiple of disclosed volume.";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','volShudBeMultipleOfDiscVol')+' ';
 						return false;
 					}
 					else if (disclosed_volume % symbolObj.BOARD_LOT != 0)
 					{
-						txtMessage="Disclosed volume should be multiple of board lot";
+						txtMessage=ResourceManager.getInstance().getString('marketwatch','discVolShouldBeMultipleOfBoardLot')+' ';
 						return false;
 					}
 				}

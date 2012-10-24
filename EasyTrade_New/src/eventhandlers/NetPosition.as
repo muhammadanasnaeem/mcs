@@ -1,8 +1,11 @@
 import common.Constants;
+import common.Messages;
 
 import components.ComboBoxItem;
 
 import controller.ModelManager;
+
+import flash.events.MouseEvent;
 
 import flashx.textLayout.events.UpdateCompleteEvent;
 
@@ -16,6 +19,10 @@ import mx.controls.dataGridClasses.DataGridColumn;
 import mx.events.DataGridEvent;
 import mx.events.FlexEvent;
 import mx.events.ItemClickEvent;
+import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
+
+import view.SelectionMenu;
 
 public var userID:Number;
 
@@ -43,7 +50,7 @@ protected function txtMarket_NetPosition_clickHandler(event:MouseEvent):void
 {
 	if (internalExchangeID < 0)
 	{
-		Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 		return;
 	}
 	var menu:SelectionMenu=PopUpManager.createPopUp(this, SelectionMenu) as SelectionMenu;

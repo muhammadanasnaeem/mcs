@@ -32,11 +32,13 @@ import mx.collections.ArrayCollection;
 import mx.collections.ArrayList;
 import mx.controls.Alert;
 import mx.controls.TextInput;
+import mx.core.FlexGlobals;
 import mx.events.DataGridEvent;
 import mx.events.FlexEvent;
 import mx.events.ItemClickEvent;
 import mx.events.ListEvent;
 import mx.managers.PopUpManager;
+import mx.resources.ResourceManager;
 import mx.utils.ObjectUtil;
 
 import services.LSListener;
@@ -232,7 +234,7 @@ protected function adgMarketWatch_itemClickHandler(event:ListEvent):void
 	{
 		if (this.adgMarketWatch.selectedItem.internalExchangeID < 0)
 		{
-			Alert.show(Messages.SELECT_EXCHANGE, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidExchange'),ResourceManager.getInstance().getString('marketwatch','error'));
 			return;
 		}
 		menu=PopUpManager.createPopUp(this.adgMarketWatch, SelectionMenu) as SelectionMenu;
@@ -346,10 +348,24 @@ protected function toolbar_clickHandler(event:MouseEvent):void
 				currentPage = equitiesPreviousIndex;
 				equitiesPage = 1;
 				bonds.source = null;
-				bonds.source=bondsUp;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					bonds.source=bondsUp;
+				}
+				else
+				{
+//					bonds.source=AR_bondsUpImage;
+				}
 				bondsPage = 0;
 				equities.source = null;
-				equities.source = equitiesOverImage;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					equities.source = equitiesOverImage;
+				}
+				else
+				{
+//					equities.source = AR_equtiesOverImage;
+				}
 				selectedIndex=0; //event.currentTarget.selectedIndex;
 				refreshDataProvider(currentPage);
 				adgMarketWatch.dataProvider=bindedArray;//modelManager.marketWatchModel.marketWatch[selectedIndex];
@@ -365,10 +381,24 @@ protected function toolbar_clickHandler(event:MouseEvent):void
 				currentPage = bondsPreviousPage;
 				bondsPage = 2;
 				equities.source = null;
-				equities.source = equitiesUpImage;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					equities.source = equitiesUpImage;
+				}
+				else
+				{
+//					equities.source = AR_equtiesUpImage;
+				}
 				equitiesPage = 0;
 				bonds.source = null;
-				bonds.source=bondsOver;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					bonds.source=bondsOver;
+				}
+				else
+				{
+//					bonds.source=AR_bondsOverImage;
+				}
 				selectedIndex=1
 //				pageNav.selectedIndex = selectedIndex+5;
 				refreshDataProvider(currentPage);
@@ -382,10 +412,24 @@ protected function toolbar_clickHandler(event:MouseEvent):void
 				currentPage = 0;
 				equitiesPage = 1;
 				bonds.source = null;
-				bonds.source=bondsUp;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					bonds.source=bondsUp;
+				}
+				else
+				{
+//					bonds.source=AR_bondsUpImage;
+				}
 				bondsPage = 0;
 				equities.source = null;
-				equities.source = equitiesOverImage;
+				if(FlexGlobals.topLevelApplication.parameters.LOCALE == 'en_US')
+				{
+					equities.source = equitiesOverImage;
+				}
+				else
+				{
+//					equities.source = AR_equtiesOverImage;
+				}
 				selectedIndex=0; //event.currentTarget.selectedIndex;
 //				refreshDataProvider(currentPage);
 //				adgMarketWatch.dataProvider=bindedArray;
@@ -616,7 +660,7 @@ public function addSymbolToWatchFromSymbolBrowser(selectIndex:Number,index:Numbe
 		
 		if (symbolId < 0)
 		{
-			Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 			// added on 2/2/2011
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].symbolID=-1;
@@ -638,7 +682,7 @@ public function addSymbolToWatchFromSymbolBrowser(selectIndex:Number,index:Numbe
 		// Modified by Anas due to the bonds market symbol handling 12th April 2012
 		if (bondsPage != 2)
 		{
-			Alert.show(Messages.ERROR_NO_BOND_SYMBOL, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','noBondSymbol'), ResourceManager.getInstance().getString('marketwatch','error'));
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 			// added on 2/2/2011
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].symbolID=-1;
@@ -670,7 +714,7 @@ public function addSymbolToWatchFromSymbolBrowser(selectIndex:Number,index:Numbe
 	// Modified by Anas due to the bonds market symbol handling 12th April 2012
 	else if (bondsPage == 2)
 	{
-		Alert.show(Messages.ERROR_NON_BOND_SYMBOL, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','nonBondSymbol'), ResourceManager.getInstance().getString('marketwatch','error'));
 		modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 		// added on 2/2/2011
 		modelManager.marketWatchModel.marketWatch[selectedIndex][index].symbolID=-1;
@@ -681,7 +725,7 @@ public function addSymbolToWatchFromSymbolBrowser(selectIndex:Number,index:Numbe
 	
 	if (internalSymbolID < 0)
 	{
-		Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 		modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 		isInvalidSymbol=true;
 		return;
@@ -780,7 +824,7 @@ public function addSymbolToWatch( /*obj:Object, */index:Number):void
 		
 		if (symbolId < 0)
 		{
-			Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+			Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 			// added on 2/2/2011
 			modelManager.marketWatchModel.marketWatch[selectedIndex][index].symbolID=-1;
@@ -842,7 +886,7 @@ public function addSymbolToWatch( /*obj:Object, */index:Number):void
 	
 	if (internalSymbolID < 0)
 	{
-		Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 		modelManager.marketWatchModel.marketWatch[selectedIndex][index].SYMBOL="";
 		isInvalidSymbol=true;
 		return;
@@ -890,7 +934,7 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 	
 	//var event:NonVisualItemUpdateEvent = new NonVisualItemUpdateEvent(null, null, null, null);
 	//var windowManager:WindowManager = WindowManager.getInstance();
-	var strMsg:String="<font color='";
+	var strMsg:String="";
 	
 	if (windowManager.marketWatchWindow)
 	{
@@ -901,34 +945,34 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 			{
 				if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 				{
-					strMsg+=Constants.BUY_COLOR;
-					strMsg+="'>";
+//					strMsg+=Constants.BUY_COLOR;
+//					strMsg+="'>";
 					strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-					strMsg+=" Negotiated, buy ";
+					strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','negotiatedBuy')+' '
 				}
 				else
 				{
-					strMsg+=Constants.SELL_COLOR;
-					strMsg+="'>";
+//					strMsg+=Constants.SELL_COLOR;
+//					strMsg+="'>";
 					strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-					strMsg+=" Negotiated, sell ";
+					strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','negotiatedSell')+' ';
 				}
 			}
 			else
 			{
 				if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 				{
-					strMsg+=Constants.BUY_COLOR;
-					strMsg+="'>";
+//					strMsg+=Constants.BUY_COLOR;
+//					strMsg+="'>";
 					strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-					strMsg+=" Buy ";
+					strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','buy')+' ';
 				}
 				else
 				{
-					strMsg+=Constants.SELL_COLOR;
-					strMsg+="'>";
+//					strMsg+=Constants.SELL_COLOR;
+//					strMsg+="'>";
 					strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-					strMsg+=" Sell ";
+					strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','sell')+' ';
 				}
 			}
 			strMsg=formatOrderQueuedMessage(event, strMsg);
@@ -936,17 +980,17 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		}
 		else if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "1") // can
 		{
-			strMsg+="#FC0606";
-			strMsg+="'>";
+//			strMsg+="#FC0606";
+//			strMsg+="'>";
 			strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-			strMsg+=" Cancelled, ";
+			strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','cancelled')+' ';
 			if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 			{
-				strMsg+=" buy ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','buy')+' ';
 			}
 			else
 			{
-				strMsg+=" sell ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','sell')+' ';
 			}
 			strMsg=formatOrderQueuedMessage(event, strMsg);
 			//if (windowManager.cancelOrderWindow)
@@ -961,17 +1005,17 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		{
 			if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 			{
-				strMsg+=Constants.BUY_COLOR;
-				strMsg+="'>";
+//				strMsg+=Constants.BUY_COLOR;
+//				strMsg+="'>";
 				strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=" Changed, buy ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','changedBuy')+' ';
 			}
 			else
 			{
-				strMsg+=Constants.SELL_COLOR;
-				strMsg+="'>";
+//				strMsg+=Constants.SELL_COLOR;
+//				strMsg+="'>";
 				strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=" Changed, sell ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','changedSell')+' ';
 			}
 			strMsg=formatOrderQueuedMessage(event, strMsg);
 			if (windowManager.changeOrderWindow)
@@ -984,21 +1028,21 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		{
 			if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 			{
-				strMsg+=Constants.BUY_COLOR;
-				strMsg+="'>";
+//				strMsg+=Constants.BUY_COLOR;
+//				strMsg+="'>";
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=" Trade ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','trade')+' ';
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[17]);
-				strMsg+=" bought ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','bought')+' ';
 			}
 			else
 			{
-				strMsg+=Constants.SELL_COLOR;
-				strMsg+="'>";
+//				strMsg+=Constants.SELL_COLOR;
+//				strMsg+="'>";
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg+=" Trade ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','trade')+' ';
 				strMsg+=LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[17]);
-				strMsg+=" sold ";
+				strMsg+=' '+ResourceManager.getInstance().getString('marketwatch','sold')+' ';
 			}
 			strMsg=formatOrderQueuedMessage(event, strMsg);
 			SoundManager.getInstance().playTradeSound();
@@ -1010,17 +1054,17 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		{
 			if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[9]) == "0")
 			{
-				strMsg += Constants.REJ_COLOR;
-				strMsg += "'>";
+//				strMsg += Constants.REJ_COLOR;
+//				strMsg += "'>";
 				strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg += " Rejected:  Buy in ";
+				strMsg += ' '+ResourceManager.getInstance().getString('marketwatch','rejectedBuyIn')+' ';
 			}
 			else
 			{
-				strMsg += Constants.REJ_COLOR;
-				strMsg += "'>";
+//				strMsg += Constants.REJ_COLOR;
+//				strMsg += "'>";
 				strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[12]).replace("T", " ");
-				strMsg += " Rejected:  Sell in ";
+				strMsg +=' '+ResourceManager.getInstance().getString('marketwatch','rejectedSellIn')+' ';
 			}
 			// modified on 24/2/2011
 			var strExchangeCode:String = modelManager.exchangeModel.getExchangeCode( new Number (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[18])));
@@ -1029,7 +1073,7 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 			
 			//var symbolDetail:SymbolBO = modelManager.exchangeModel
 			
-			strMsg+=strMarketCode + " market in " + strExchangeCode + " exchange. ";
+			strMsg+=strMarketCode +' '+ResourceManager.getInstance().getString('marketwatch','marketIn')+' '+ strExchangeCode + ''+ResourceManager.getInstance().getString('marketwatch','exchange')+'. ';
 			
 			if(LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[20]) == "0")
 			{
@@ -1043,8 +1087,8 @@ public function handleOrderConfirmation(event:NonVisualItemUpdateEvent):void
 		}
 		// usman majeed - for RSS
 		strMsg+="";
-		strMsg+="</font><br />";
-		windowManager.viewManager.liveMessages.updateStatus2(strMsg);
+//		strMsg+="</font><br />";
+		windowManager.viewManager.liveMessages.updateStatus2(event,strMsg);
 		
 		callLater(focusNewRow);
 	}
@@ -1083,104 +1127,103 @@ private function getReasonMessage(index:Number, event:NonVisualItemUpdateEvent, 
 	switch (index)
 	{
 		case 1:
-			message = ReasonMessages.INVALID_CLIENT + " "+ LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','invalidClient')+ " "+ LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + ".";
 			break;
 		case 2:
-			message = ReasonMessages.INVALID_EXCHANGE + " "+ strExchangeCode  + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','invalidExchange')+ " "+ strExchangeCode  + ".";
 			break;
 		case 3:
-			message = ReasonMessages.INVALID_MARKET  + " "+ strMarketCode  + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','invalidMarket')+ " "+ strMarketCode  + ".";
 			break;	
 		case 4:
-			message = ReasonMessages.INVALID_SYMBOL + " " + strSymbolCode;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidSymbol')+ " " + strSymbolCode;
 			break;
 		case 5:
-			message = "Market "+strMarketCode +" Not Allowed. ";
+			message = ResourceManager.getInstance().getString('marketwatch','market')+' '+strMarketCode +' '+ResourceManager.getInstance().getString('marketwatch','notAllowed');
 			break;
 		case 6:
-			message = ReasonMessages.INVALID_MARKET_STATE + " "+strMarketCode;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidMarketStateFor') + " "+strMarketCode;
 			break;
 		case 7:
-			message = ReasonMessages.CLEARINGID_NOT_DEFINED;
+			message = ResourceManager.getInstance().getString('marketwatch','clearingIDNotDefined');
 			break;
 		case 8:
-			message = strSymbolCode + " "+ReasonMessages.SYMBOL_SUSPENDED;
+			message = strSymbolCode + " "+ResourceManager.getInstance().getString('marketwatch','symbolSuspended');
 			break;
 		case 9:
-			message = ReasonMessages.USER_SUSPENDED;
+			message = ResourceManager.getInstance().getString('marketwatch','userSuspended');
 			break;
 		case 10:
-			message = "Volume lot size for "+strSymbolCode+" is  "+browser.lotSize; //ReasonMessages.VOL_NOT_MTPLE_OF_BLOT;
+			message = ResourceManager.getInstance().getString('marketwatch','volLotSizeFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','is')+' '+browser.lotSize; //ReasonMessages.VOL_NOT_MTPLE_OF_BLOT;
 			break;
 		case 11:
-			message = "Price tick size for "+strSymbolCode+" is  "+browser.tickSize;//ReasonMessages.PRICE_NOT_MTPLE_OF_TICK_SIZE;
+			message = ResourceManager.getInstance().getString('marketwatch','priceTikSizeFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','is')+' '+browser.tickSize;//ReasonMessages.PRICE_NOT_MTPLE_OF_TICK_SIZE;
 			break;
 		case 12:
-			message = "Circuit breaker limits for "+strSymbolCode+" are "+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;//ReasonMessages.INVALID_PRICE;
+			message = ResourceManager.getInstance().getString('marketwatch','circuitBreakerLimitsFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','are')+' '+browser.circuitBreakerDown + " - "+browser.circuitBreakerUp;//ReasonMessages.INVALID_PRICE;
 			break;
 		case 13:
-			message = "Volume limits for "+strSymbolCode+" are "+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;//ReasonMessages.VOL_UPPER_LIM_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','volLimitsFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','are')+' '+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;//ReasonMessages.VOL_UPPER_LIM_EXCEEDED;
 			break;
 		case 14:
-			message = "Volume limits for "+strSymbolCode+" are "+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;//ReasonMessages.VOL_LOWER_LIM_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','volLimitsFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','are')+' '+browser.lowerVolumeLimit + " - "+browser.upperVolumeLimit;//ReasonMessages.VOL_LOWER_LIM_EXCEEDED;
 			break;
 		case 15:
-			message = "Value limits for "+strSymbolCode+" are "+browser.lowerValueLimit + " - "+browser.upperValueLimit;//ReasonMessages.VAL_UPPER_LIM_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','valLimitsFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','are')+' '+browser.lowerValueLimit + " - "+browser.upperValueLimit;//ReasonMessages.VAL_UPPER_LIM_EXCEEDED;
 			break;
 		case 16:
-			message = "Value limits for "+strSymbolCode+" are "+browser.lowerValueLimit + " - "+browser.upperValueLimit;//ReasonMessages.VAL_LOWER_LIM_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','valLimitsFor')+' '+strSymbolCode+' '+ResourceManager.getInstance().getString('marketwatch','are')+' '+browser.lowerValueLimit + " - "+browser.upperValueLimit;//ReasonMessages.VAL_LOWER_LIM_EXCEEDED;
 			break;
 		case 17:
-			message = ReasonMessages.INVALID_TERMINAL;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidTerminal');
 			break;
 		case 18:
-			message = ReasonMessages.NO_OPPOSITE_SIDE + strSymbolCode + ". Volume: " + strOrderVolume + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','noOppositeSide') + strSymbolCode + '. ' +ResourceManager.getInstance().getString('marketwatch','volume')+' ' + strOrderVolume + ".";
 			break;
 		case 19:
-			message = ReasonMessages.GRANTS_NOT_AVAILABLE;
+			message = ResourceManager.getInstance().getString('marketwatch','grantsNotAvailableForTheUser');
 			break;
 		case 20:
-			message = ReasonMessages.CREDIT_LINE_LIMIT_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','creditLineLimitExceeded');
 			break;
 		case 21:
-			message = ReasonMessages.SHORT_SELL + strSymbolCode + ". Volume: " + strOrderVolume + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','shortSelling') + strSymbolCode + '. ' +ResourceManager.getInstance().getString('marketwatch','volume')+' ' + strOrderVolume + ".";
 			break;
 		case 22:
-			message = ReasonMessages.NOT_AFFIRMED;
+			message = ResourceManager.getInstance().getString('marketwatch','notAffirmed');
 			break;
 		case 23:
-			message = ReasonMessages.CHANGE_NOT_ALLAOWED_NEGOTIATED_ORDER;
+			message = ResourceManager.getInstance().getString('marketwatch','changeNotAllowedNegoOrdr');
 			break;
 		case 24:
-			message = ReasonMessages.INVALID_ORDER;
+			message = ResourceManager.getInstance().getString('marketwatch','volumeNotMultipleOfDisclosedVolume');
 			break;
 		case 25:
-			message = ReasonMessages.DISCLOSED_VOLUME_LESS_THAN_VOLUME;
+			message = ResourceManager.getInstance().getString('marketwatch','discVolLessThnOrdrVol');
 			break;
 		case 26:
-			message = ReasonMessages.DISCLOSED_VOLUME_NOT_MULTIPLE_OF_BOARDLOT+ ". Board Lot: " + browser.lotSize;
+			message = ResourceManager.getInstance().getString('marketwatch','discVolNotMulOfBoardLot')+ '. '+ResourceManager.getInstance().getString('marketwatch','boardLot')+': ' + browser.lotSize;
 			break;
-		
 		case 27:
-			message = ReasonMessages.VOLUME_NOT_MULTIPLE_OF_DISCLOSED_VOLUME;
+			message = ResourceManager.getInstance().getString('marketwatch','volumeNotMultipleOfDisclosedVolume');
 			break;
 		case 28:
-			message = ReasonMessages.INVALID_BUYING_POWER;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidBuyingPower');
 			break;
 		case 29:
-			message = ReasonMessages.INVALID_USER;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidUser');
 			break;
 		case 30:
-			message = ReasonMessages.NOT_ALLOWED_IN_PREOPEN + " Market: " + strMarketCode + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','orderNotAllowedinPreOpen') + ' ' +ResourceManager.getInstance().getString('marketwatch','market')+' ' + strMarketCode + ".";
 			break;
 		case 31:
-			message = ReasonMessages.INACTIVE_CLIENT + ". Account Code : " + LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) ;
+			message = ResourceManager.getInstance().getString('marketwatch','invalidClient') +' ' +ResourceManager.getInstance().getString('marketwatch','accountCode')+' ' + LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) ;
 			break;
 		case 32:
-			message = ReasonMessages.CASH_LIMIT_EXCEEDED;
+			message = ResourceManager.getInstance().getString('marketwatch','cashLimitExceeded');
 			break;
 		case 33:
-			message = ReasonMessages.NOT_SUFFICIENT_OPPOSIT_SIDE + strSymbolCode + ". Volume: " + strOrderVolume + ".";
+			message = ResourceManager.getInstance().getString('marketwatch','notSuffcientOppositeSide') + strSymbolCode + ' ' +ResourceManager.getInstance().getString('marketwatch','volume')+' ' + strOrderVolume + ".";
 			break;	
 		default : 
 			message = "";
@@ -1221,12 +1264,12 @@ private function formatOrderQueuedMessage(event:NonVisualItemUpdateEvent, strMsg
 	strMsg += strSymbolCode + " @ ";
 	var ezCurrencyFormatter:EZCurrencyFormatter = new EZCurrencyFormatter();
 	str = LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[7]);
-	strMsg += ezCurrencyFormatter.format( str ) + " for ";
-	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + " order number ";
-	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[6]) + " in ";
+	strMsg += ezCurrencyFormatter.format( str ) + ' '+ ResourceManager.getInstance().getString('marketwatch','for')+' ';
+	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[21]) + ' '+ ResourceManager.getInstance().getString('marketwatch','orderNumber')+' ';
+	strMsg += LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[6]) + ' '+ ResourceManager.getInstance().getString('marketwatch','in')+' ';
 	var strMarketCode:String = modelManager.exchangeModel.getMarketCode( new Number (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[18])),
 		new Number (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[5])) );
-	strMsg += strMarketCode + " market.";
+	strMsg += strMarketCode + ' '+ ResourceManager.getInstance().getString('marketwatch','market')+'.';
 	// added on 14/1/2011
 	if (LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[0]) == "3")
 	{
@@ -1237,7 +1280,7 @@ private function formatOrderQueuedMessage(event:NonVisualItemUpdateEvent, strMsg
 			var remaining_volume:Number =  new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[25]));
 			remainedVol = remaining_volume;
 			var volume:Number =  new Number(LSListener.extractFieldData(event, LSListener.fieldSchemaOrderConfirmation[16])); 
-			strMsg += " Remaining Volume : " + remaining_volume;	
+			strMsg += ' '+ ResourceManager.getInstance().getString('marketwatch','remainingVolume')+' ' + remaining_volume;	
 		}
 		
 	}

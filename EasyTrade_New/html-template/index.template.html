@@ -1,15 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!-- saved from url=(0014)about:internet -->
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
-<!-- 
-    Smart developers always View Source. 
-    
-    This application was built using Adobe Flex, an open source framework
-    for building rich Internet applications that get delivered via the
-    Flash Player or to desktops via Adobe AIR. 
-    
-    Learn more about Flex at http://flex.org 
-    // -->
+<!--
+Note:
+-->
 <head>
     <title>${title}</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -37,13 +31,13 @@
             var xiSwfUrlStr = "${expressInstallSwf}";
             var flashvars = {};
             var params = {};
-            flashvars.SERVICE_URL = "http://www.infotech.com:8080/QWService/";
-            flashvars.SECURE_SERVICE_URL = "https://www.infotech.com:8443/QWService/";            
-            flashvars.LIGHTSTREAMER_SERVER = "push.infotech.com";
+            flashvars.SERVICE_URL = "http://www.infotechanas.com:8080/QWService/";
+            flashvars.SECURE_SERVICE_URL = "https://www.infotechanas.com:8443/QWService/";            
+            flashvars.LIGHTSTREAMER_SERVER = "push.infotechanas.com";
             flashvars.LIGHTSTREAMER_PORT = "8085";
 			flashvars.STOCK_EXCHANGE = "RSEBL";
 			flashvars.STOCK_EXCHANGE_FULL_NAME = "Royal Securities Exchange of Bhutan Limited";
-			flashvars.LOCALE = "sv_SE";   
+			flashvars.LOCALE = "en_US";   
             params.quality = "high";
             params.bgcolor = "${bgcolor}";
             params.allowscriptaccess = "sameDomain";
@@ -60,81 +54,9 @@
 			<!-- JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. -->
 			swfobject.createCSS("#flashContent", "display:block;text-align:left;");
     </script>
-    <script language='JavaScript' src='LS/lscommons.js'></script>
-    <script language='JavaScript' src='LS/lspushpage.js'></script>
-    <script type="text/javascript" src="bridge.js"></script>
 </head>
 <body>
-   <script>
-        var app_name = attributes.id;
-        var app = document.getElementById(app_name);
-        var page = new PushPage();
-        var pageEngine = null;
-
-        page.onEngineCreation = function (engine) {
-            engine.connection.setLSHost("push.infotech.com");
-            engine.connection.setLSPort(8085);
-            engine.context.setDebugAlertsOnClientError(true);
-
-            engine.connection.setAdapterName("BRIDGE_ADAPTER");
-            engine.changeStatus("STREAMING");
-            pageEngine = engine;
-        }
-        page.context.setDomain("infotech.com")
-        page.bind();
-        page.createEngine("EasyTradeWebApp", "LS", "SHARE_SESSION");
-
-       /* var field_schema1 = ["message1", "timestamp1"];
-        var pushtable1 = new NonVisualTable(["greetings1"], field_schema1, "RAW", false);
-        pushtable1.setDataAdapter("HELLOWORLD_DATA_ADAPTER_1");
-
-        pushtable1.onItemUpdate = function (itemPos, updateInfo, itemName) {
-            //updateInfo.forEachChangedField(handleOrderConfirmation);
-        };
-
-        page.addTable(pushtable1, "hellotable1");
-        */
-        /*var tbl = new NonVisualTable(["USER_427_427"], fieldSchemaOrderConfirmation, "RAW", false);
-        tbl.setDataAdapter("ORDER_CONFIRMATION");
-
-        tbl.onItemUpdate = function (itemPos, updateInfo, itemName) {
-        updateInfo.forEachChangedField(handleOrderConfirmation);
-        };
-        page.addTable(tbl, "tblOrderConfirmation");*/
-
-var subscribeItem = function (adapterName, tblName, i, s, l, u_name, p_word) {
-debugger
-	pageEngine.connection.setUserName(u_name);
-	pageEngine.connection.setPassword(p_word);
-
-    var itemName = null;
-    if (typeof i === 'string') {
-        itemName = new Array(i);
-    } else {
-        itemName = i;
-    }
-
-    var schema = eval(s);
-    var listener = eval(l);
-    var tbl = new NonVisualTable(itemName, schema, "RAW", false);
-    tbl.setDataAdapter(adapterName);
-    tbl.onItemUpdate = function (itemPos, updateInfo, itemName) {
-        debugger
-        updatedFields = [];
-        var numFields = updateInfo.getNumFields();
-        for (i = 1; i <= numFields; ++i) {
-            var updatedField = new UpdatedField(i, schema[i - 1], updateInfo.getOldValue(i), updateInfo.getNewValue(i), updateInfo.isValueChanged());
-            updatedFields.push(updatedField);
-            //handleUpdate(fieldPos, fieldName, oldValue, newValue, updateInfo);
-            //updateInfo.forEachChangedField(handleUpdate);
-        }
-        listener(itemName, itemPos, updatedFields);
-    };
-    page.addTable(tbl, tblName);
-};
-/************************************************************************/
-
-   </script>
+  
     <!-- SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
 			 JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
 			 when JavaScript is disabled.

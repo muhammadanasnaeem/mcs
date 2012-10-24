@@ -20,6 +20,7 @@ package model
 	import mx.collections.SortField;
 	import mx.controls.Alert;
 	import mx.managers.CursorManager;
+	import mx.resources.ResourceManager;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
 	
@@ -108,6 +109,10 @@ package model
 						symbols.addItem(fillSymbolSummary(obj.stats, new SymbolSummary(), internalExchangeID, internalMarketID));
 						addSummary=true;
 					}
+					if (obj.stats.turnover_ == 0)
+					{
+						addSummary=false;
+					}
 //						else
 //						{
 //							symbols.addItem( fillSymbolSummary( event.result.stats, new SymbolSummary() ) );
@@ -136,6 +141,7 @@ package model
 					}
 					else
 					{
+						summaryObj.SYMBOL="";
 						summaryObj.TOTAL_SIZE_TRADED=totalVolume.toString();
 						summaryObj.VALUE=totalValue.toString();
 						summaryObj.TRADES=totalTrades.toString();
@@ -166,7 +172,7 @@ package model
 		public function onFault(event:FaultEvent):void
 		{
 			isDirty=true;
-			Alert.show(event.fault.faultDetail, Messages.TITLE_ERROR);
+			Alert.show(event.fault.faultDetail, ResourceManager.getInstance().getString('marketwatch','error'));
 			CursorManager.removeBusyCursor();
 		}
 
@@ -232,8 +238,8 @@ package model
 			else
 			{
 				symbol.TOTAL_SIZE_TRADED=obj.totalSizeTraded_;
-			symbol.VALUE=(obj.totalSizeTraded_ * obj.ohlc_.high_).toString();
-			symbol.PERCENTAGE_VALUE = ((obj.totalSizeTraded_ * obj.ohlc_.high_) / 100 * 100).toString();
+				symbol.VALUE=(obj.totalSizeTraded_ * obj.ohlc_.high_).toString();
+				symbol.PERCENTAGE_VALUE = ((obj.totalSizeTraded_ * obj.ohlc_.high_) / 100 * 100).toString();
 			}
 			
 			if(obj.totalSizeTraded_ == '0')  
@@ -244,10 +250,10 @@ package model
 			{
 				symbol.PERCENTAGE_VOLUME=((obj.totalSizeTraded_ / 100) * 100).toString();
 			}
-			totalNumberOfSymbols++;
-			totalTrades=totalTrades + new Number(obj.totalNoOfTrades_);
-			totalVolume=totalVolume + new Number(obj.totalSizeTraded_);
-			totalValue=totalValue + new Number(symbol.VALUE);
+				totalNumberOfSymbols++;
+				totalTrades=totalTrades + new Number(obj.totalNoOfTrades_);
+				totalVolume=totalVolume + new Number(obj.totalSizeTraded_);
+				totalValue=totalValue + new Number(symbol.VALUE);
 
 			return symbol;
 		}

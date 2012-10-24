@@ -12,6 +12,8 @@ package controller
 	import view.EventLog;
 	import view.ExchangeStats;
 	import view.HistoricalSymbolChart;
+	import view.HistoricalSymbolData;
+	import view.HistoricalSymbolDataCharts;
 	import view.LastDayRemainingOrders;
 	import view.LiveMessages;
 	import view.LiveSymbolChart;
@@ -113,7 +115,7 @@ package controller
 			symbolSumm_=value;
 		}
 		
-		//////////////////Risk Information/////////////////////////
+		//////////////////Risk Information///////////////////////// 
 		private var riskInfo_:RiskInformation = new RiskInformation();
 		
 		public function get riskInfo():RiskInformation
@@ -124,6 +126,32 @@ package controller
 		public function set riskInfo(value:RiskInformation):void
 		{
 			riskInfo_=value;
+		}
+		
+		//////////////////Historical Symbol Data Charts////////////
+		private var histsymDataCharts_:HistoricalSymbolDataCharts = new HistoricalSymbolDataCharts();
+		
+		public function get histsymDataCharts():HistoricalSymbolDataCharts
+		{
+			return histsymDataCharts_;
+		}
+		
+		public function set histsymDataCharts(value:HistoricalSymbolDataCharts):void
+		{
+			histsymDataCharts_=value;
+		}
+		
+		/////////////////////Historical Symbol Data Information/////
+		private var historicalSymbolDataInfo_:HistoricalSymbolData = new HistoricalSymbolData();
+		
+		public function get historicalSymbolDataInfo():HistoricalSymbolData
+		{
+			return historicalSymbolDataInfo_;
+		}
+		
+		public function set historicalSymbolDataInfo(value:HistoricalSymbolData):void
+		{
+			historicalSymbolDataInfo_=value;
 		}
 		////////////////////Symbol Summary View////////////////////
 		private var symbolSummary_:SymbolSummary=new SymbolSummary();

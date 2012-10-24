@@ -14,6 +14,7 @@ import flash.events.KeyboardEvent;
 import mx.controls.Alert;
 import mx.core.IVisualElement;
 import mx.events.FlexEvent;
+import mx.resources.ResourceManager;
 
 public var modelManager:ModelManager=ModelManager.getInstance();
 public var windowManager:WindowManager=WindowManager.getInstance();
@@ -61,7 +62,7 @@ protected function txtSymbol_focusOutHandler(event:FocusEvent):void
 
 	if (internalSymbolID < 0)
 	{
-		Alert.show(Messages.ERROR_INVALID_SYMBOL, Messages.TITLE_ERROR);
+		Alert.show(ResourceManager.getInstance().getString('marketwatch','invalidSymbol'),ResourceManager.getInstance().getString('marketwatch','error'));
 		txtSymbol.text="";
 		return;
 	}
